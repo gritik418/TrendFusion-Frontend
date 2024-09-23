@@ -5,10 +5,10 @@ import { FaEye } from "react-icons/fa";
 
 const LoginPage = () => {
   return (
-    <div className="">
+    <div>
       <Navbar />
 
-      <div className="container p-3 m-auto mt-16 flex">
+      <div className="container p-3 m-auto my-16 flex">
         <div className="hidden md:flex w-1/2 items-center justify-center">
           <Image
             className="h-full"
