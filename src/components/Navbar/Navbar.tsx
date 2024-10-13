@@ -4,6 +4,7 @@ import { IoCartOutline } from "react-icons/io5";
 import { CiLogin } from "react-icons/ci";
 import Image from "next/image";
 import Link from "next/link";
+import MenubarComponent from "../MenubarComponent/MenubarComponent";
 
 const Navbar = () => {
   return (
@@ -22,6 +23,8 @@ const Navbar = () => {
             />
           </Link>
           <SearchBar />
+
+          <MenubarComponent />
 
           <button className="flex items-center text-lg gap-1 hover:bg-slate-50 transition-colors ease-in-out duration-300 py-1 px-3 rounded-md">
             <CiLogin className="text-2xl" /> Login
@@ -47,6 +50,7 @@ const Navbar = () => {
           </Link>
 
           <div className="flex gap-4">
+            <MenubarComponent />
             <button className="flex items-center text-lg gap-1 hover:bg-slate-50 transition-colors ease-in-out duration-300 py-1 px-3 rounded-md">
               <CiLogin className="text-2xl" /> Login
             </button>
