@@ -19,18 +19,17 @@ const MenubarComponent = () => {
           <FaUser /> Ritik
         </MenubarTrigger>
         <MenubarContent>
-          <MenubarItem className="flex gap-2">
+          <MenubarItem className="flex gap-2 cursor-pointer">
             <FaUserCircle /> Profile
           </MenubarItem>
-          <MenubarItem className="flex gap-2">
+          <MenubarItem className="flex gap-2 cursor-pointer">
             <FaBoxOpen /> Orders
           </MenubarItem>
-          <MenubarSeparator />
-          <MenubarItem className="flex gap-2">
+          <MenubarItem className="flex gap-2 cursor-pointer">
             <FaHeart className="text-red-500" /> Wishlist
           </MenubarItem>
           <MenubarSeparator />
-          <MenubarItem className="flex gap-2">
+          <MenubarItem className="flex gap-2 cursor-pointer">
             <RiShutDownLine /> Logout
           </MenubarItem>
         </MenubarContent>

@@ -1,9 +1,34 @@
+"use client";
 import Navbar from "@/components/Navbar/Navbar";
+import { useUserLoginMutation } from "@/features/api/apiSlice";
 import Image from "next/image";
 import Link from "next/link";
-import { FaEye } from "react-icons/fa";
+import { ChangeEvent, useState } from "react";
 
 const LoginPage = () => {
+  const [show, setShow] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [loginData, setLoginData] = useState<LoginDataType>({
+    identifier: "",
+    password: "",
+  });
+  const [userLogin] = useUserLoginMutation();
+
+  const handleLogin = async () => {
+    setLoading(true);
+    const { data, error } = await userLogin(loginData);
+    setLoading(false);
+    console.log(data, error);
+  };
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setLoginData({ ...loginData, [name]: value });
+  };
+
+  const toggleShow = () => {
+    setShow(!show);
+  };
   return (
     <div>
       <Navbar />
@@ -43,8 +68,10 @@ const LoginPage = () => {
               className="bg-slate-100 py-2 px-2 rounded-md outline-[var(--secondary-color)]"
               type="email"
               id="email"
-              name="email"
+              name="identifier"
               placeholder="Email or Username"
+              onChange={handleChange}
+              value={loginData.identifier}
             />
           </div>
 
@@ -55,17 +82,27 @@ const LoginPage = () => {
             <div className="bg-slate-100 rounded-md relative">
               <input
                 className="h-full w-full py-2 px-2 bg-transparent outline-[var(--secondary-color)] rounded-md"
-                type="password"
+                type={show ? "text" : "password"}
                 id="password"
                 name="password"
                 placeholder="Password"
+                onChange={handleChange}
+                value={loginData.password}
               />
-              <FaEye className="cursor-pointer absolute top-[50%] right-2 -translate-y-[50%] text-[var(--primary-color)] text-lg" />
+              <span
+                onClick={toggleShow}
+                className="cursor-pointer text-xs absolute top-[50%] right-2 -translate-y-[50%] text-[var(--primary-color)] bg-white p-1 rounded-md font-medium"
+              >
+                {show ? "HIDE" : "SHOW"}
+              </span>
             </div>
           </div>
 
-          <button className="bg-[var(--secondary-color)] mt-6 text-white font-bold text-xl py-2 rounded-md">
-            Login
+          <button
+            onClick={handleLogin}
+            className="bg-[var(--secondary-color)] mt-6 text-white font-bold text-xl py-2 rounded-md"
+          >
+            {loading ? "Processing..." : "Login"}
           </button>
 
           <p className="text-center">

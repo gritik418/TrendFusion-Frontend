@@ -1,10 +1,15 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import Navbar from "@/components/Navbar/Navbar";
 import Image from "next/image";
 import Link from "next/link";
-import { FaEye } from "react-icons/fa";
 
 const SignupPage = () => {
+  const [show, setShow] = useState<boolean>(false);
+
+  const toggleShow = () => {
+    setShow(!show);
+  };
   return (
     <div>
       <Navbar />
@@ -95,12 +100,17 @@ const SignupPage = () => {
             <div className="bg-slate-100 rounded-md relative">
               <input
                 className="h-full w-full py-2 px-2 bg-transparent outline-[var(--secondary-color)] rounded-md"
-                type="password"
+                type={show ? "text" : "password"}
                 id="password"
                 name="password"
                 placeholder="Password"
               />
-              <FaEye className="cursor-pointer absolute top-[50%] right-2 -translate-y-[50%] text-[var(--primary-color)] text-lg" />
+              <span
+                onClick={toggleShow}
+                className="cursor-pointer text-xs absolute top-[50%] right-2 -translate-y-[50%] text-[var(--primary-color)] bg-white p-1 rounded-md font-medium"
+              >
+                {show ? "HIDE" : "SHOW"}
+              </span>
             </div>
           </div>
 
@@ -111,12 +121,17 @@ const SignupPage = () => {
             <div className="bg-slate-100 rounded-md relative">
               <input
                 className="h-full w-full py-2 px-2 bg-transparent outline-[var(--secondary-color)] rounded-md"
-                type="password"
+                type={show ? "text" : "password"}
                 id="confirmPassword"
                 name="confirmPassword"
                 placeholder="Confirm Password"
               />
-              <FaEye className="cursor-pointer absolute top-[50%] right-2 -translate-y-[50%] text-[var(--primary-color)] text-lg" />
+              <span
+                onClick={toggleShow}
+                className="cursor-pointer text-xs absolute top-[50%] right-2 -translate-y-[50%] text-[var(--primary-color)] bg-white p-1 rounded-md font-medium"
+              >
+                {show ? "HIDE" : "SHOW"}
+              </span>
             </div>
           </div>
 
