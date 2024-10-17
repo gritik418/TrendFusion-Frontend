@@ -11,11 +11,12 @@ import "swiper/css";
 import "swiper/css/free-mode";
 import "swiper/css/navigation";
 import "swiper/css/thumbs";
+import Image from "next/image";
 
-const ImageSlider = () => {
+const ImageSlider = ({ images }: { images: string[] }) => {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
   return (
-    <div className="">
+    <div className="sticky top-[64px]">
       <Swiper
         style={{
           //   @ts-ignore
@@ -28,41 +29,22 @@ const ImageSlider = () => {
         navigation={true}
         thumbs={{ swiper: thumbsSwiper }}
         modules={[FreeMode, Navigation, Thumbs, Autoplay]}
-        className={`${styles.mySwiper2} ${"min-h-full max-h-[550px]"}`}
+        className={`${styles.mySwiper2} ${"min-h-full max-h-[600px]"}`}
       >
-        <SwiperSlide>
-          <img src="https://swiperjs.com/demos/images/nature-1.jpg" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src="https://swiperjs.com/demos/images/nature-2.jpg" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src="https://swiperjs.com/demos/images/nature-3.jpg" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src="https://swiperjs.com/demos/images/nature-4.jpg" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src="https://swiperjs.com/demos/images/nature-5.jpg" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src="https://swiperjs.com/demos/images/nature-6.jpg" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src="https://swiperjs.com/demos/images/nature-7.jpg" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src="https://swiperjs.com/demos/images/nature-8.jpg" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src="https://swiperjs.com/demos/images/nature-9.jpg" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src="https://swiperjs.com/demos/images/nature-10.jpg" />
-        </SwiperSlide>
+        {images.map((img: string) => (
+          <SwiperSlide className="">
+            <Image
+              alt=""
+              height={650}
+              width={650}
+              src={img}
+              className="object-contain h-full"
+            />
+          </SwiperSlide>
+        ))}
       </Swiper>
 
-      <div className="border-2">
+      <div className="mt-2">
         <Swiper
           onSwiper={setThumbsSwiper as (swiper: any) => void}
           loop={true}
@@ -72,38 +54,15 @@ const ImageSlider = () => {
           freeMode={true}
           watchSlidesProgress={true}
           modules={[FreeMode, Navigation, Thumbs]}
-          className={`${styles.mySwiper} ${"max-h-[100px] flex flex-row"}`}
+          className={`${
+            styles.mySwiper
+          } ${"max-h-[100px] min-h-[100px] flex flex-row"}`}
         >
-          <SwiperSlide>
-            <img src="https://swiperjs.com/demos/images/nature-1.jpg" />
-          </SwiperSlide>
-          <SwiperSlide>
-            <img src="https://swiperjs.com/demos/images/nature-2.jpg" />
-          </SwiperSlide>
-          <SwiperSlide>
-            <img src="https://swiperjs.com/demos/images/nature-3.jpg" />
-          </SwiperSlide>
-          <SwiperSlide>
-            <img src="https://swiperjs.com/demos/images/nature-4.jpg" />
-          </SwiperSlide>
-          <SwiperSlide>
-            <img src="https://swiperjs.com/demos/images/nature-5.jpg" />
-          </SwiperSlide>
-          <SwiperSlide>
-            <img src="https://swiperjs.com/demos/images/nature-6.jpg" />
-          </SwiperSlide>
-          <SwiperSlide>
-            <img src="https://swiperjs.com/demos/images/nature-7.jpg" />
-          </SwiperSlide>
-          <SwiperSlide>
-            <img src="https://swiperjs.com/demos/images/nature-8.jpg" />
-          </SwiperSlide>
-          <SwiperSlide>
-            <img src="https://swiperjs.com/demos/images/nature-9.jpg" />
-          </SwiperSlide>
-          <SwiperSlide>
-            <img src="https://swiperjs.com/demos/images/nature-10.jpg" />
-          </SwiperSlide>
+          {images.map((img: string) => (
+            <SwiperSlide>
+              <img src={img} className="h-[100px]" />
+            </SwiperSlide>
+          ))}
         </Swiper>
       </div>
     </div>

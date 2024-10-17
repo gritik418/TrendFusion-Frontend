@@ -1,4 +1,4 @@
-interface User extends Document {
+interface User {
   firstName: string;
   lastName?: string;
   email: string;
@@ -23,21 +23,25 @@ interface Product {
   description: string;
   thumbnail: string;
   isAvailable: boolean;
-  images?: string[];
+  images: string[];
   category?: string;
   price: number;
   warranty?: string;
   discount?: Discount;
   rating?: number;
   stock: number;
-  color?: string;
+  color?: Color;
   size?: string;
   highlights: string[];
   specifications?: Specifications;
-  offers?: Offers;
+  offers?: Offers[];
 }
 
-interface Order extends Document {
+interface ProductWithVariants extends Product {
+  variants?: Variants[];
+}
+
+interface Order {
   orderId: string;
   userId: Types.ObjectId;
   orderDate: Date;
@@ -57,7 +61,7 @@ interface Order extends Document {
   trackingId?: string;
 }
 
-interface Cart extends Document {
+interface Cart {
   userId: Types.ObjectId;
   items: string[] | CartItem[];
   totalPrice: number;
@@ -66,7 +70,15 @@ interface Cart extends Document {
   totalQuantity: number;
 }
 
-interface Reviews extends Document {
+interface Reviews {
+  _id: string;
+  user: {
+    firstName: string;
+    lastName?: string;
+    email: string;
+    username: string;
+    avatar?: string;
+  };
   userId: Types.ObjectId;
   productId: Types.ObjectId;
   rating: number;
@@ -100,6 +112,22 @@ interface CartItem {
   size?: string;
 }
 
+type Variants = {
+  colorName: string;
+  colorImage: string;
+  sizes: VariantSize[];
+};
+
+type Color = {
+  colorName: string;
+  colorImage: string;
+};
+
+type VariantSize = {
+  size: string;
+  slug: string;
+};
+
 interface Specifications {
   [category: string]: {
     [key: string]: string;
@@ -107,7 +135,8 @@ interface Specifications {
 }
 
 interface Offers {
-  [offerType: string]: string;
+  offerType: string;
+  offer: string;
 }
 
 interface DeliveryAddress {
