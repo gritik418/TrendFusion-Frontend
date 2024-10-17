@@ -15,7 +15,7 @@ const CartItem = ({ product }: { product: Product }) => {
   }
 
   return (
-    <div className="flex flex-col gap-2 sm:gap-8 sm:flex-row border-b-2 p-2">
+    <div className="flex flex-col gap-2 sm:gap-8 mb-4 sm:flex-row border-b-2 p-2">
       <div className="w-full gap-1 sm:min-w-[220px] sm:max-w-[220px] h-[270px] flex flex-col items-center justify-center">
         <Image
           className="min-h-[220px] max-h-[220px] w-auto"

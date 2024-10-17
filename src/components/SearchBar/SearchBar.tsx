@@ -6,7 +6,7 @@ const SearchBar = () => {
       <TfiSearch className="text-xl text-gray-500" />
       <input
         type="text"
-        className="text-lg bg-transparent text-gray-700 w-full"
+        className="text-lg bg-transparent text-gray-700 w-full outline-none"
         placeholder="Search for Products, Brands and More"
       />
     </div>
