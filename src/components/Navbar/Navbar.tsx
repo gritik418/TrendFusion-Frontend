@@ -9,7 +9,7 @@ import MenubarComponent from "../MenubarComponent/MenubarComponent";
 const Navbar = () => {
   return (
     <>
-      <div className="h-[60px] shadow-lg hidden sm:flex bg-white/65 backdrop-blur-sm sticky top-0">
+      <div className="h-[60px] shadow-lg hidden md:flex bg-white/65 backdrop-blur-sm sticky top-0">
         <div className="h-full container m-auto gap-6 flex items-center">
           <Link
             href={"/"}
@@ -41,7 +41,7 @@ const Navbar = () => {
         </div>
       </div>
 
-      <div className="h-[110px] py-2 shadow-lg flex-col flex sm:hidden bg-white/65 backdrop-blur-sm sticky top-0">
+      <div className="h-[110px] py-2 shadow-lg flex-col flex md:hidden bg-white/65 backdrop-blur-sm sticky top-0">
         <div className="h-full px-3 container m-auto gap-6 justify-between flex items-center">
           <Link
             href={"/"}
