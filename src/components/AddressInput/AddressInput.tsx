@@ -4,7 +4,11 @@ import { Switch } from "../ui/switch";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { Label } from "../ui/label";
 
-const AddressInput = () => {
+const AddressInput = ({
+  setShowAddressInput,
+}: {
+  setShowAddressInput: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   return (
     <div className="flex rounded-md flex-col bg-[var(--light-color)] my-10 py-8 px-4 lg:px-8">
       <div className="flex flex-col gap-8">
@@ -113,7 +117,7 @@ const AddressInput = () => {
           />
         </div>
 
-        <div className="flex w-full flex-col lg:flex-row gap-3 flex-col">
+        <div className="flex w-full gap-3 flex-col">
           <p>Address Type</p>
           <RadioGroup
             defaultValue="option-one"
@@ -137,7 +141,10 @@ const AddressInput = () => {
         </div>
 
         <div className="flex gap-3 justify-end">
-          <button className="px-5 py-2 text-xl text-[var(--secondary-color)] rounded-md font-semibold">
+          <button
+            onClick={() => setShowAddressInput(false)}
+            className="px-5 py-2 text-xl text-[var(--secondary-color)] rounded-md font-semibold"
+          >
             Cancel
           </button>
 
