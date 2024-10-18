@@ -4,15 +4,11 @@ import { Separator } from "@/components/ui/separator";
 
 const Account = () => {
   return (
-    <div className="space-y-6">
-      <div>
-        <h3 className="text-lg font-medium">Profile</h3>
-        <p className="text-sm text-muted-foreground">
-          This is how others will see you on the site.
-        </p>
+    <div className="w-full">
+      <div className="w-full mb-6">
+        <h1 className="text-3xl mb-3">Profile Information</h1>
+        <Separator />
       </div>
-      <Separator />
-      {/* <ProfileForm /> */}
     </div>
   );
 };

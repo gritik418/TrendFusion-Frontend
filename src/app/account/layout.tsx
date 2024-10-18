@@ -24,17 +24,17 @@ const sidebarNavItems: SidebarNavItem[] = [
   {
     title: "My Orders",
     icon: <IoIosBasket className="text-xl text-[var(--secondary-color)]" />,
-    href: "/orders",
+    href: "/account/orders",
   },
   {
     title: "My Wishlist",
     icon: <FaHeart className="text-lg text-[var(--secondary-color)]" />,
-    href: "/wishlist",
+    href: "/account/wishlist",
   },
   {
     title: "My Reviews",
     icon: <MdReviews className="text-xl text-[var(--secondary-color)]" />,
-    href: "/reviews",
+    href: "/account/reviews",
   },
   {
     title: "Logout",

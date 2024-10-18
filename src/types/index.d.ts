@@ -162,6 +162,18 @@ interface Discount {
   description?: string;
 }
 
+interface WishlistItem {
+  productId: string;
+  title: string;
+  brand?: string;
+  thumbnail: string;
+  isAvailable: boolean;
+  price: number;
+  discount?: Discount;
+  rating?: number;
+  stock: number;
+}
+
 interface JWTPayload extends JwtPayload {
   id: string;
   email: string;
