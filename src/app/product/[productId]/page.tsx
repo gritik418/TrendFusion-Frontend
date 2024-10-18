@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/accordion";
 import UserReviewItem from "@/components/UserReviewItem/UserReviewItem";
 import PriceBar from "@/components/PriceBar/PriceBar";
+import CheckDelivery from "@/components/CheckDelivery/CheckDelivery";
 
 const product: ProductWithVariants = {
   productId: "1A2B3C",
@@ -350,6 +351,14 @@ const Product = ({ params }: { params: { productId: string } }) => {
                 </div>
               </div>
             )}
+
+            {
+              <div className="flex flex-col mt-1">
+                <Separator />
+                <p className="text-3xl mt-4 mb-5">Delivery</p>
+                <CheckDelivery />
+              </div>
+            }
 
             {product.warranty && (
               <div className="flex flex-col mt-1">

@@ -45,9 +45,11 @@ interface Order {
   orderId: string;
   userId: Types.ObjectId;
   orderDate: Date;
-  deliveryDate?: Date;
+  expectedDeliveryDate?: Date;
+  deliveredOn?: Date;
   status: "Pending" | "Shipped" | "Delivered" | "Cancelled";
   items: OrderProductInfo[] | undefined;
+  itemCount: number;
   totalQuantity: number;
   totalPrice: number;
   discount?: Discount;
