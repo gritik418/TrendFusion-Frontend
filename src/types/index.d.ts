@@ -147,12 +147,13 @@ interface DeliveryAddress {
   city: string;
   state: string;
   street: string;
-  country: string;
   postalCode: string;
   landmark?: string;
   appartment?: string;
-  phoneNumber: string[];
+  phoneNumber: string;
+  alternatePhoneNumber?: string;
   isDefault: boolean;
+  addressType: "home" | "work";
 }
 
 interface Discount {

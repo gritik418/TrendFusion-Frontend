@@ -56,7 +56,7 @@ export function SidebarNav({ items }: SidebarNavProps) {
   const pathname = usePathname();
 
   return (
-    <nav className="w-[270px] flex flex-col">
+    <nav className="w-[270px] flex flex-col max-h-max ">
       {items.map((item) => {
         if (item.href)
           return (
@@ -64,7 +64,9 @@ export function SidebarNav({ items }: SidebarNavProps) {
               key={item.href}
               href={item.href}
               className={`${
-                pathname === item.href ? "bg-gray-300" : "bg-white"
+                pathname === item.href
+                  ? "bg-[var(--light-color)] text-[var(--secondary-color)]"
+                  : "bg-white"
               } rounded-none`}
             >
               <div className="flex flex-col">
@@ -76,13 +78,12 @@ export function SidebarNav({ items }: SidebarNavProps) {
                 </div>
                 {item.subItems &&
                   item.subItems.map((subItem: SubItem) => {
-                    console.log(pathname, subItem.href);
                     return (
                       <Link
                         href={subItem.href}
                         className={`${
                           pathname === subItem.href
-                            ? "bg-blue-50 text-blue-500 font-semibold text-lg"
+                            ? "bg-[var(--light-color)] text-[var(--secondary-color)] font-semibold text-lg"
                             : "bg-white text-lg font-normal"
                         } flex pl-10 p-3 flex-col gap-3`}
                       >
@@ -101,7 +102,9 @@ export function SidebarNav({ items }: SidebarNavProps) {
           <div
             key={item.href}
             className={`${
-              pathname === item.href ? "bg-gray-300" : "bg-white"
+              pathname === item.href
+                ? "bg-[var(--light-color)] text-[var(--secondary-color)]"
+                : "bg-white"
             } rounded-none cursor-pointer`}
           >
             <div className="flex flex-col">
@@ -113,13 +116,12 @@ export function SidebarNav({ items }: SidebarNavProps) {
               </div>
               {item.subItems &&
                 item.subItems.map((subItem: SubItem) => {
-                  console.log(pathname, subItem.href);
                   return (
                     <Link
                       href={subItem.href}
                       className={`${
                         pathname === subItem.href
-                          ? "bg-blue-50 text-blue-500 font-semibold text-lg"
+                          ? "bg-[var(--light-color)] text-[var(--secondary-color)] font-semibold text-lg"
                           : "bg-white text-lg font-normal"
                       } flex pl-10 p-3 flex-col gap-3`}
                     >

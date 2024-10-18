@@ -13,6 +13,8 @@
 :root {
   --primary-color: #16423c;
   --secondary-color: #6a9c89;
+  --medium-color: #b2ccc2;
+  --light-color: #f0f5f3;
 }
 
 @layer base {

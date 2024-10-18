@@ -9,7 +9,7 @@ import { RiShutDownLine } from "react-icons/ri";
 const sidebarNavItems: SidebarNavItem[] = [
   {
     title: "Account",
-    icon: <FaUserAlt className="text-lg text-blue-600" />,
+    icon: <FaUserAlt className="text-lg text-[var(--secondary-color)]" />,
     subItems: [
       {
         title: "Profile Information",
@@ -23,22 +23,22 @@ const sidebarNavItems: SidebarNavItem[] = [
   },
   {
     title: "My Orders",
-    icon: <IoIosBasket className="text-xl text-blue-600" />,
+    icon: <IoIosBasket className="text-xl text-[var(--secondary-color)]" />,
     href: "/orders",
   },
   {
     title: "My Wishlist",
-    icon: <FaHeart className="text-lg text-blue-600" />,
+    icon: <FaHeart className="text-lg text-[var(--secondary-color)]" />,
     href: "/wishlist",
   },
   {
     title: "My Reviews",
-    icon: <MdReviews className="text-xl text-blue-600" />,
+    icon: <MdReviews className="text-xl text-[var(--secondary-color)]" />,
     href: "/reviews",
   },
   {
     title: "Logout",
-    icon: <RiShutDownLine className="text-xl text-blue-600" />,
+    icon: <RiShutDownLine className="text-xl text-[var(--secondary-color)]" />,
   },
 ];
 
@@ -63,11 +63,13 @@ export default function SettingsLayout({ children }: SettingsLayoutProps) {
         </div>
 
         <div className="flex gap-4">
-          <div className="flex bg-white">
+          <div className="flex bg-white max-h-max">
             <SidebarNav items={sidebarNavItems} />
           </div>
 
-          <div className="flex bg-white w-full p-4">{children}</div>
+          <div className="flex bg-white w-full p-4 min-h-[80vh]">
+            {children}
+          </div>
         </div>
       </div>
     </div>
