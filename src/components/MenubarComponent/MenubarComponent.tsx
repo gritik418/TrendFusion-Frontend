@@ -1,17 +1,18 @@
-import React from "react";
+"use client";
 import {
   Menubar,
   MenubarContent,
   MenubarMenu,
   MenubarTrigger,
   MenubarSeparator,
-  MenubarShortcut,
   MenubarItem,
 } from "../ui/menubar";
 import { FaBoxOpen, FaHeart, FaUser, FaUserCircle } from "react-icons/fa";
 import { RiShutDownLine } from "react-icons/ri";
+import { useRouter } from "next/navigation";
 
 const MenubarComponent = () => {
+  const router = useRouter();
   return (
     <Menubar className="border-none cursor-pointer bg-gray-100">
       <MenubarMenu>
@@ -19,7 +20,10 @@ const MenubarComponent = () => {
           <FaUser /> Ritik
         </MenubarTrigger>
         <MenubarContent>
-          <MenubarItem className="flex gap-2 cursor-pointer">
+          <MenubarItem
+            onClick={() => router.push("/account")}
+            className="flex gap-2 cursor-pointer"
+          >
             <FaUserCircle /> Profile
           </MenubarItem>
           <MenubarItem className="flex gap-2 cursor-pointer">
