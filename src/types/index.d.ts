@@ -48,7 +48,7 @@ interface Order {
   expectedDeliveryDate?: Date;
   deliveredOn?: Date;
   status: "Pending" | "Shipped" | "Delivered" | "Cancelled";
-  items: OrderProductInfo[] | undefined;
+  items: OrderProductInfo[];
   itemCount: number;
   totalQuantity: number;
   totalPrice: number;
