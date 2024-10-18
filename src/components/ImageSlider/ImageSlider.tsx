@@ -31,8 +31,8 @@ const ImageSlider = ({ images }: { images: string[] }) => {
         modules={[FreeMode, Navigation, Thumbs, Autoplay]}
         className={`${styles.mySwiper2} ${"min-h-full max-h-[600px]"}`}
       >
-        {images.map((img: string) => (
-          <SwiperSlide className="">
+        {images.map((img: string, index: number) => (
+          <SwiperSlide key={index}>
             <Image
               alt=""
               height={650}
@@ -58,8 +58,8 @@ const ImageSlider = ({ images }: { images: string[] }) => {
             styles.mySwiper
           } ${"max-h-[100px] min-h-[100px] flex flex-row"}`}
         >
-          {images.map((img: string) => (
-            <SwiperSlide>
+          {images.map((img: string, index: number) => (
+            <SwiperSlide key={index}>
               <img src={img} className="h-[100px]" />
             </SwiperSlide>
           ))}

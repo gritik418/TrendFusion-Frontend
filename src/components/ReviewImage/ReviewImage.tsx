@@ -1,5 +1,4 @@
 import Image from "next/image";
-import React from "react";
 import {
   Dialog,
   DialogClose,
@@ -15,7 +14,7 @@ const ReviewImage = ({ image }: { image: string }) => {
   return (
     <Dialog>
       <DialogTrigger>
-        <div className="cursor-pointer">
+        <div className="cursor-pointer mt-3">
           <Image
             src={image}
             className="min-h-24 max-h-24 min-w-24 max-w-24"
@@ -25,12 +24,13 @@ const ReviewImage = ({ image }: { image: string }) => {
           />
         </div>
       </DialogTrigger>
+      <DialogTitle></DialogTitle>
 
       <DialogContent className="border-2 mt-3">
         <DialogDescription>
           <Image
             src={image}
-            className="min-h-[400px] max-h-[400px]"
+            className="min-h-[350px] max-h-[400px]"
             alt="review-image"
             height={500}
             width={500}

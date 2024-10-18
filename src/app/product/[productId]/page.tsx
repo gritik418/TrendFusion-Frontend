@@ -15,6 +15,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import UserReviewItem from "@/components/UserReviewItem/UserReviewItem";
+import PriceBar from "@/components/PriceBar/PriceBar";
 
 const product: ProductWithVariants = {
   productId: "1A2B3C",
@@ -268,10 +269,10 @@ const Product = ({ params }: { params: { productId: string } }) => {
               <div className="flex mt-4 mb-2 items-end gap-3">
                 <p className="text-4xl font-semibold">
                   <span className="text-2xl">₹</span>
-                  {(
+                  {Math.floor(
                     product.price -
-                    (product.price * product.discount?.value!) / 100
-                  ).toFixed()}
+                      (product.price * product.discount?.value!) / 100
+                  )}
                 </p>
 
                 <p className="text-xl text-green-600 font-semibold">
@@ -447,6 +448,8 @@ const Product = ({ params }: { params: { productId: string } }) => {
           </div>
         </div>
       )}
+
+      <PriceBar product={product} />
     </div>
   );
 };
