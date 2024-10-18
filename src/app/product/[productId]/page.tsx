@@ -270,19 +270,25 @@ const Product = ({ params }: { params: { productId: string } }) => {
               <div className="flex mt-4 mb-2 items-end gap-3">
                 <p className="text-4xl font-semibold">
                   <span className="text-2xl">₹</span>
-                  {Math.floor(
-                    product.price -
-                      (product.price * product.discount?.value!) / 100
-                  )}
+                  {product.discount
+                    ? Math.floor(
+                        product.price -
+                          (product.price * product.discount?.value!) / 100
+                      )
+                    : product.price}
                 </p>
 
-                <p className="text-xl text-green-600 font-semibold">
-                  {product.discount?.value}% Off
-                </p>
+                {product.discount && (
+                  <p className="text-xl text-green-600 font-semibold">
+                    {product.discount?.value}% Off
+                  </p>
+                )}
               </div>
-              <p className="text-lg text-gray-500 font-normal">
-                M.R.P. <span className="line-through">₹{product.price}</span>
-              </p>
+              {product.discount && (
+                <p className="text-lg text-gray-500 font-normal">
+                  M.R.P. <span className="line-through">₹{product.price}</span>
+                </p>
+              )}
               <p className="text-sm font-semibold mb-2">
                 Inclusive of all taxes
               </p>

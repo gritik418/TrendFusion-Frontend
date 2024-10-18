@@ -6,9 +6,9 @@ import Link from "next/link";
 const WishlistItem = ({ item }: { item: WishlistItem }) => {
   return (
     <Link href={`/product/${item.productId}`}>
-      <div className="gap-3 flex p-2 justify-between hover:bg-[var(--light-color)]">
+      <div className="gap-3 flex p-2 mb-2 justify-between hover:bg-[var(--light-color)]">
         <div className="flex gap-3">
-          <div className="flex min-w-[120px] items-center justify-center">
+          <div className="flex bg-white min-w-[120px] items-center justify-center">
             <Image
               className="h-[120px] max-w-[120px] w-auto"
               src={item.thumbnail}
@@ -33,18 +33,24 @@ const WishlistItem = ({ item }: { item: WishlistItem }) => {
             <div className="flex items-end">
               <span className="text-xl">₹</span>
               <p className="text-2xl font-semibold">
-                {Math.floor(
-                  item.price - (item.price * item.discount?.value!) / 100
-                )}
+                {item.discount
+                  ? Math.floor(
+                      item.price - (item.price * item.discount?.value!) / 100
+                    )
+                  : item.price}
               </p>
 
-              <p className="text-lg text-gray-500 font-normal mx-3">
-                <span className="line-through">₹{item.price}</span>
-              </p>
+              {item.discount && (
+                <p className="text-lg text-gray-500 font-normal mx-3">
+                  <span className="line-through">₹{item.price}</span>
+                </p>
+              )}
 
-              <p className="text-xl text-green-600 font-semibold">
-                {item.discount?.value}% Off
-              </p>
+              {item.discount && (
+                <p className="text-xl text-green-600 font-semibold">
+                  {item.discount?.value}% Off
+                </p>
+              )}
             </div>
           </div>
         </div>

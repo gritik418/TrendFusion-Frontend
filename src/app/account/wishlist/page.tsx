@@ -1,6 +1,7 @@
 import { Separator } from "@/components/ui/separator";
 import WishlistItem from "@/components/WishlistItem/WishlistItem";
 import React from "react";
+import { HiOutlineClipboardDocumentList } from "react-icons/hi2";
 
 const wishlistItems: WishlistItem[] = [
   {
@@ -143,11 +144,21 @@ const Wishlist = () => {
         <Separator />
       </div>
 
-      <div className="flex flex-col gap-2">
-        {wishlistItems.map((item: WishlistItem) => (
-          <WishlistItem key={item.productId} item={item} />
-        ))}
-      </div>
+      {wishlistItems ? (
+        <div className="flex flex-col gap-2">
+          {wishlistItems.map((item: WishlistItem) => (
+            <WishlistItem key={item.productId} item={item} />
+          ))}
+        </div>
+      ) : (
+        <div className="flex items-center w-full justify-center py-16">
+          <HiOutlineClipboardDocumentList className="text-8xl" />
+          <div className="flex flex-col">
+            <p className="text-lg">There are no items in this List.</p>
+            <p className="text-lg">Add items you want to shop for.</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

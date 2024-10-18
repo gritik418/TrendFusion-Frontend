@@ -6,18 +6,24 @@ const PriceBar = ({ product }: { product: Product }) => {
       <div className="flex items-end">
         <span className="text-xl">₹</span>
         <p className="text-3xl">
-          {Math.floor(
-            product.price - (product.price * product.discount?.value!) / 100
-          )}
+          {product.discount
+            ? Math.floor(
+                product.price - (product.price * product.discount?.value!) / 100
+              )
+            : product.price}
         </p>
 
-        <p className="text-lg text-gray-500 font-normal mx-3">
-          <span className="line-through">₹{product.price}</span>
-        </p>
+        {product.discount && (
+          <p className="text-lg text-gray-500 font-normal mx-3">
+            <span className="line-through">₹{product.price}</span>
+          </p>
+        )}
 
-        <p className="text-xl text-green-600 font-semibold">
-          {product.discount?.value}% Off
-        </p>
+        {product.discount && (
+          <p className="text-xl text-green-600 font-semibold">
+            {product.discount?.value}% Off
+          </p>
+        )}
       </div>
 
       <div className="flex gap-3 justify-end">
