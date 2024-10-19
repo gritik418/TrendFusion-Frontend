@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { ChevronRight, ChevronsUpDown } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 
 import { Avatar } from "@/components/ui/avatar";
 import {
@@ -30,7 +30,7 @@ import {
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { FaHeart, FaUserAlt } from "react-icons/fa";
-import { IoIosBasket } from "react-icons/io";
+import { IoIosBasket, IoIosSettings } from "react-icons/io";
 import Link from "next/link";
 import { MdReviews } from "react-icons/md";
 import { RiShutDownLine } from "react-icons/ri";
@@ -73,6 +73,21 @@ const data = {
       icon: <MdReviews className="text-xl text-[var(--secondary-color)]" />,
     },
     {
+      title: "Settings",
+      url: "#",
+      isActive: true,
+      isLink: false,
+      icon: (
+        <IoIosSettings className="text-3xl text-[var(--secondary-color)]" />
+      ),
+      items: [
+        {
+          title: "Appearance",
+          url: "/account/appearance",
+        },
+      ],
+    },
+    {
       title: "Logout",
       url: "#",
       isLink: true,
@@ -80,29 +95,6 @@ const data = {
         <RiShutDownLine className="text-xl text-[var(--secondary-color)]" />
       ),
     },
-    // {
-    //   title: "Settings",
-    //   url: "#",
-    //   icon: Settings2,
-    //   items: [
-    //     {
-    //       title: "General",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Team",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Billing",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Limits",
-    //       url: "#",
-    //     },
-    //   ],
-    // },
   ],
 };
 
@@ -137,9 +129,8 @@ export default function AppSidebar({
                   </div>
                   <div className="grid flex-1 text-left text-sm leading-tight">
                     <span className="truncate text-xs">Hello,</span>
-                    <span className="truncate font-semibold">Ritik Gupt</span>
+                    <span className="truncate font-semibold">Ritik Gupta</span>
                   </div>
-                  <ChevronsUpDown className="ml-auto" />
                 </SidebarMenuButton>
               </DropdownMenu>
             </SidebarMenuItem>
