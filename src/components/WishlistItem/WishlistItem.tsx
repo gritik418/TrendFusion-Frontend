@@ -32,13 +32,17 @@ const WishlistItem = ({ item }: { item: WishlistItem }) => {
 
             <div className="flex items-end">
               <span className="text-xl">₹</span>
-              <p className="text-2xl font-semibold">
-                {item.discount
-                  ? Math.floor(
-                      item.price - (item.price * item.discount?.value!) / 100
-                    )
-                  : item.price}
-              </p>
+              {item.discount ? (
+                <p className="text-2xl font-semibold">
+                  {item.discount.discountType === "Percentage"
+                    ? Math.floor(
+                        item.price - (item.price * item.discount?.value!) / 100
+                      )
+                    : Math.floor(item.price - item.discount.value)}
+                </p>
+              ) : (
+                <p className="text-2xl font-semibold">{item.price}</p>
+              )}
 
               {item.discount && (
                 <p className="text-lg text-gray-500 font-normal mx-3">

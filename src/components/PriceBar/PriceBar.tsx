@@ -5,13 +5,18 @@ const PriceBar = ({ product }: { product: Product }) => {
     <div className="flex p-3 items-end gap-3 flex-col sm:flex-row bg-white border-t-0 shadow-2xl shadow-slate-900 px-8 sticky bottom-0 sm:justify-between sm:items-center">
       <div className="flex items-end">
         <span className="text-xl">₹</span>
-        <p className="text-3xl">
-          {product.discount
-            ? Math.floor(
-                product.price - (product.price * product.discount?.value!) / 100
-              )
-            : product.price}
-        </p>
+        {product.discount ? (
+          <p className="text-3xl">
+            {product.discount.discountType === "Percentage"
+              ? Math.floor(
+                  product.price -
+                    (product.price * product.discount?.value!) / 100
+                )
+              : Math.floor(product.price - product.discount.value)}
+          </p>
+        ) : (
+          <p className="text-3xl">{product.price}</p>
+        )}
 
         {product.discount && (
           <p className="text-lg text-gray-500 font-normal mx-3">

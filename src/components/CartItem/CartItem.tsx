@@ -3,15 +3,15 @@ import React from "react";
 import { FaHeart, FaTrash } from "react-icons/fa";
 
 const CartItem = ({ product }: { product: Product }) => {
-  let discountedPrice: number = 0;
-  if (product.discount?.discountType === "Fixed") {
-    discountedPrice = Math.ceil(product.price - product.discount.value);
+  let discountedPrice: number = product.price;
+  if (product?.discount?.discountType === "Fixed") {
+    discountedPrice = Math.floor(product.price - product.discount.value);
   }
-  if (product.discount?.discountType === "Percentage") {
-    let discountValue = Math.ceil(
+  if (product?.discount?.discountType === "Percentage") {
+    let discountValue = Math.floor(
       (product.price * product.discount.value) / 100
     );
-    discountedPrice = Math.ceil(product.price - discountValue);
+    discountedPrice = Math.floor(product.price - discountValue);
   }
 
   return (
@@ -43,12 +43,18 @@ const CartItem = ({ product }: { product: Product }) => {
           <p className="text-sm text-green-700 font-normal">In Stock</p>
 
           <p className="mt-4">
-            <span className="text-gray-500 line-through">₹{product.price}</span>
+            {product.discount && (
+              <span className="text-gray-500 line-through">
+                ₹{product.price}
+              </span>
+            )}
             <span className="mx-2 text-xl font-bold">₹{discountedPrice}</span>
 
-            <span className="text-green-600 font-semibold text-sm">
-              {product.discount?.value}% Off
-            </span>
+            {product.discount && (
+              <span className="text-green-600 font-semibold text-sm">
+                {product.discount?.value}% Off
+              </span>
+            )}
           </p>
         </div>
 

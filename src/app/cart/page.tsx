@@ -27,7 +27,11 @@ const products: Product[] = [
     },
     rating: 4.5,
     stock: 150,
-    color: "Black",
+    color: {
+      colorName: "Black",
+      colorImage:
+        "https://m.media-amazon.com/images/I/71652WdL3pL._AC_SX679_.jpg",
+    },
     size: "N/A",
     highlights: [
       "Bluetooth 5.0",
@@ -44,9 +48,12 @@ const products: Product[] = [
         chargingTime: "1 hour",
       },
     },
-    offers: {
-      buyOneGetOne: "Yes",
-    },
+    offers: [
+      {
+        offerType: "Buy One Get One",
+        offer: "Yes",
+      },
+    ],
   },
   {
     productId: "4D5E6F",
@@ -71,7 +78,11 @@ const products: Product[] = [
     },
     rating: 4.8,
     stock: 80,
-    color: "Silver",
+    color: {
+      colorName: "Silver",
+      colorImage:
+        "https://m.media-amazon.com/images/I/71Nd69-7YiL.__AC_SX300_SY300_QL70_FMwebp_.jpg",
+    },
     size: "Medium",
     highlights: [
       "Heart rate monitoring",
@@ -88,9 +99,12 @@ const products: Product[] = [
         chargingTime: "2 hours",
       },
     },
-    offers: {
-      freeShipping: "Yes",
-    },
+    offers: [
+      {
+        offerType: "Free Shipping",
+        offer: "Yes",
+      },
+    ],
   },
 ];
 

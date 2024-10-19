@@ -94,9 +94,6 @@ const OrderItem = ({ order }: { order: Order }) => {
             </div>
           );
         })}
-        {/* <p className="text-gray-500 mt-1 font-semibold bg-gray-100 w-max p-1 rounded-sm px-3">
-          {order.itemCount} {order.itemCount > 1 ? "Items" : "Item"}
-        </p> */}
       </div>
     </div>
   );
