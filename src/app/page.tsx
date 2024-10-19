@@ -1,3 +1,4 @@
+import DetailedProductItem from "@/components/DetailedProductItem/DetailedProductItem";
 import Navbar from "@/components/Navbar/Navbar";
 import ProductItem from "@/components/ProductItem/ProductItem";
 
@@ -111,9 +112,15 @@ export default function Home() {
     <div className="">
       <Navbar />
 
-      <div className="flex m-6 gap-4">
+      <div className="flex m-6 gap-4 flex-wrap">
         {products.map((product: Product) => (
           <ProductItem product={product} key={product.productId} />
+        ))}
+      </div>
+
+      <div className="flex m-6 gap-4 flex-wrap">
+        {products.map((product: Product) => (
+          <DetailedProductItem product={product} key={product.productId} />
         ))}
       </div>
     </div>
