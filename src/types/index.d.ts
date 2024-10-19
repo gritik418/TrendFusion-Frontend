@@ -9,6 +9,7 @@ interface User {
   password?: string;
   verificationCode?: string;
   verificationCodeExpiry?: Date;
+  gender: "male" | "female";
   phoneNumber: string;
   addresses: DeliveryAddress[];
   wishlist: Types.ObjectId[];
