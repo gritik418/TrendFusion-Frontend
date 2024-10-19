@@ -12,7 +12,7 @@ const orders: Order[] = [
     status: "Delivered",
     items: [
       {
-        productId: "",
+        productId: "1",
         title: "Wireless Mouse",
         brand: "Logitech",
         thumbnail:
@@ -24,7 +24,7 @@ const orders: Order[] = [
         size: "N/A",
       },
       {
-        productId: "",
+        productId: "2",
         title: "Mechanical Keyboard",
         brand: "Razer",
         thumbnail:
@@ -62,7 +62,7 @@ const orders: Order[] = [
     status: "Pending",
     items: [
       {
-        productId: "",
+        productId: "3",
         title: "Bluetooth Headphones",
         brand: "Sony",
         thumbnail:
@@ -73,7 +73,7 @@ const orders: Order[] = [
         size: "N/A",
       },
       {
-        productId: "",
+        productId: "4",
         title: "Wireless Charger",
         brand: "Anker",
         thumbnail:
@@ -109,7 +109,7 @@ const orders: Order[] = [
     status: "Shipped",
     items: [
       {
-        productId: "",
+        productId: "5",
         title: "Gaming Monitor",
         brand: "ASUS",
         thumbnail:
@@ -120,7 +120,7 @@ const orders: Order[] = [
         size: "N/A",
       },
       {
-        productId: "",
+        productId: "6",
         title: "HDMI Cable",
         brand: "Belkin",
         thumbnail:
@@ -156,7 +156,7 @@ const orders: Order[] = [
     status: "Cancelled",
     items: [
       {
-        productId: "",
+        productId: "7",
         title: "Smartphone",
         brand: "Apple",
         thumbnail:
@@ -192,7 +192,7 @@ const orders: Order[] = [
     status: "Delivered",
     items: [
       {
-        productId: "",
+        productId: "8",
         title: "Laptop",
         brand: "Dell",
         thumbnail:
@@ -203,7 +203,7 @@ const orders: Order[] = [
         size: "N/A",
       },
       {
-        productId: "",
+        productId: "9",
         title: "Laptop Sleeve",
         brand: "Inateck",
         thumbnail:
@@ -240,7 +240,7 @@ const orders: Order[] = [
     status: "Pending",
     items: [
       {
-        productId: "",
+        productId: "10",
         title: "Action Camera",
         brand: "GoPro",
         thumbnail:
@@ -251,7 +251,7 @@ const orders: Order[] = [
         size: "N/A",
       },
       {
-        productId: "",
+        productId: "11",
         title: "Camera Mount",
         brand: "Joby",
         thumbnail:
@@ -287,7 +287,7 @@ const orders: Order[] = [
     status: "Shipped",
     items: [
       {
-        productId: "",
+        productId: "12",
         title: "Gaming Chair",
         brand: "Secretlab",
         thumbnail:
@@ -298,7 +298,7 @@ const orders: Order[] = [
         size: "N/A",
       },
       {
-        productId: "",
+        productId: "13",
         title: "Gaming Desk",
         brand: "Arozzi",
         thumbnail:

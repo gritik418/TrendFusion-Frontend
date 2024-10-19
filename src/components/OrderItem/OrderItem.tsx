@@ -1,6 +1,5 @@
 import Image from "next/image";
 import React from "react";
-import { Separator } from "../ui/separator";
 
 const monthNames: { [key: number]: string } = {
   1: "January",
@@ -29,7 +28,7 @@ const OrderItem = ({ order }: { order: Order }) => {
             <p className="uppercase text-sm text-gray-600 font-semibold">
               Order Placed
             </p>
-            <p className="text-sm font-semibold text-gray-500">
+            <p className="text-[16px] font-semibold text-gray-500">
               {order.orderDate.getDate()}{" "}
               {getMonths(order.orderDate.getMonth())}{" "}
               {order.orderDate.getFullYear()}
@@ -40,7 +39,7 @@ const OrderItem = ({ order }: { order: Order }) => {
             <p className="uppercase text-sm text-gray-600 font-semibold">
               Total
             </p>
-            <p className="text-sm font-semibold text-gray-500">
+            <p className="text-[16px] font-semibold text-gray-500">
               ₹{Math.floor(order.finalPrice)}
             </p>
           </div>
@@ -59,39 +58,40 @@ const OrderItem = ({ order }: { order: Order }) => {
       <div className="bg-white">
         {order.items.map((item: OrderProductInfo) => {
           return (
-            <>
-              <div className="flex justify-between p-3 border-t-2 ">
-                <div className="flex gap-3">
-                  <div className="flex bg-white min-w-[120px] items-center justify-center">
-                    <Image
-                      className="h-[120px] max-w-[120px] w-auto"
-                      src={item.thumbnail}
-                      height={120}
-                      width={120}
-                      alt=""
-                    />
-                  </div>
-
-                  <div className="flex flex-col justify-center gap-3">
-                    <p className="text-xl">{item.title}</p>
-                    <div className="flex gap-3">
-                      <button className="text-white py-1 px-3 rounded-md bg-[var(--secondary-color)]">
-                        Buy it again
-                      </button>
-                      <button className="border-2 border-[var(--secondary-color)] py-1 px-3 rounded-md">
-                        View item
-                      </button>
-                    </div>
-                  </div>
+            <div
+              key={item.productId}
+              className="flex justify-between p-3 border-t-2 "
+            >
+              <div className="flex gap-3">
+                <div className="flex bg-white min-w-[120px] items-center justify-center">
+                  <Image
+                    className="h-[120px] max-w-[120px] w-auto"
+                    src={item.thumbnail}
+                    height={120}
+                    width={120}
+                    alt=""
+                  />
                 </div>
 
-                <div className="flex items-center">
-                  <button className="border-2 rounded-full border-gray-500 py-1 px-4">
-                    Write a review
-                  </button>
+                <div className="flex flex-col justify-center gap-3">
+                  <p className="text-xl">{item.title}</p>
+                  <div className="flex gap-3">
+                    <button className="text-white py-1 px-3 rounded-md bg-[var(--secondary-color)]">
+                      Buy it again
+                    </button>
+                    <button className="border-2 border-[var(--secondary-color)] py-1 px-3 rounded-md">
+                      View item
+                    </button>
+                  </div>
                 </div>
               </div>
-            </>
+
+              <div className="flex items-center">
+                <button className="border-2 rounded-full border-gray-500 py-1 px-4">
+                  Write a review
+                </button>
+              </div>
+            </div>
           );
         })}
         {/* <p className="text-gray-500 mt-1 font-semibold bg-gray-100 w-max p-1 rounded-sm px-3">
