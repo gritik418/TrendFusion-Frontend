@@ -17,6 +17,7 @@ const Navbar = () => {
           >
             <Image
               src={"/images/logo.png"}
+              style={{ height: "auto" }}
               height={70}
               width={140}
               className="h-auto"
@@ -51,6 +52,7 @@ const Navbar = () => {
             <Image
               src={"/images/logo.png"}
               height={70}
+              style={{ height: "auto" }}
               width={110}
               className="h-auto"
               alt="logo"
