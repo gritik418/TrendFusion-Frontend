@@ -19,6 +19,7 @@ const Navbar = () => {
               src={"/images/logo.png"}
               height={70}
               width={140}
+              className="h-auto"
               alt="logo"
             />
           </Link>
@@ -51,6 +52,7 @@ const Navbar = () => {
               src={"/images/logo.png"}
               height={70}
               width={110}
+              className="h-auto"
               alt="logo"
             />
           </Link>

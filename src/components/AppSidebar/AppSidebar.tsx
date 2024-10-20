@@ -107,7 +107,7 @@ export default function AppSidebar({
 
   return (
     <SidebarProvider>
-      <Sidebar collapsible="icon" className="mt-[110px] md:mt-[60px]">
+      <Sidebar collapsible="icon" className="pt-[110px] md:pt-[60px]">
         <SidebarHeader>
           <SidebarMenu>
             <SidebarMenuItem>

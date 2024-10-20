@@ -24,6 +24,10 @@ const DetailedProductItem = ({ product }: { product: Product }) => {
           {product.brand}
         </p>
         <p className="text-xl font-[500]">{product.title}</p>
+        <p className="text-gray-400 text-sm font-semibold">
+          {product.color?.colorName}
+          {product.color?.colorName && product.size && ","} {product.size}
+        </p>
 
         {product.rating && (
           <div className="flex mt-2 items-center gap-2">

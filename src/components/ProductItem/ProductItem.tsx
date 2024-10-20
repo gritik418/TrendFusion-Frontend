@@ -7,7 +7,7 @@ const ProductItem = ({ product }: { product: Product }) => {
   return (
     <Link
       href={`/product/${product.productId}`}
-      className="max-w-[320px] w-[90%] min-w-[260px]"
+      className="max-w-[320px] w-full min-w-[260px]"
     >
       <div className="hover:shadow-xl transition-shadow duration-300 ease-in-out cursor-pointer rounded-md shadow-md p-2 flex flex-col w-full">
         <div className="flex h-[350px] w-full max-w-[320px] items-center justify-center">
