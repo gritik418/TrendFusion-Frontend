@@ -1,14 +1,37 @@
 "use client";
-import React, { useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import Navbar from "@/components/Navbar/Navbar";
 import Image from "next/image";
 import Link from "next/link";
+import { useUserSignupMutation } from "@/features/api/authApi";
 
 const SignupPage = () => {
   const [show, setShow] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [userSignup] = useUserSignupMutation();
+  const [signupData, setSignupData] = useState<SignupDataType>({
+    firstName: "",
+    lastName: "",
+    email: "",
+    username: "",
+    password: "",
+    confirmPassword: "",
+  });
 
   const toggleShow = () => {
     setShow(!show);
+  };
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setSignupData({ ...signupData, [name]: value });
+  };
+
+  const handleSignup = async () => {
+    setLoading(true);
+    const { data, error } = await userSignup(signupData);
+    setLoading(false);
+    console.log(data, error);
   };
   return (
     <div>
@@ -50,6 +73,8 @@ const SignupPage = () => {
               type="text"
               id="firstName"
               name="firstName"
+              value={signupData.firstName}
+              onChange={handleChange}
               placeholder="First Name"
             />
           </div>
@@ -63,6 +88,8 @@ const SignupPage = () => {
               type="text"
               id="lastName"
               name="lastName"
+              value={signupData.lastName}
+              onChange={handleChange}
               placeholder="Last Name"
             />
           </div>
@@ -76,6 +103,8 @@ const SignupPage = () => {
               type="email"
               id="email"
               name="email"
+              value={signupData.email}
+              onChange={handleChange}
               placeholder="Email"
             />
           </div>
@@ -89,6 +118,8 @@ const SignupPage = () => {
               type="text"
               id="username"
               name="username"
+              value={signupData.username}
+              onChange={handleChange}
               placeholder="Username"
             />
           </div>
@@ -104,6 +135,8 @@ const SignupPage = () => {
                 id="password"
                 name="password"
                 placeholder="Password"
+                value={signupData.password}
+                onChange={handleChange}
               />
               <span
                 onClick={toggleShow}
@@ -124,6 +157,8 @@ const SignupPage = () => {
                 type={show ? "text" : "password"}
                 id="confirmPassword"
                 name="confirmPassword"
+                value={signupData.confirmPassword}
+                onChange={handleChange}
                 placeholder="Confirm Password"
               />
               <span
@@ -135,8 +170,11 @@ const SignupPage = () => {
             </div>
           </div>
 
-          <button className="bg-[var(--secondary-color)] mt-6 text-white font-bold text-xl py-2 rounded-md">
-            Signup
+          <button
+            onClick={handleSignup}
+            className="bg-[var(--secondary-color)] mt-6 text-white font-bold text-xl py-2 rounded-md"
+          >
+            {loading ? "Processing..." : "Signup"}
           </button>
 
           <p className="text-center">

@@ -3,6 +3,8 @@ import localFont from "next/font/local";
 import "./globals.css";
 import ReduxProvider from "@/providers/ReduxProvider";
 import MuiProvider from "@/providers/MuiProvider";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -33,6 +35,7 @@ export default function RootLayout({
         <MuiProvider>
           <ReduxProvider>{children}</ReduxProvider>
         </MuiProvider>
+        <ToastContainer />
       </body>
     </html>
   );

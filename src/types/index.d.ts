@@ -184,3 +184,32 @@ type LoginDataType = {
   identifier: string;
   password: string;
 };
+
+type LoginErrors = {
+  identifier?: string;
+  password?: string;
+};
+
+type SignupDataType = {
+  firstName: string;
+  lastName: string;
+  username: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+};
+
+type SignupErrors = {
+  firstName?: string;
+  lastName?: string;
+  username?: string;
+  email?: string;
+  password?: string;
+  confirmPassword?: string;
+};
+
+interface AuthResponse {
+  message: string;
+  errors?: object;
+  success: boolean;
+}

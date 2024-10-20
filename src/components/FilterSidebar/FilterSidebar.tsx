@@ -144,7 +144,7 @@ const FilterSidebar = ({ children }: { children: React.ReactNode }) => {
         <SidebarContent>
           <SidebarGroup>
             <SidebarMenu>
-              <div className="border-b-2 px-2 pb-3 flex gap-3 text-gray-500 font-semibold flex-col">
+              <div className="border-b-2 px-2 pb-3 mb-2 flex gap-3 text-gray-500 font-semibold flex-col">
                 <SidebarMenuSubItem>Price</SidebarMenuSubItem>
                 <PriceRangeSlider />
               </div>

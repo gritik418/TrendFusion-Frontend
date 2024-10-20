@@ -7,7 +7,7 @@ const DetailedProductItem = ({ product }: { product: Product }) => {
   return (
     <Link
       href={`/product/${product.productId}`}
-      className="w-full cursor-pointer shadow hover:shadow-lg py-3 transition-shadow duration-300 ease-in-out flex gap-3"
+      className="w-full cursor-pointer rounded-md shadow hover:shadow-lg py-3 transition-shadow duration-300 ease-in-out flex gap-3"
     >
       <div className="flex px-2 items-center justify-center mb-3 w-full max-w-[300px]">
         <Image

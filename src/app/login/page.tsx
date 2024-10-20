@@ -1,24 +1,93 @@
 "use client";
 import Navbar from "@/components/Navbar/Navbar";
-import { useUserLoginMutation } from "@/features/api/apiSlice";
+import { useUserLoginMutation } from "@/features/api/authApi";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { ChangeEvent, useState } from "react";
+import { Bounce, toast } from "react-toastify";
 
 const LoginPage = () => {
   const [show, setShow] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+  const [userLogin] = useUserLoginMutation();
+  const router = useRouter();
+  const [errors, setErrors] = useState<LoginErrors>({
+    identifier: "",
+    password: "",
+  });
   const [loginData, setLoginData] = useState<LoginDataType>({
     identifier: "",
     password: "",
   });
-  const [userLogin] = useUserLoginMutation();
 
   const handleLogin = async () => {
+    setErrors({ identifier: "", password: "" });
     setLoading(true);
     const { data, error } = await userLogin(loginData);
     setLoading(false);
-    console.log(data, error);
+
+    if (error) {
+      const response = error as FetchBaseQueryError;
+      if (response.status === "FETCH_ERROR") {
+        toast.error("Check your internet.", {
+          position: "bottom-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
+        return;
+      }
+      const errorResponse = response.data as AuthResponse;
+      if (errorResponse?.errors) {
+        setErrors(errorResponse.errors);
+      } else {
+        toast.error(errorResponse?.message, {
+          position: "bottom-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
+      }
+      return;
+    }
+    if (data?.success) {
+      router.push("/");
+      toast.success(data?.message, {
+        position: "bottom-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+    } else if (data?.success && data.message) {
+      toast.error(data?.message, {
+        position: "bottom-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+    }
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -73,6 +142,11 @@ const LoginPage = () => {
               onChange={handleChange}
               value={loginData.identifier}
             />
+            {errors.identifier && (
+              <span className="text-red-500 text-sm font-normal">
+                {errors.identifier}
+              </span>
+            )}
           </div>
 
           <div className="flex flex-col gap-1">
@@ -96,6 +170,11 @@ const LoginPage = () => {
                 {show ? "HIDE" : "SHOW"}
               </span>
             </div>
+            {errors.password && (
+              <span className="text-red-500 text-sm font-normal">
+                {errors.password}
+              </span>
+            )}
           </div>
 
           <button

@@ -114,6 +114,7 @@ const products: Product[] = [
 
 const SearchPage = () => {
   const searchParams = useSearchParams();
+
   return (
     <div>
       <Navbar />
