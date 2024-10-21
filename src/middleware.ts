@@ -2,9 +2,10 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { TF_TOKEN } from "./constants/variables";
 
-// This function can be marked `async` if using `await` inside
 export function middleware(request: NextRequest) {
-  const isPublicPath = request.nextUrl.pathname.startsWith("/login");
+  const { pathname } = request.nextUrl;
+  const isPublicPath =
+    pathname.startsWith("/login") || pathname.startsWith("/signup");
 
   const cookie = request.cookies.get(TF_TOKEN)?.value;
 
@@ -17,7 +18,6 @@ export function middleware(request: NextRequest) {
   }
 }
 
-// See "Matching Paths" below to learn more
 export const config = {
-  matcher: ["/", "/login/:path*", "/about/:path*"],
+  matcher: ["/", "/login/:path*", "/signup/:path*"],
 };

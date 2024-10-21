@@ -25,9 +25,24 @@ const authApi = createApi({
         },
       }),
     }),
+    verifyEmail: builder.mutation<AuthResponse, EmailVerificationDataType>({
+      query: (data) => ({
+        url: "/verify",
+        method: "POST",
+        body: data,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      }),
+    }),
   }),
 });
 
-export const { useUserLoginMutation, useUserSignupMutation } = authApi;
+export const {
+  useUserLoginMutation,
+  useUserSignupMutation,
+  useVerifyEmailMutation,
+} = authApi;
 
 export default authApi;

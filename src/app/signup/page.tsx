@@ -1,16 +1,27 @@
 "use client";
-import React, { ChangeEvent, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import Navbar from "@/components/Navbar/Navbar";
 import Image from "next/image";
 import Link from "next/link";
 import { useUserSignupMutation } from "@/features/api/authApi";
 import EmailVerification from "@/components/EmailVerification/EmailVerification";
+import { Bounce, toast } from "react-toastify";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 
 const SignupPage = () => {
   const [show, setShow] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+  const [email, setEmail] = useState<string>("");
   const [userSignup] = useUserSignupMutation();
   const [open, setOpen] = useState<boolean>(false);
+  const [errors, setErrors] = useState<SignupErrors>({
+    firstName: "",
+    lastName: "",
+    email: "",
+    username: "",
+    confirmPassword: "",
+    password: "",
+  });
   const [signupData, setSignupData] = useState<SignupDataType>({
     firstName: "",
     lastName: "",
@@ -30,10 +41,88 @@ const SignupPage = () => {
   };
 
   const handleSignup = async () => {
+    setErrors({
+      confirmPassword: "",
+      email: "",
+      firstName: "",
+      lastName: "",
+      password: "",
+      username: "",
+    });
+    setEmail("");
     setLoading(true);
     const { data, error } = await userSignup(signupData);
     setLoading(false);
-    console.log(data, error);
+
+    if (error) {
+      const response = error as FetchBaseQueryError;
+      if (response.status === "FETCH_ERROR") {
+        toast.error("Check your internet.", {
+          position: "bottom-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
+        return;
+      }
+      const errorResponse = response.data as AuthResponse;
+      if (errorResponse?.errors) {
+        setErrors(errorResponse.errors);
+      } else {
+        toast.error(errorResponse?.message, {
+          position: "bottom-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
+      }
+      return;
+    }
+    if (data?.success) {
+      setOpen(true);
+      setEmail(signupData.email);
+      setSignupData({
+        firstName: "",
+        lastName: "",
+        email: "",
+        username: "",
+        confirmPassword: "",
+        password: "",
+      });
+      toast.success(data?.message, {
+        position: "bottom-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+    } else if (data?.success && data.message) {
+      toast.error(data?.message, {
+        position: "bottom-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+    }
   };
   return (
     <>
@@ -79,6 +168,11 @@ const SignupPage = () => {
                 onChange={handleChange}
                 placeholder="First Name"
               />
+              {errors.firstName && (
+                <span className="text-red-500 text-sm font-normal">
+                  {errors.firstName}
+                </span>
+              )}
             </div>
 
             <div className="flex flex-col gap-1">
@@ -94,6 +188,11 @@ const SignupPage = () => {
                 onChange={handleChange}
                 placeholder="Last Name"
               />
+              {errors.lastName && (
+                <span className="text-red-500 text-sm font-normal">
+                  {errors.lastName}
+                </span>
+              )}
             </div>
 
             <div className="flex flex-col gap-1">
@@ -109,6 +208,11 @@ const SignupPage = () => {
                 onChange={handleChange}
                 placeholder="Email"
               />
+              {errors.email && (
+                <span className="text-red-500 text-sm font-normal">
+                  {errors.email}
+                </span>
+              )}
             </div>
 
             <div className="flex flex-col gap-1">
@@ -124,6 +228,11 @@ const SignupPage = () => {
                 onChange={handleChange}
                 placeholder="Username"
               />
+              {errors.username && (
+                <span className="text-red-500 text-sm font-normal">
+                  {errors.username}
+                </span>
+              )}
             </div>
 
             <div className="flex flex-col gap-1">
@@ -147,6 +256,11 @@ const SignupPage = () => {
                   {show ? "HIDE" : "SHOW"}
                 </span>
               </div>
+              {errors.password && (
+                <span className="text-red-500 text-sm font-normal">
+                  {errors.password}
+                </span>
+              )}
             </div>
 
             <div className="flex flex-col gap-1">
@@ -173,6 +287,11 @@ const SignupPage = () => {
                   {show ? "HIDE" : "SHOW"}
                 </span>
               </div>
+              {errors.confirmPassword && (
+                <span className="text-red-500 text-sm font-normal">
+                  {errors.confirmPassword}
+                </span>
+              )}
             </div>
 
             <button
@@ -194,7 +313,7 @@ const SignupPage = () => {
           </div>
         </div>
       </div>
-      <EmailVerification open={open} setOpen={setOpen} />
+      <EmailVerification email={email} open={open} setOpen={setOpen} />
     </>
   );
 };

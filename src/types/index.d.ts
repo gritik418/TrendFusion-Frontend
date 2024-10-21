@@ -190,6 +190,16 @@ type LoginErrors = {
   password?: string;
 };
 
+type EmailVerificationDataType = {
+  email: string;
+  verificationCode: string;
+};
+
+type EmailVerificationErrors = {
+  email?: string;
+  verificationCode?: string;
+};
+
 type SignupDataType = {
   firstName: string;
   lastName: string;
