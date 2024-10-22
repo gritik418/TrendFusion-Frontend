@@ -34,7 +34,7 @@ interface Product {
   color?: Color;
   size?: string;
   highlights: string[];
-  specifications?: Specifications;
+  specifications?: Specifications[];
   offers?: Offers[];
 }
 
@@ -132,9 +132,10 @@ type VariantSize = {
 };
 
 interface Specifications {
-  [category: string]: {
+  category: string;
+  specs: {
     [key: string]: string;
-  };
+  }[];
 }
 
 interface Offers {

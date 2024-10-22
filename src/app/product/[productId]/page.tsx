@@ -94,16 +94,30 @@ const product: ProductWithVariants = {
   ],
   size: "1.38",
   highlights: ["Bluetooth 5.0", "24-hour battery life", "IPX7 water-resistant"],
-  specifications: {
-    Audio: {
-      frequencyRange: "20Hz - 20kHz",
-      impedance: "32 Ohms",
+  specifications: [
+    {
+      category: "Display",
+      specs: [
+        {
+          size: "1.5 inches",
+        },
+        {
+          type: "LCD",
+        },
+      ],
     },
-    Battery: {
-      life: "6 hours",
-      chargingTime: "1 hour",
+    {
+      category: "Battery",
+      specs: [
+        {
+          life: "10 days",
+        },
+        {
+          chargingTime: "2 hours",
+        },
+      ],
     },
-  },
+  ],
   offers: [
     {
       offerType: "Discount",
@@ -406,36 +420,39 @@ const Product = ({ params }: { params: { productId: string } }) => {
                 <Separator />
                 <p className="text-3xl mt-4 mb-5">Specifications</p>
                 <div className="flex flex-col gap-2 mb-3">
-                  {Object.keys(product.specifications!).map(
-                    (specification: string, index: number) => {
+                  {product.specifications!.map(
+                    (specification: Specifications, index: number) => {
                       return (
                         <Accordion
                           key={index}
                           type="single"
                           collapsible
                           defaultChecked
-                          defaultValue={specification}
+                          defaultValue={specification.category}
                         >
-                          <AccordionItem value={specification}>
+                          <AccordionItem value={specification.category}>
                             <AccordionTrigger className="text-2xl p-2 bg-gray-200 hover:no-underline">
-                              {specification}
+                              {specification.category}
                             </AccordionTrigger>
                             <AccordionContent className=" bg-gray-50">
-                              {Object.entries(
-                                product.specifications![specification]
-                              ).map((spec: string[], index: number) => {
-                                return (
-                                  <div
-                                    key={index}
-                                    className="flex justify-between p-3"
-                                  >
-                                    <p className="capitalize text-xl font-normal">
-                                      {spec[0]}
-                                    </p>
-                                    <p className="text-lg">{spec[1]}</p>
-                                  </div>
-                                );
-                              })}
+                              {specification.specs.map(
+                                (spec, index: number) => {
+                                  console.log(spec);
+                                  return (
+                                    <div
+                                      key={index}
+                                      className="flex justify-between p-3"
+                                    >
+                                      <p className="capitalize text-xl font-normal">
+                                        {Object.keys(spec)[0]}
+                                      </p>
+                                      <p className="text-lg">
+                                        {Object.values(spec)[0]}
+                                      </p>
+                                    </div>
+                                  );
+                                }
+                              )}
                             </AccordionContent>
                           </AccordionItem>
                         </Accordion>

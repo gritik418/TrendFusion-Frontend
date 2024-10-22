@@ -38,16 +38,30 @@ const products: Product[] = [
       "24-hour battery life",
       "IPX7 water-resistant",
     ],
-    specifications: {
-      Audio: {
-        frequencyRange: "20Hz - 20kHz",
-        impedance: "32 Ohms",
+    specifications: [
+      {
+        category: "Audio",
+        specs: [
+          {
+            frequencyRange: "20Hz - 20kHz",
+          },
+          {
+            impedance: "32 Ohms",
+          },
+        ],
       },
-      Battery: {
-        life: "6 hours",
-        chargingTime: "1 hour",
+      {
+        category: "Battery",
+        specs: [
+          {
+            life: "6 hours",
+          },
+          {
+            chargingTime: "1 hour",
+          },
+        ],
       },
-    },
+    ],
     offers: [
       {
         offerType: "Buy One Get One",
@@ -89,16 +103,30 @@ const products: Product[] = [
       "Water-resistant up to 50m",
       "GPS tracking",
     ],
-    specifications: {
-      Display: {
-        size: "1.5 inches",
-        type: "LCD",
+    specifications: [
+      {
+        category: "Display",
+        specs: [
+          {
+            size: "1.5 inches",
+          },
+          {
+            type: "LCD",
+          },
+        ],
       },
-      Battery: {
-        life: "10 days",
-        chargingTime: "2 hours",
+      {
+        category: "Battery",
+        specs: [
+          {
+            life: "10 days",
+          },
+          {
+            chargingTime: "2 hours",
+          },
+        ],
       },
-    },
+    ],
     offers: [
       {
         offerType: "Free Shipping",

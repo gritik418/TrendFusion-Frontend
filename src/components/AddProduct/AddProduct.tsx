@@ -11,6 +11,9 @@ import React from "react";
 import { Switch } from "../ui/switch";
 import { Label } from "../ui/label";
 import { IoAddOutline } from "react-icons/io5";
+import { ThumbnailUpload } from "../ThumbnailUpload/ThumbnailUpload";
+import { ColorImageUpload } from "../ColorImageUpload";
+import { ImagesUpload } from "../ImagesUpload/ImagesUpload";
 
 const productInfo: Product = {
   productId: "1A2B3C",
@@ -29,16 +32,23 @@ const productInfo: Product = {
   price: 79.99,
   warranty: "1 year",
   highlights: ["", "", ""],
-  specifications: {
-    Audio: {
-      frequencyRange: "20Hz - 20kHz",
-      impedance: "32 Ohms",
+  specifications: [
+    {
+      category: "Audio",
+      specs: [{ frequencyRange: "20Hz - 20kHz" }, { impedance: "32 Ohms" }],
     },
-    Battery: {
-      life: "6 hours",
-      chargingTime: "1 hour",
+    {
+      category: "Battery",
+      specs: [
+        {
+          life: "6 hours",
+        },
+        {
+          chargingTime: "1 hour",
+        },
+      ],
     },
-  },
+  ],
   offers: [
     {
       offerType: "Buy One Get One",
@@ -232,25 +242,7 @@ const AddProduct = () => {
             </p>
           </div>
 
-          <div className="flex gap-4 p-2 py-4 rounded-md">
-            <div className="cursor-pointer relative flex rounded-md h-60 w-60">
-              <label
-                htmlFor=""
-                className="border-2 flex p-3 items-center justify-center opacity-1 border-gray-400 border-dashed rounded-md h-full w-full"
-              >
-                <p className="text-center text-lg">
-                  Drag color image here or,{" "}
-                  <span className="font-semibold cursor-pointer">Browse</span>
-                </p>
-              </label>
-              <input
-                type="file"
-                className="border-2 absolute opacity-0 h-full w-full"
-                name=""
-                id=""
-              />
-            </div>
-          </div>
+          <ColorImageUpload />
         </div>
       </div>
 
@@ -260,25 +252,7 @@ const AddProduct = () => {
             <p className="text-3xl">Thumbnail*</p>
           </div>
 
-          <div className="flex gap-4 p-2 py-4 rounded-md">
-            <div className="cursor-pointer relative flex rounded-md h-60 w-60">
-              <label
-                htmlFor=""
-                className="border-2 flex p-3 items-center justify-center opacity-1 border-gray-400 border-dashed rounded-md h-full w-full"
-              >
-                <p className="text-center text-lg">
-                  Drag thumbnail here or,{" "}
-                  <span className="font-semibold cursor-pointer">Browse</span>
-                </p>
-              </label>
-              <input
-                type="file"
-                className="border-2 absolute opacity-0 h-full w-full"
-                name=""
-                id=""
-              />
-            </div>
-          </div>
+          <ThumbnailUpload />
         </div>
       </div>
 
@@ -288,26 +262,7 @@ const AddProduct = () => {
             <p className="text-3xl">Images*</p>
           </div>
 
-          <div className="flex gap-4 p-2 py-4 rounded-md">
-            <div className="cursor-pointer relative flex rounded-md h-40 w-60">
-              <label
-                htmlFor=""
-                className="border-2 flex p-3 items-center justify-center opacity-1 border-gray-400 border-dashed rounded-md h-full w-full"
-              >
-                <p className="text-center text-lg">
-                  Drag images here or,{" "}
-                  <span className="font-semibold cursor-pointer">Browse</span>
-                </p>
-              </label>
-              <input
-                multiple
-                type="file"
-                className="border-2 absolute opacity-0 h-full w-full"
-                name=""
-                id=""
-              />
-            </div>
-          </div>
+          <ImagesUpload />
         </div>
       </div>
 
@@ -342,35 +297,44 @@ const AddProduct = () => {
             </button>
           </div>
 
-          {Object.keys(productInfo?.specifications!).map((specification) => (
-            <div className="flex flex-col gap-6 bg-white p-2 py-6 rounded-md">
-              <div className="flex md:w-1/3 max-w-[90%]">
-                <TextField
-                  className="bg-white w-full"
-                  id="outlined-basic"
-                  label="Specification Category"
-                  variant="outlined"
-                />
-              </div>
+          {productInfo?.specifications?.map((specification) => (
+            <div className="flex flex-col gap-6 bg-white p-4 py-6 rounded-md">
+              <div className="flex justify-between items-center">
+                <div className="flex md:w-1/3 max-w-[90%]">
+                  <TextField
+                    className="bg-white w-full"
+                    id="outlined-basic"
+                    label="Specification Category"
+                    variant="outlined"
+                    value={specification.category}
+                  />
+                </div>
 
-              <div className="flex gap-4">
-                <div className="flex w-full">
-                  <TextField
-                    className="bg-white w-full"
-                    id="outlined-basic"
-                    label="Specification Name"
-                    variant="outlined"
-                  />
-                </div>
-                <div className="flex w-full">
-                  <TextField
-                    className="bg-white w-full"
-                    id="outlined-basic"
-                    label="Specification Value"
-                    variant="outlined"
-                  />
-                </div>
+                <button className="bg-gray-200 flex items-center py-1 px-3 rounded-md">
+                  <IoAddOutline className="text-xl" />
+                  Add More
+                </button>
               </div>
+              {specification.specs.map(() => (
+                <div className="flex gap-4">
+                  <div className="flex w-full">
+                    <TextField
+                      className="bg-white w-full"
+                      id="outlined-basic"
+                      label="Specification Name"
+                      variant="outlined"
+                    />
+                  </div>
+                  <div className="flex w-full">
+                    <TextField
+                      className="bg-white w-full"
+                      id="outlined-basic"
+                      label="Specification Value"
+                      variant="outlined"
+                    />
+                  </div>
+                </div>
+              ))}
             </div>
           ))}
         </div>
@@ -387,7 +351,7 @@ const AddProduct = () => {
           </div>
 
           {productInfo.offers?.map((offer) => (
-            <div className="flex gap-4 bg-white p-2 py-6 rounded-md">
+            <div className="flex gap-4 bg-white p-4 py-6 rounded-md">
               <div className="flex w-full">
                 <TextField
                   className="bg-white w-full"
