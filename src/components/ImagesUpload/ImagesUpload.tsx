@@ -5,10 +5,17 @@ import {
   type FileState,
 } from "@/components/MultiImageDropzone/MultiImageDropzone";
 import { useEdgeStore } from "@/lib/edgestore";
-import { useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 
-export function ImagesUpload() {
-  const [fileStates, setFileStates] = useState<FileState[]>([]);
+export function ImagesUpload({
+  setImages,
+  fileStates,
+  setFileStates,
+}: {
+  setImages: Dispatch<SetStateAction<string[]>>;
+  setFileStates: Dispatch<SetStateAction<FileState[]>>;
+  fileStates: FileState[];
+}) {
   const { edgestore } = useEdgeStore();
 
   function updateFileProgress(key: string, progress: FileState["progress"]) {
@@ -34,31 +41,36 @@ export function ImagesUpload() {
         onChange={(files) => {
           setFileStates(files);
         }}
-        onFilesAdded={async (addedFiles) => {
-          setFileStates([...fileStates, ...addedFiles]);
+      />
+
+      <button
+        className="bg-[var(--secondary-color)] h-10 flex items-center justify-center w-24 mt-4 py-1 px-4 text-xl text-white rounded-md"
+        onClick={async () => {
           await Promise.all(
-            addedFiles.map(async (addedFileState) => {
+            fileStates.map(async (addedFileState) => {
               try {
                 const res = await edgestore.publicFiles.upload({
                   file: addedFileState.file as File,
                   onProgressChange: async (progress) => {
                     updateFileProgress(addedFileState.key, progress);
                     if (progress === 100) {
-                      // wait 1 second to set it to complete
-                      // so that the user can see the progress bar at 100%
                       await new Promise((resolve) => setTimeout(resolve, 1000));
                       updateFileProgress(addedFileState.key, "COMPLETE");
                     }
                   },
                 });
-                console.log(res);
+                if (res.url) {
+                  setImages((images) => [...images, res.url]);
+                }
               } catch (err) {
                 updateFileProgress(addedFileState.key, "ERROR");
               }
             })
           );
         }}
-      />
+      >
+        Upload
+      </button>
     </div>
   );
 }

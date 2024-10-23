@@ -6,12 +6,12 @@ import Image from "next/image";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { FaCheck } from "react-icons/fa";
 
-export function ThumbnailUpload({
-  setThummbnail,
+export function ColorImageUpload({
+  setColorImage,
   file,
   setFile,
 }: {
-  setThummbnail: Dispatch<SetStateAction<string>>;
+  setColorImage: Dispatch<SetStateAction<string>>;
   file: File | undefined;
   setFile: Dispatch<SetStateAction<File | undefined>>;
 }) {
@@ -32,9 +32,7 @@ export function ThumbnailUpload({
         onChange={(file) => {
           setFile(file);
         }}
-        className="mb-2"
       />
-
       <button
         className="bg-[var(--secondary-color)] h-10 flex items-center justify-center w-24 mt-4 py-1 px-4 text-xl text-white rounded-md"
         onClick={async () => {
@@ -45,8 +43,8 @@ export function ThumbnailUpload({
             });
             setLoading(false);
             if (res.url) {
-              setThummbnail(res.url);
               setIsUploaded(true);
+              setColorImage(res.url);
             }
           }
         }}

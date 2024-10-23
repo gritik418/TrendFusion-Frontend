@@ -7,15 +7,19 @@ import {
   SelectChangeEvent,
   TextField,
 } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
+import axios from "axios";
 import { Switch } from "../ui/switch";
 import { Label } from "../ui/label";
 import { IoAddOutline } from "react-icons/io5";
 import { ThumbnailUpload } from "../ThumbnailUpload/ThumbnailUpload";
-import { ColorImageUpload } from "../ColorImageUpload";
+import { ColorImageUpload } from "../ColorImageUpload/ColorImageUpload";
 import { ImagesUpload } from "../ImagesUpload/ImagesUpload";
+import Image from "next/image";
+import { FileState } from "../MultiImageDropzone/MultiImageDropzone";
 
 const productInfo: Product = {
+  rating: 5,
   productId: "1A2B3C",
   title: "Super Sound Wireless Earbuds",
   brand: "SoundMax",
@@ -70,12 +74,88 @@ const productInfo: Product = {
 };
 
 const AddProduct = () => {
-  const [discountType, setDiscountType] = React.useState<
-    "Fixed" | "Percentage"
-  >("Fixed");
+  const [productId, setProductId] = useState<string>("");
+  const [productIdLoading, setProductIdLoading] = useState<boolean>(false);
+  const [productIdInfo, setProductIdInfo] = useState<any>("");
+  const [thumbnail, setThummbnail] = useState<string>("");
+  const [thumbnailFile, setThumbnailFile] = useState<File>();
+  const [colorImage, setColorImage] = useState<string>("");
+  const [colorImageFile, setColorImageFile] = useState<File>();
+  const [images, setImages] = useState<string[]>([]);
+  const [fileStates, setFileStates] = useState<FileState[]>([]);
+  const [highlights, setHighlights] = useState<string[]>([""]);
+  const [specifications, setSpecifications] = useState<Specifications[]>([
+    {
+      category: "",
+      specs: [{ "": "" }],
+    },
+  ]);
+  const [offers, setOffers] = useState<Offers[]>([
+    { offerType: "", offer: "" },
+  ]);
+  const [discountType, setDiscountType] = useState<"Fixed" | "Percentage">(
+    "Fixed"
+  );
 
   const handleChange = (event: SelectChangeEvent) => {
     setDiscountType(event.target.value as "Fixed" | "Percentage");
+  };
+
+  const addMoreHighlight = () => {
+    setHighlights([...highlights, ""]);
+  };
+
+  const addMoreSpecification = () => {
+    setSpecifications([
+      ...specifications,
+      {
+        category: "",
+        specs: [{ "": "" }],
+      },
+    ]);
+  };
+
+  const addMoreSpec = (index: number) => {
+    let specs = specifications;
+    specs[index].specs.push({ "": "" });
+    setSpecifications([...specs]);
+  };
+
+  const addMoreOffer = () => {
+    setOffers([
+      ...offers,
+      {
+        offerType: "",
+        offer: "",
+      },
+    ]);
+  };
+
+  const handleClearImages = () => {
+    setThummbnail("");
+    setColorImage("");
+    setImages([]);
+    setFileStates([]);
+    setColorImageFile(undefined);
+    setThumbnailFile(undefined);
+  };
+
+  const handleCheckProductId = async () => {
+    try {
+      const { data } = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/admin/product/check`,
+        { productId },
+        {
+          headers: {
+            "Content-Type": "appliacation/json",
+          },
+          withCredentials: true,
+        }
+      );
+      console.log(data);
+    } catch (error: any) {
+      console.log(error.response.data);
+    }
   };
 
   return (
@@ -83,14 +163,30 @@ const AddProduct = () => {
       <h1 className="text-3xl">Add a new product</h1>
 
       <div className="flex p-6 gap-8 rounded-md mt-6 flex-col bg-gray-100 w-full">
-        <div className="flex flex-col gap-1">
+        <div className="flex gap-3">
           <TextField
-            className="bg-white"
+            className="bg-white w-full"
             placeholder="Enter product id without spaces"
             id="outlined-basic"
             label="Product Id (Must be unique)*"
             variant="outlined"
           />
+
+          <button
+            onClick={handleCheckProductId}
+            className="bg-[var(--secondary-color)] flex items-center justify-center w-24 font-semibold rounded-md text-white text-lg"
+          >
+            {productIdLoading ? (
+              <Image
+                src={"/images/loader.gif"}
+                alt="uploading"
+                height={30}
+                width={30}
+              />
+            ) : (
+              "Check"
+            )}
+          </button>
         </div>
 
         <div className="flex flex-col gap-1">
@@ -242,7 +338,11 @@ const AddProduct = () => {
             </p>
           </div>
 
-          <ColorImageUpload />
+          <ColorImageUpload
+            file={colorImageFile}
+            setFile={setColorImageFile}
+            setColorImage={setColorImage}
+          />
         </div>
       </div>
 
@@ -252,7 +352,11 @@ const AddProduct = () => {
             <p className="text-3xl">Thumbnail*</p>
           </div>
 
-          <ThumbnailUpload />
+          <ThumbnailUpload
+            file={thumbnailFile}
+            setFile={setThumbnailFile}
+            setThummbnail={setThummbnail}
+          />
         </div>
       </div>
 
@@ -262,7 +366,11 @@ const AddProduct = () => {
             <p className="text-3xl">Images*</p>
           </div>
 
-          <ImagesUpload />
+          <ImagesUpload
+            fileStates={fileStates}
+            setFileStates={setFileStates}
+            setImages={setImages}
+          />
         </div>
       </div>
 
@@ -271,12 +379,15 @@ const AddProduct = () => {
           <div className="flex justify-between mb-2">
             <p className="text-3xl">Highlights</p>
 
-            <button className="flex items-center gap-2 bg-gray-400 px-3 text-white rounded-md">
+            <button
+              onClick={addMoreHighlight}
+              className="flex items-center gap-2 bg-gray-400 px-3 text-white rounded-md"
+            >
               <IoAddOutline className="text-2xl" /> Add More
             </button>
           </div>
 
-          {productInfo.highlights.map((highlight: string) => (
+          {highlights.map((highlight: string) => (
             <TextField
               className="bg-white w-full"
               id="outlined-basic"
@@ -292,12 +403,15 @@ const AddProduct = () => {
           <div className="flex justify-between mb-2">
             <p className="text-3xl">Specifications</p>
 
-            <button className="flex items-center gap-2 bg-gray-400 px-3 text-white rounded-md">
+            <button
+              onClick={addMoreSpecification}
+              className="flex items-center gap-2 bg-gray-400 px-3 text-white rounded-md"
+            >
               <IoAddOutline className="text-2xl" /> Add More
             </button>
           </div>
 
-          {productInfo?.specifications?.map((specification) => (
+          {specifications?.map((specification, index: number) => (
             <div className="flex flex-col gap-6 bg-white p-4 py-6 rounded-md">
               <div className="flex justify-between items-center">
                 <div className="flex md:w-1/3 max-w-[90%]">
@@ -310,7 +424,10 @@ const AddProduct = () => {
                   />
                 </div>
 
-                <button className="bg-gray-200 flex items-center py-1 px-3 rounded-md">
+                <button
+                  onClick={() => addMoreSpec(index)}
+                  className="bg-gray-200 flex items-center py-1 px-3 rounded-md"
+                >
                   <IoAddOutline className="text-xl" />
                   Add More
                 </button>
@@ -345,12 +462,15 @@ const AddProduct = () => {
           <div className="flex justify-between mb-2">
             <p className="text-3xl">Offers</p>
 
-            <button className="flex items-center gap-2 bg-gray-400 px-3 text-white rounded-md">
+            <button
+              onClick={addMoreOffer}
+              className="flex items-center gap-2 bg-gray-400 px-3 text-white rounded-md"
+            >
               <IoAddOutline className="text-2xl" /> Add More
             </button>
           </div>
 
-          {productInfo.offers?.map((offer) => (
+          {offers?.map((offer) => (
             <div className="flex gap-4 bg-white p-4 py-6 rounded-md">
               <div className="flex w-full">
                 <TextField
@@ -378,7 +498,10 @@ const AddProduct = () => {
           Cancel
         </button>
 
-        <button className="bg-[var(--secondary-color)] text-2xl text-white py-2 px-6 rounded-md font-bold">
+        <button
+          onClick={handleClearImages}
+          className="bg-[var(--secondary-color)] text-2xl text-white py-2 px-6 rounded-md font-bold"
+        >
           Add Product
         </button>
       </div>
