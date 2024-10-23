@@ -224,3 +224,35 @@ interface AuthResponse {
   errors?: object;
   success: boolean;
 }
+
+type ProductInfo = {
+  title: string;
+  brand?: string;
+  description: string;
+  category: string;
+  stock: number;
+  discountValue: number | undefined;
+  discountDescription: string;
+  size: string;
+  price: number | undefined;
+  warranty: string;
+  colorName: string;
+};
+
+interface ProductErrors {
+  productId?: string;
+  title?: string;
+  brand?: string;
+  description?: string;
+  thumbnail?: string;
+  isAvailable?: string;
+  images?: string;
+  category?: string;
+  price?: string;
+  warranty?: string;
+  discount?: string;
+  rating?: string;
+  stock?: string;
+  color?: string;
+  size?: string;
+}
