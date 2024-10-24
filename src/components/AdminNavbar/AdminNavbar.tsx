@@ -12,6 +12,7 @@ const AdminNavbar = () => {
   return (
     <div className="shadow-lg justify-between py-2 px-6 flex items-center w-full sticky top-0 bg-white z-50">
       <AdminSearchBar />
+
       <div className="flex items-center gap-4">
         <div className="flex transition-colors duration-300 ease-in-out hover:bg-gray-100 cursor-pointer h-10 w-10 rounded-full items-center justify-center">
           <TooltipProvider>

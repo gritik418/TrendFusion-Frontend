@@ -1,8 +1,12 @@
 "use client";
+import { ChevronRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import React from "react";
-import { FaTshirt } from "react-icons/fa";
+import { BiLogOut } from "react-icons/bi";
+import { FaTshirt, FaUserCircle } from "react-icons/fa";
+import { HiUsers } from "react-icons/hi2";
 import { MdSpaceDashboard } from "react-icons/md";
 import {
   Collapsible,
@@ -12,6 +16,7 @@ import {
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupLabel,
   SidebarMenu,
@@ -21,10 +26,8 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
   SidebarProvider,
+  SidebarRail,
 } from "../ui/sidebar";
-import { ChevronRight } from "lucide-react";
-import { usePathname } from "next/navigation";
-import { link } from "fs";
 
 const data = [
   {
@@ -43,7 +46,7 @@ const data = [
         icon: <FaTshirt className="text-xl" />,
         subItems: [
           {
-            title: "All Products",
+            title: "Products",
             link: "/admin/dashboard/products",
           },
           {
@@ -59,8 +62,16 @@ const data = [
 const AdminSidebar = () => {
   const pathname = usePathname();
   return (
-    <SidebarProvider className="flex py-4 px-4 bg-gray-50 w-[var(--sidebar-width)] h-screen flex-col">
-      <Sidebar collapsible="icon" className="px-2">
+    <SidebarProvider
+      style={
+        {
+          "--sidebar-width": "20rem",
+          "--sidebar-width-mobile": "20rem",
+        } as any
+      }
+      className="flex py-4 px-4 bg-gray-50 w-[var(--sidebar-width)] h-screen flex-col"
+    >
+      <Sidebar className="px-2">
         <div className="flex py-3 mb-4">
           <Image src={"/images/logo.png"} alt="logo" width={90} height={60} />
         </div>
@@ -148,6 +159,47 @@ const AdminSidebar = () => {
             </SidebarGroup>
           ))}
         </SidebarContent>
+        <SidebarFooter>
+          <SidebarGroup>
+            <SidebarGroupLabel className="uppercase">Account</SidebarGroupLabel>
+            <SidebarMenu>
+              <Link href={"/admin/account"}>
+                <SidebarMenuItem
+                  className={`${
+                    pathname === "/admin/account"
+                      ? "bg-[var(--light-color)] hover:text-[var(--secondary-color)] text-[var(--secondary-color)] font-semibold text-lg"
+                      : ""
+                  } `}
+                >
+                  <SidebarMenuButton>
+                    <FaUserCircle className="text-xl" /> Account
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              </Link>
+
+              <Link href={"/admin/user"}>
+                <SidebarMenuItem
+                  className={`${
+                    pathname === "/admin/user"
+                      ? "bg-[var(--light-color)] hover:text-[var(--secondary-color)] text-[var(--secondary-color)] font-semibold text-lg"
+                      : ""
+                  } `}
+                >
+                  <SidebarMenuButton>
+                    <HiUsers className="text-xl" /> Manage User
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              </Link>
+
+              <SidebarMenuItem>
+                <SidebarMenuButton>
+                  <BiLogOut className="text-3xl font-bold" /> Logout
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroup>
+        </SidebarFooter>
+        <SidebarRail />
       </Sidebar>
     </SidebarProvider>
   );
