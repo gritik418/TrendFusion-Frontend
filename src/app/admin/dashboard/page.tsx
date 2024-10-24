@@ -1,7 +1,12 @@
+import AdminNavbar from "@/components/AdminNavbar/AdminNavbar";
 import React from "react";
 
 const Dashboard = () => {
-  return <div>Dashboard</div>;
+  return (
+    <div>
+      <AdminNavbar />
+    </div>
+  );
 };
 
 export default Dashboard;
