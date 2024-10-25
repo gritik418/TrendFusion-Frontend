@@ -38,10 +38,6 @@ interface Product {
   offers?: Offers[];
 }
 
-interface ProductWithVariants extends Product {
-  variants?: Variants[];
-}
-
 interface Order {
   orderId: string;
   userId: Types.ObjectId;
@@ -118,7 +114,7 @@ interface CartItem {
 type Variants = {
   colorName: string;
   colorImage: string;
-  sizes: VariantSize[];
+  size: VariantSize[];
 };
 
 type Color = {

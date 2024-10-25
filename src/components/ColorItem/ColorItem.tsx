@@ -13,13 +13,13 @@ const ColorItem = ({
   const router = useRouter();
 
   const handleChangeColor = () => {
-    color.sizes.forEach((size: VariantSize) => {
+    color.size.forEach((size: VariantSize) => {
       if (size.size === selectedSize) {
         return router.push(`/product/${size.slug}`);
       }
     });
 
-    return router.push(`/product/${color.sizes[0].slug}`);
+    return router.push(`/product/${color.size[0].slug}`);
   };
 
   return (

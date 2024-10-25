@@ -5,7 +5,8 @@ import {
 } from "@/features/product/productSlice";
 import { Dispatch } from "@reduxjs/toolkit";
 import Link from "next/link";
-import { ChangeEvent, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { ChangeEvent, KeyboardEvent, useEffect, useState } from "react";
 import { TfiSearch } from "react-icons/tfi";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -14,15 +15,23 @@ const SearchBar = () => {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const items: string[] = useSelector(selectSuggestions);
   const dispatch = useDispatch<Dispatch<any>>();
+  const router = useRouter();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setShowOptions(true);
     setSearchQuery(e.target.value);
   };
 
+  const handleKeyDown = (e: KeyboardEvent) => {
+    if (e.key === "Enter") {
+      setShowOptions(false);
+      router.push(`/search?q=${searchQuery}`);
+    }
+  };
+
   useEffect(() => {
     const timeOutId = setTimeout(() => {
-      if (searchQuery.length > 2) {
+      if (searchQuery.length > 0) {
         dispatch(getSuggestionsAsync(searchQuery));
       }
     }, 1000);
@@ -39,6 +48,7 @@ const SearchBar = () => {
           onClick={() => setShowOptions(!showOptions)}
           type="text"
           onChange={handleChange}
+          onKeyDown={handleKeyDown}
           className="text-lg hover:outline-none hover:border-none border-b-0 bg-transparent text-gray-700 w-full outline-none"
           placeholder="Search for Products, Brands and More"
         />
