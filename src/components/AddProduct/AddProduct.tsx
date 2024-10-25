@@ -409,7 +409,7 @@ const AddProduct = () => {
           )}
         </div>
 
-        <div className="flex gap-4">
+        <div className="flex gap-8 lg:gap-4 flex-col lg:flex-row">
           <div className="flex w-full flex-col">
             <TextField
               className="bg-white w-full"
@@ -446,7 +446,7 @@ const AddProduct = () => {
           </div>
         </div>
 
-        <div className="flex gap-4">
+        <div className="flex gap-8 lg:gap-4 flex-col lg:flex-row">
           <div className="flex w-full">
             <FormControl className="w-full bg-white">
               <InputLabel id="demo-simple-select-helper-label">
@@ -522,7 +522,7 @@ const AddProduct = () => {
           />
         </div>
 
-        <div className="flex gap-4">
+        <div className="flex gap-8 lg:gap-4 flex-col lg:flex-row">
           <div className="flex w-full">
             <TextField
               className="bg-white w-full"
@@ -656,8 +656,8 @@ const AddProduct = () => {
 
           {specifications?.map((specification, index: number) => (
             <div className="flex flex-col gap-6 bg-white p-4 py-6 rounded-md">
-              <div className="flex justify-between items-center">
-                <div className="flex md:w-1/3 max-w-[90%]">
+              <div className="flex gap-2 justify-between items-center">
+                <div className="flex w-full md:1/2 lg:w-1/3 max-w-[90%]">
                   <TextField
                     className="bg-white w-full"
                     id="outlined-basic"
@@ -673,14 +673,15 @@ const AddProduct = () => {
 
                 <button
                   onClick={() => addMoreSpec(index)}
-                  className="bg-gray-200 flex items-center py-1 px-3 rounded-md"
+                  className="bg-gray-200 h-full text-nowrap flex items-center py-1 px-3 rounded-md"
                 >
                   <IoAddOutline className="text-xl" />
                   Add More
                 </button>
               </div>
+
               {specification.specs.map((spec, specIndex: number) => (
-                <div className="flex gap-4">
+                <div className="flex gap-8 lg:gap-4 flex-col lg:flex-row">
                   <div className="flex w-full">
                     <TextField
                       className="bg-white w-full"
@@ -738,7 +739,7 @@ const AddProduct = () => {
           </div>
 
           {offers?.map((offer, index: number) => (
-            <div className="flex gap-4 bg-white p-4 py-6 rounded-md">
+            <div className="flex bg-white p-4 py-6 rounded-md gap-8 lg:gap-4 flex-col lg:flex-row">
               <div className="flex w-full">
                 <TextField
                   defaultValue={offer.offerType}
