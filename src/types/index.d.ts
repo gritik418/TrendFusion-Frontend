@@ -225,6 +225,13 @@ interface AuthResponse {
   success: boolean;
 }
 
+interface Response {
+  message: string;
+  errors?: object;
+  data?: any;
+  success: boolean;
+}
+
 type ProductInfo = {
   title: string;
   brand?: string;
