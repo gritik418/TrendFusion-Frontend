@@ -6,6 +6,7 @@ import MuiProvider from "@/providers/MuiProvider";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { EdgeStoreProvider } from "@/lib/edgestore";
+import UserProvider from "@/components/UserProvider/UserProvider";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -35,7 +36,9 @@ export default function RootLayout({
       >
         <EdgeStoreProvider>
           <MuiProvider>
-            <ReduxProvider>{children}</ReduxProvider>
+            <ReduxProvider>
+              <UserProvider>{children}</UserProvider>
+            </ReduxProvider>
           </MuiProvider>
         </EdgeStoreProvider>
         <ToastContainer />

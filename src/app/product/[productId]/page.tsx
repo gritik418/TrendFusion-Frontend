@@ -154,237 +154,265 @@ const Product = ({ params }: { params: { productId: string } }) => {
           </div>
         ) : (
           <>
-            <div className="bg-[#eeeeee] p-5 pb-4 pt-10">
-              <div className="bg-white p-3 w-full flex flex-col lg:flex-row gap-3">
-                <div className="w-full lg:w-5/12">
-                  <ImageSlider images={data!.product!.images} />
-                </div>
+            <>
+              {data?.product?.productId ? (
+                <div className="bg-[#eeeeee] p-5 pb-4 pt-10">
+                  <div className="bg-white p-3 w-full flex flex-col lg:flex-row gap-3">
+                    <div className="w-full lg:w-5/12">
+                      <ImageSlider images={data!.product!.images} />
+                    </div>
 
-                <div className="w-full lg:w-7/12 p-3">
-                  <div className="flex flex-col">
-                    <p className="text-lg text-gray-400 font-bold uppercase">
-                      {data!.product!.brand}
-                    </p>
-                    <h1 className="text-3xl mb-2 pb-2">
-                      {data!.product!.title}
-                    </h1>
-                    {data?.product?.rating && (
-                      <div className="flex items-center gap-2 mt-2 mb-2">
-                        <Rating
-                          name="size-medium"
-                          precision={0.25}
-                          defaultValue={data!.product!.rating}
-                          readOnly
-                        />
-                        <span className="font-semibold">
-                          {data!.product!.rating}
-                        </span>
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="flex flex-col">
-                    <Separator />
-                    <div className="flex mt-4 mb-2 items-end gap-3">
-                      <p className="text-4xl font-semibold">
-                        <span className="text-2xl">₹</span>
-                        {data!.product!.discount
-                          ? Math.floor(
-                              data!.product!.price -
-                                (data!.product!.price *
-                                  data!.product!.discount?.value!) /
-                                  100
-                            )
-                          : data!.product!.price}
-                      </p>
-
-                      {data!.product!.discount && (
-                        <p className="text-xl text-green-600 font-semibold">
-                          {data!.product!.discount?.value}% Off
+                    <div className="w-full lg:w-7/12 p-3">
+                      <div className="flex flex-col">
+                        <p className="text-lg text-gray-400 font-bold uppercase">
+                          {data!.product!.brand}
                         </p>
+                        <h1 className="text-3xl mb-2 pb-2">
+                          {data!.product!.title}
+                        </h1>
+                        {data?.product?.rating && (
+                          <div className="flex items-center gap-2 mt-2 mb-2">
+                            <Rating
+                              name="size-medium"
+                              precision={0.25}
+                              defaultValue={data!.product!.rating}
+                              readOnly
+                            />
+                            <span className="font-semibold">
+                              {data!.product!.rating}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="flex flex-col">
+                        <Separator />
+                        <div className="flex mt-4 mb-2 items-end gap-3">
+                          <p className="text-4xl font-semibold">
+                            <span className="text-2xl">₹</span>
+                            {data!.product!.discount
+                              ? Math.floor(
+                                  data!.product!.price -
+                                    (data!.product!.price *
+                                      data!.product!.discount?.value!) /
+                                      100
+                                )
+                              : data!.product!.price}
+                          </p>
+
+                          {data!.product!.discount && (
+                            <p className="text-xl text-green-600 font-semibold">
+                              {data!.product!.discount?.value}% Off
+                            </p>
+                          )}
+                        </div>
+                        {data!.product!.discount && (
+                          <p className="text-lg text-gray-500 font-normal">
+                            M.R.P.{" "}
+                            <span className="line-through">
+                              ₹{data!.product!.price}
+                            </span>
+                          </p>
+                        )}
+                        <p className="text-sm font-semibold mb-2">
+                          Inclusive of all taxes
+                        </p>
+                      </div>
+
+                      {data?.variants && data?.product?.color && (
+                        <div className="flex flex-col mt-1">
+                          <Separator />
+                          <p className="text-3xl mt-4 mb-5">Color</p>
+                          <div className="flex gap-3 mb-3">
+                            {data?.variants?.map((color: Variants) => {
+                              return (
+                                <ColorItem
+                                  selectedSize={data?.product?.size!}
+                                  selectedColor={data?.product?.color!}
+                                  key={color.colorName}
+                                  color={color}
+                                />
+                              );
+                            })}
+                          </div>
+                        </div>
+                      )}
+
+                      {selectedColor && data?.product && (
+                        <div className="flex flex-col mt-1">
+                          <Separator />
+                          <p className="text-3xl mt-4 mb-5">Size</p>
+                          <div className="flex gap-3 mb-3">
+                            {selectedColor &&
+                              selectedColor?.size?.map((size: VariantSize) => (
+                                <div
+                                  onClick={() => handleChangeSize(size.slug)}
+                                  className={`border-2 px-5 py-2 rounded-md cursor-pointer ${
+                                    data?.product?.size === size.size
+                                      ? "border-gray-400 border-4"
+                                      : "border-gray-200"
+                                  }`}
+                                  key={size.slug}
+                                >
+                                  {size.size}
+                                </div>
+                              ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {data!.product!.offers && (
+                        <div className="flex flex-col mt-1">
+                          <Separator />
+                          <p className="text-3xl mt-4 mb-5">Available Offers</p>
+                          <div className="flex flex-col gap-3 mb-3">
+                            {data!.product!?.offers &&
+                              data!.product.offers.map(
+                                (
+                                  { offer, offerType }: Offers,
+                                  index: number
+                                ) => {
+                                  return (
+                                    <div
+                                      key={index}
+                                      className="flex justify-start items-center"
+                                    >
+                                      <div className="min-w-[140px] flex gap-2">
+                                        <MdLocalOffer className="text-lg mr-2 text-green-600" />
+                                        <p className="font-semibold">
+                                          {offerType}
+                                        </p>
+                                      </div>
+                                      <div className="flex gap-2">
+                                        <p>{offer}</p>
+                                      </div>
+                                    </div>
+                                  );
+                                }
+                              )}
+                          </div>
+                        </div>
+                      )}
+
+                      <div className="flex flex-col mt-1">
+                        <Separator />
+                        <p className="text-3xl mt-4 mb-5">Delivery</p>
+                        <CheckDelivery />
+                      </div>
+
+                      {data?.product?.warranty && (
+                        <div className="flex flex-col mt-1">
+                          <Separator />
+                          <p className="text-3xl mt-4 mb-5">Warranty</p>
+                          <p className="px-3 mb-3 text-lg">
+                            {data?.product.warranty}
+                          </p>
+                        </div>
+                      )}
+
+                      {data?.product?.description && (
+                        <div className="flex flex-col mt-1">
+                          <Separator />
+                          <p className="text-3xl mt-4 mb-5">Description</p>
+                          <p className="text-lg px-3 mb-3">
+                            {data?.product.description}
+                          </p>
+                        </div>
+                      )}
+
+                      {data?.product?.highlights && (
+                        <div className="flex flex-col mt-1">
+                          <Separator />
+                          <p className="text-3xl mt-4 mb-5">Highlights</p>
+                          <div className="flex flex-col gap-2 mb-3">
+                            {data?.product.highlights.map(
+                              (highlight: string, index: number) => {
+                                return (
+                                  <div
+                                    key={index}
+                                    className="flex items-center"
+                                  >
+                                    <FaHighlighter className="text-green-700" />
+                                    <p className="text-lg px-3">{highlight}</p>
+                                  </div>
+                                );
+                              }
+                            )}
+                          </div>
+                        </div>
+                      )}
+
+                      {data?.product?.specifications && (
+                        <div className="flex flex-col mt-1">
+                          <Separator />
+                          <p className="text-3xl mt-4 mb-5">Specifications</p>
+                          <div className="flex flex-col gap-2 mb-3">
+                            {data?.product.specifications!.map(
+                              (
+                                specification: Specifications,
+                                index: number
+                              ) => {
+                                return (
+                                  <Accordion
+                                    key={index}
+                                    type="single"
+                                    collapsible
+                                    defaultChecked
+                                    defaultValue={specification.category}
+                                  >
+                                    <AccordionItem
+                                      value={specification.category}
+                                    >
+                                      <AccordionTrigger className="text-xl p-2 font-normal bg-gray-200 hover:no-underline">
+                                        {specification.category}
+                                      </AccordionTrigger>
+                                      <AccordionContent className=" bg-gray-50">
+                                        {specification.specs.map(
+                                          (spec, index: number) => {
+                                            return (
+                                              <div
+                                                key={index}
+                                                className="flex justify-between gap-2 p-3"
+                                              >
+                                                <div className="flex min-w-[120px] md:min-w-[160px]">
+                                                  <p className="text-sm capitalize md:text-lg font-normal">
+                                                    {Object.keys(spec)[0]}
+                                                  </p>
+                                                </div>
+                                                <p className="text-xs text-justify max-w-[400px] md:text-lg">
+                                                  {Object.values(spec)[0]}
+                                                </p>
+                                              </div>
+                                            );
+                                          }
+                                        )}
+                                      </AccordionContent>
+                                    </AccordionItem>
+                                  </Accordion>
+                                );
+                              }
+                            )}
+                          </div>
+                        </div>
                       )}
                     </div>
-                    {data!.product!.discount && (
-                      <p className="text-lg text-gray-500 font-normal">
-                        M.R.P.{" "}
-                        <span className="line-through">
-                          ₹{data!.product!.price}
-                        </span>
-                      </p>
-                    )}
-                    <p className="text-sm font-semibold mb-2">
-                      Inclusive of all taxes
-                    </p>
                   </div>
-
-                  {data?.variants && data?.product?.color && (
-                    <div className="flex flex-col mt-1">
-                      <Separator />
-                      <p className="text-3xl mt-4 mb-5">Color</p>
-                      <div className="flex gap-3 mb-3">
-                        {data?.variants?.map((color: Variants) => {
-                          return (
-                            <ColorItem
-                              selectedSize={data?.product?.size!}
-                              selectedColor={data?.product?.color!}
-                              key={color.colorName}
-                              color={color}
-                            />
-                          );
-                        })}
-                      </div>
-                    </div>
-                  )}
-
-                  {selectedColor && data?.product && (
-                    <div className="flex flex-col mt-1">
-                      <Separator />
-                      <p className="text-3xl mt-4 mb-5">Size</p>
-                      <div className="flex gap-3 mb-3">
-                        {selectedColor &&
-                          selectedColor?.size?.map((size: VariantSize) => (
-                            <div
-                              onClick={() => handleChangeSize(size.slug)}
-                              className={`border-2 px-5 py-2 rounded-md cursor-pointer ${
-                                data?.product?.size === size.size
-                                  ? "border-gray-400 border-4"
-                                  : "border-gray-200"
-                              }`}
-                              key={size.slug}
-                            >
-                              {size.size}
-                            </div>
-                          ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {data!.product!.offers && (
-                    <div className="flex flex-col mt-1">
-                      <Separator />
-                      <p className="text-3xl mt-4 mb-5">Available Offers</p>
-                      <div className="flex flex-col gap-3 mb-3">
-                        {data!.product!?.offers &&
-                          data!.product.offers.map(
-                            ({ offer, offerType }: Offers, index: number) => {
-                              return (
-                                <div
-                                  key={index}
-                                  className="flex justify-start items-center"
-                                >
-                                  <div className="min-w-[140px] flex gap-2">
-                                    <MdLocalOffer className="text-lg mr-2 text-green-600" />
-                                    <p className="font-semibold">{offerType}</p>
-                                  </div>
-                                  <div className="flex gap-2">
-                                    <p>{offer}</p>
-                                  </div>
-                                </div>
-                              );
-                            }
-                          )}
-                      </div>
-                    </div>
-                  )}
-
-                  <div className="flex flex-col mt-1">
-                    <Separator />
-                    <p className="text-3xl mt-4 mb-5">Delivery</p>
-                    <CheckDelivery />
-                  </div>
-
-                  {data?.product?.warranty && (
-                    <div className="flex flex-col mt-1">
-                      <Separator />
-                      <p className="text-3xl mt-4 mb-5">Warranty</p>
-                      <p className="px-3 mb-3 text-lg">
-                        {data?.product.warranty}
-                      </p>
-                    </div>
-                  )}
-
-                  {data?.product?.description && (
-                    <div className="flex flex-col mt-1">
-                      <Separator />
-                      <p className="text-3xl mt-4 mb-5">Description</p>
-                      <p className="text-lg px-3 mb-3">
-                        {data?.product.description}
-                      </p>
-                    </div>
-                  )}
-
-                  {data?.product?.highlights && (
-                    <div className="flex flex-col mt-1">
-                      <Separator />
-                      <p className="text-3xl mt-4 mb-5">Highlights</p>
-                      <div className="flex flex-col gap-2 mb-3">
-                        {data?.product.highlights.map(
-                          (highlight: string, index: number) => {
-                            return (
-                              <div key={index} className="flex items-center">
-                                <FaHighlighter className="text-green-700" />
-                                <p className="text-lg px-3">{highlight}</p>
-                              </div>
-                            );
-                          }
-                        )}
-                      </div>
-                    </div>
-                  )}
-
-                  {data?.product?.specifications && (
-                    <div className="flex flex-col mt-1">
-                      <Separator />
-                      <p className="text-3xl mt-4 mb-5">Specifications</p>
-                      <div className="flex flex-col gap-2 mb-3">
-                        {data?.product.specifications!.map(
-                          (specification: Specifications, index: number) => {
-                            return (
-                              <Accordion
-                                key={index}
-                                type="single"
-                                collapsible
-                                defaultChecked
-                                defaultValue={specification.category}
-                              >
-                                <AccordionItem value={specification.category}>
-                                  <AccordionTrigger className="text-xl p-2 font-normal bg-gray-200 hover:no-underline">
-                                    {specification.category}
-                                  </AccordionTrigger>
-                                  <AccordionContent className=" bg-gray-50">
-                                    {specification.specs.map(
-                                      (spec, index: number) => {
-                                        return (
-                                          <div
-                                            key={index}
-                                            className="flex justify-between gap-2 p-3"
-                                          >
-                                            <div className="flex min-w-[120px] md:min-w-[160px]">
-                                              <p className="text-sm capitalize md:text-lg font-normal">
-                                                {Object.keys(spec)[0]}
-                                              </p>
-                                            </div>
-                                            <p className="text-xs text-justify max-w-[400px] md:text-lg">
-                                              {Object.values(spec)[0]}
-                                            </p>
-                                          </div>
-                                        );
-                                      }
-                                    )}
-                                  </AccordionContent>
-                                </AccordionItem>
-                              </Accordion>
-                            );
-                          }
-                        )}
-                      </div>
-                    </div>
-                  )}
                 </div>
-              </div>
-            </div>
-
-            {reviews && (
+              ) : (
+                <div className="h-[90vh] w-full items-center flex flex-col justify-center">
+                  <Image
+                    src={"/images/no-product-found.png"}
+                    alt="img"
+                    height={180}
+                    width={240}
+                  />
+                  <p className="text-2xl font-semibold">
+                    Sorry, no results found!
+                  </p>
+                </div>
+              )}
+            </>
+            {data?.product && reviews && (
               <div className="bg-[#eeeeee] p-5 pt-2">
                 <div className="bg-white p-3 w-full flex flex-col">
                   <p className="text-3xl mt-4 mb-5">Ratings & Reviews</p>
@@ -399,7 +427,7 @@ const Product = ({ params }: { params: { productId: string } }) => {
               </div>
             )}
 
-            <PriceBar product={data?.product!} />
+            {data?.product && <PriceBar product={data?.product!} />}
           </>
         )}
       </>

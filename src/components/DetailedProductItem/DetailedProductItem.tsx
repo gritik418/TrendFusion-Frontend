@@ -68,7 +68,7 @@ const DetailedProductItem = ({ product }: { product: Product }) => {
           </div>
         </div>
 
-        <div className="">
+        <div className="mt-3">
           <button className="bg-[var(--secondary-color)] mt-4 font-semibold text-xl py-1 px-4 text-white rounded-full">
             Add to Cart
           </button>

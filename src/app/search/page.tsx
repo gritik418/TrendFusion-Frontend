@@ -27,8 +27,13 @@ const SearchPage = () => {
 
         <>
           {isLoading ? (
-            <div className="h-full w-full flex-col flex items-center justify-center">
-              <p>Loading...</p>
+            <div className="h-[60%] w-full flex-col flex items-center justify-center">
+              <Image
+                src={"/images/loading.gif"}
+                alt="loading"
+                height={140}
+                width={140}
+              />
             </div>
           ) : (
             <>
@@ -55,14 +60,17 @@ const SearchPage = () => {
                   </div>
                 </>
               ) : (
-                <div className="flex flex-col justify-center items-center pt-10">
+                <div className="flex flex-col justify-center items-center h-[60%]">
                   <Image
                     src={"/images/no-product-found.png"}
                     alt="img"
                     height={180}
                     width={240}
                   />
-                  <h2 className="text-2xl text-gray-600">Product not found</h2>
+                  <h2 className="text-2xl text-gray-600">
+                    {" "}
+                    Sorry, no results found!
+                  </h2>
                 </div>
               )}
             </>

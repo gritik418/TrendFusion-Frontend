@@ -1,7 +1,12 @@
+"use client";
 import CartItem from "@/components/CartItem/CartItem";
 import Navbar from "@/components/Navbar/Navbar";
 import { Separator } from "@/components/ui/separator";
+import { selectUser } from "@/features/user/userSlice";
+import Image from "next/image";
+import Link from "next/link";
 import React from "react";
+import { useSelector } from "react-redux";
 
 const products: Product[] = [
   {
@@ -137,6 +142,63 @@ const products: Product[] = [
 ];
 
 const Cart = () => {
+  const user: User = useSelector(selectUser);
+  const isEmpty = true;
+
+  if (isEmpty)
+    return (
+      <div className="bg-[#eeeeee] min-h-screen">
+        <Navbar />
+
+        <div className="p-5 pt-10 gap-6 flex flex-col lg:flex-row container m-auto">
+          <div className="bg-white flex items-center py-8 justify-center flex-col w-full min-h-[40vh]">
+            <Image
+              src={"/images/empty-cart.png"}
+              alt="img"
+              height={220}
+              width={220}
+            />
+            <p className="text-2xl mb-2">Your cart is empty!</p>
+            <p className="mb-8">Add items to it now.</p>
+
+            <Link
+              href={"/"}
+              className="text-2xl font-semibold rounded-md bg-[var(--secondary-color)] py-2 px-6 text-white"
+            >
+              Shop Now
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+
+  if (!user._id)
+    return (
+      <div className="bg-[#eeeeee] min-h-screen">
+        <Navbar />
+
+        <div className="p-5 pt-10 gap-6 flex flex-col lg:flex-row container m-auto">
+          <div className="bg-white flex items-center py-8 justify-center flex-col w-full min-h-[40vh]">
+            <Image
+              src={"/images/cart-no-login.png"}
+              alt="img"
+              height={220}
+              width={220}
+            />
+            <p className="text-2xl mb-2">Missing Cart items?</p>
+            <p className="mb-8">Login to see the items you added previously.</p>
+
+            <Link
+              href={"/login"}
+              className="text-2xl font-semibold rounded-md bg-[var(--secondary-color)] py-2 px-6 text-white"
+            >
+              Login
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+
   return (
     <div className="min-h-screen">
       <Navbar />

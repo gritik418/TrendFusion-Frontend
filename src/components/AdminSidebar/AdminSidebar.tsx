@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
 import { BiLogOut } from "react-icons/bi";
-import { FaTshirt, FaUserCircle } from "react-icons/fa";
+import { FaTshirt, FaUserCircle, FaUsers } from "react-icons/fa";
 import { HiUsers } from "react-icons/hi2";
 import { MdSpaceDashboard } from "react-icons/md";
 import {
@@ -28,25 +28,32 @@ import {
   SidebarProvider,
   SidebarRail,
 } from "../ui/sidebar";
+import { TfiShoppingCartFull } from "react-icons/tfi";
 
 const data = [
   {
     label: "Menu",
     items: [
       {
-        title: "Dashboard",
+        title: "Overview",
         isLink: true,
         icon: <MdSpaceDashboard className="text-xl" />,
         link: "/admin/dashboard",
       },
       {
-        title: "Products",
+        title: "Orders",
+        isLink: true,
+        icon: <TfiShoppingCartFull className="text-xl" />,
+        link: "/admin/orders",
+      },
+      {
+        title: "Product",
         isLink: false,
         isActive: true,
         icon: <FaTshirt className="text-xl" />,
         subItems: [
           {
-            title: "Products",
+            title: "All Products",
             link: "/admin/dashboard/products",
           },
           {
@@ -54,6 +61,12 @@ const data = [
             link: "/admin/dashboard/products/add",
           },
         ],
+      },
+      {
+        title: "Customers",
+        isLink: true,
+        icon: <FaUsers className="text-xl" />,
+        link: "/admin/customers",
       },
     ],
   },

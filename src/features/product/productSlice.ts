@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getSuggestions } from "./productApi";
+import { getSuggestions } from "./productAPI";
 
 const initialState = {
   suggestions: [],

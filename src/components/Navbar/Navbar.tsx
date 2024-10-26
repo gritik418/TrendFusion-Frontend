@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import SearchBar from "../SearchBar/SearchBar";
 import { IoCartOutline } from "react-icons/io5";
@@ -5,8 +6,12 @@ import { CiLogin } from "react-icons/ci";
 import Image from "next/image";
 import Link from "next/link";
 import MenubarComponent from "../MenubarComponent/MenubarComponent";
+import { useSelector } from "react-redux";
+import { selectUser } from "@/features/user/userSlice";
 
 const Navbar = () => {
+  const user: User = useSelector(selectUser);
+
   return (
     <>
       <div className="z-50 h-[60px] shadow-lg hidden md:flex bg-white/85 backdrop-blur-md sticky top-0">
@@ -26,14 +31,16 @@ const Navbar = () => {
           </Link>
           <SearchBar />
 
-          <MenubarComponent />
+          {user._id && <MenubarComponent />}
 
-          <Link
-            href={"/login"}
-            className="flex items-center text-lg gap-1 hover:bg-slate-50 transition-colors ease-in-out duration-300 py-1 px-3 rounded-md"
-          >
-            <CiLogin className="text-2xl" /> Login
-          </Link>
+          {!user._id && (
+            <Link
+              href={"/login"}
+              className="flex items-center text-lg gap-1 hover:bg-slate-50 transition-colors ease-in-out duration-300 py-1 px-3 rounded-md"
+            >
+              <CiLogin className="text-2xl" /> Login
+            </Link>
+          )}
           <Link
             href={"/cart"}
             className="flex items-center text-lg gap-1 hover:bg-slate-50 transition-colors ease-in-out duration-300 py-1 px-3 rounded-md"
@@ -60,13 +67,16 @@ const Navbar = () => {
           </Link>
 
           <div className="flex gap-4">
-            <MenubarComponent />
-            <Link
-              href={"/login"}
-              className="flex items-center text-lg gap-1 hover:bg-slate-50 transition-colors ease-in-out duration-300 py-1 px-3 rounded-md"
-            >
-              <CiLogin className="text-2xl" /> Login
-            </Link>
+            {user._id && <MenubarComponent />}
+
+            {!user._id && (
+              <Link
+                href={"/login"}
+                className="flex items-center text-lg gap-1 hover:bg-slate-50 transition-colors ease-in-out duration-300 py-1 px-3 rounded-md"
+              >
+                <CiLogin className="text-2xl" /> Login
+              </Link>
+            )}
             <Link
               href={"/cart"}
               className="flex items-center text-lg gap-1 hover:bg-slate-50 transition-colors ease-in-out duration-300 py-1 px-3 rounded-md"

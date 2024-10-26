@@ -10,14 +10,18 @@ import {
 import { FaBoxOpen, FaHeart, FaUser, FaUserCircle } from "react-icons/fa";
 import { RiShutDownLine } from "react-icons/ri";
 import { useRouter } from "next/navigation";
+import { useSelector } from "react-redux";
+import { selectUser } from "@/features/user/userSlice";
 
 const MenubarComponent = () => {
   const router = useRouter();
+  const user: User = useSelector(selectUser);
+
   return (
     <Menubar className="border-none cursor-pointer bg-gray-100">
       <MenubarMenu>
         <MenubarTrigger className="flex gap-2 text-lg border-none cursor-pointer">
-          <FaUser /> Ritik
+          <FaUser /> {user.firstName}
         </MenubarTrigger>
         <MenubarContent>
           <MenubarItem

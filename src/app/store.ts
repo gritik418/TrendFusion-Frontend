@@ -4,6 +4,7 @@ import authApi from "@/features/api/authApi";
 import productApi from "@/features/api/productApi";
 import { configureStore } from "@reduxjs/toolkit";
 import productReducer from "@/features/product/productSlice";
+import userReducer from "@/features/user/userSlice";
 
 const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ const store = configureStore({
     [adminProductAPi.reducerPath]: adminProductAPi.reducer,
     [productApi.reducerPath]: productApi.reducer,
     [productReducer.name]: productReducer.reducer,
+    [userReducer.name]: userReducer.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()

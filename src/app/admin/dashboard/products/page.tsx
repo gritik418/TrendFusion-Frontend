@@ -727,7 +727,7 @@ const ProductsPage = () => {
       <AdminNavbar />
 
       <div className="p-5 pb-4 pt-10">
-        <div className="flex justify-between items-center">
+        <div className="hidden lg:flex justify-between items-center">
           <h1 className="text-3xl font-[500]">Products</h1>
 
           <div className="flex gap-2">
@@ -744,9 +744,32 @@ const ProductsPage = () => {
 
             <span className="border-l-[1px]"></span>
 
-            <button className="flex items-center gap-2 py-2 px-5 rounded-full border-[1px] border-black">
+            <button className="bg-[var(--secondary-color)] text-white flex items-center gap-2 py-2 px-5 rounded-full font-semibold">
+              Add New Product <IoAddOutline className="text-2xl" />
+            </button>
+          </div>
+        </div>
+
+        <div className="flex flex-col lg:hidden justify-between items-center">
+          <div className="flex items-center w-full mb-4 justify-between">
+            <h1 className="text-2xl md:text-3xl font-[500]">Products</h1>
+
+            <button className="text-xs sm:text-lg flex items-center gap-2 py-2 px-3 sm:px-5 rounded-full bg-[var(--secondary-color)] text-white">
               Add New Product <IoAddOutline className="text-xl" />
             </button>
+          </div>
+
+          <div className="w-full">
+            <div className="flex w-full justify-self-end py-2 p-1 rounded-full px-2 bg-slate-100 gap-2 items-center">
+              <CiSearch className="text-2xl" />
+              <input
+                type="text"
+                name=""
+                className="bg-transparent outline-none w-[240px]"
+                placeholder="Search product..."
+                id=""
+              />
+            </div>
           </div>
         </div>
 
