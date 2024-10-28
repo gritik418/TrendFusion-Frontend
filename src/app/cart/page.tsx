@@ -143,7 +143,7 @@ const products: Product[] = [
 
 const Cart = () => {
   const user: User = useSelector(selectUser);
-  const isEmpty = true;
+  const isEmpty = false;
 
   if (isEmpty)
     return (
@@ -203,65 +203,75 @@ const Cart = () => {
     <div className="min-h-screen">
       <Navbar />
 
-      <div className="bg-[#eeeeee] p-5 pt-10 gap-6 flex flex-col lg:flex-row w-full">
-        <div className="bg-white flex flex-col w-full lg:w-4/6">
-          <div className="p-4">
-            <h1 className="text-3xl font-normal mb-3">Shopping Cart</h1>
-            <Separator />
-          </div>
-
-          <div className="p-4">
-            {products.map((product: Product) => (
-              <CartItem key={product.productId} product={product} />
-            ))}
-          </div>
+      <div className="bg-[#eeeeee] p-5 pt-10 gap-6 flex flex-col w-full">
+        <div className="flex bg-white p-5 rounded-lg">
+          <h1 className="text-3xl font-semibold">
+            Shopping Bag{" "}
+            <span className="text-xl font-normal text-gray-500">(4 items)</span>
+          </h1>
         </div>
-
-        <div className="bg-white w-full lg:w-2/6 h-max">
-          <div className="p-4">
-            <h2 className="uppercase text-2xl mb-3 text-gray-400 font-bold">
-              Price Details
-            </h2>
-            <Separator />
+        <div className="flex flex-col lg:flex-row gap-6">
+          <div className="bg-white flex flex-col w-full lg:w-4/6 rounded-lg">
+            <div className="p-4">
+              {products.map((product: Product) => (
+                <CartItem key={product.productId} product={product} />
+              ))}
+            </div>
           </div>
-          <div className="flex flex-col px-6 gap-3">
-            <div className="flex justify-between">
-              <p className="text-sm sm:text-lg">Price (1 item)</p>
-              <p className="text-sm sm:text-lg font-semibold">
-                ₹{products[0].price}
+
+          <div className="bg-white w-full lg:w-2/6 h-max rounded-lg">
+            <div className="p-4">
+              <h2 className="uppercase text-2xl mb-3 text-gray-400 font-bold">
+                Order Summary
+              </h2>
+              <Separator />
+            </div>
+            <div className="flex flex-col px-6 gap-3">
+              <div className="flex justify-between">
+                <p className="text-sm sm:text-lg">Price (1 item)</p>
+                <p className="text-sm sm:text-lg font-semibold">
+                  ₹{products[0].price}
+                </p>
+              </div>
+              <div className="flex justify-between">
+                <p className="text-sm sm:text-lg">Discount</p>
+                <p className="text-sm sm:text-lg font-semibold text-green-600">
+                  - ₹{products[0].discount?.value}
+                </p>
+              </div>
+              <div className="flex justify-between">
+                <p className="text-sm sm:text-lg">Platform Fee</p>
+                <p className="text-sm sm:text-lg font-semibold">₹5</p>
+              </div>
+              <div className="flex justify-between">
+                <p className="text-sm sm:text-lg">Delivery Charges</p>
+                <p className="text-sm sm:text-lg font-semibold">₹10</p>
+              </div>
+
+              <Separator />
+
+              <div className="flex justify-between my-2">
+                <p className="text-lg sm:text-xl font-bold">Total Amount</p>
+                <p className="text-lg sm:text-xl font-bold">₹85</p>
+              </div>
+
+              <p className="text-sm text-green-600 font-bold mb-4">
+                You will save ₹10 on this order
               </p>
-            </div>
-            <div className="flex justify-between">
-              <p className="text-sm sm:text-lg">Discount</p>
-              <p className="text-sm sm:text-lg font-semibold text-green-600">
-                - ₹{products[0].discount?.value}
-              </p>
-            </div>
-            <div className="flex justify-between">
-              <p className="text-sm sm:text-lg">Platform Fee</p>
-              <p className="text-sm sm:text-lg font-semibold">₹5</p>
-            </div>
-            <div className="flex justify-between">
-              <p className="text-sm sm:text-lg">Delivery Charges</p>
-              <p className="text-sm sm:text-lg font-semibold">₹10</p>
-            </div>
+              <Separator />
 
-            <Separator />
+              <div className="flex my-2 items-center flex-col justify-end">
+                <button className="text-lg w-full text-white font-semibold bg-[var(--secondary-color)] py-3 px-5 rounded-full mb-4">
+                  Proceed to Buy
+                </button>
 
-            <div className="flex justify-between my-2">
-              <p className="text-lg sm:text-xl font-bold">Total Amount</p>
-              <p className="text-lg sm:text-xl font-bold">₹85</p>
-            </div>
-
-            <p className="text-sm text-green-600 font-bold mb-4">
-              You will save ₹10 on this order
-            </p>
-            <Separator />
-
-            <div className="flex my-2 items-center justify-end">
-              <button className="text-lg text-white font-semibold bg-[var(--secondary-color)] py-3 px-5 rounded-md mb-4">
-                Proceed to Buy
-              </button>
+                <Link
+                  href={"/"}
+                  className="text-lg w-full text-black font-semibold bg-gray-200 py-3 px-5 rounded-full mb-4"
+                >
+                  Continue Shopping
+                </Link>
+              </div>
             </div>
           </div>
         </div>
