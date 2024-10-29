@@ -1,3 +1,4 @@
+import CheckLogin from "@/components/CheckLogin/CheckLogin";
 import Navbar from "@/components/Navbar/Navbar";
 import CustomizedSteppers from "@/components/Stepper/Stepper";
 
@@ -12,7 +13,9 @@ const Checkout = () => {
           <CustomizedSteppers />
         </div>
 
-        <div className="flex min-h-[30vh] bg-white flex-col items-center p-5 rounded-lg"></div>
+        <div className="flex bg-white flex-col p-5 rounded-lg">
+          <CheckLogin />
+        </div>
       </div>
     </div>
   );
