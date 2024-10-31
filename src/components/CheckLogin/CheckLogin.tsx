@@ -6,9 +6,15 @@ import { useSelector } from "react-redux";
 import { Separator } from "../ui/separator";
 import Link from "next/link";
 import { IoMdAdd } from "react-icons/io";
+import { Dispatch, SetStateAction } from "react";
 
-const CheckLogin = () => {
+const CheckLogin = ({
+  setActiveStep,
+}: {
+  setActiveStep: Dispatch<SetStateAction<number>>;
+}) => {
   const user: User = useSelector(selectUser);
+
   return (
     <div>
       <h1 className="text-4xl mb-2">Login</h1>
@@ -66,7 +72,10 @@ const CheckLogin = () => {
 
       {user._id && (
         <div className="flex justify-end mt-8">
-          <FaArrowCircleRight className="text-4xl text-green-700 cursor-pointer" />
+          <FaArrowCircleRight
+            onClick={() => setActiveStep(1)}
+            className="text-4xl text-green-700 cursor-pointer"
+          />
         </div>
       )}
     </div>

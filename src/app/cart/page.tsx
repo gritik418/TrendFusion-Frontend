@@ -267,7 +267,7 @@ const Cart = () => {
 
                 <Link
                   href={"/"}
-                  className="text-lg w-full text-black font-semibold bg-gray-200 py-3 px-5 rounded-full mb-4"
+                  className="text-lg text-center w-full text-black font-semibold bg-gray-200 py-3 px-5 rounded-full mb-4"
                 >
                   Continue Shopping
                 </Link>

@@ -98,12 +98,16 @@ function ColorlibStepIcon(props: StepIconProps) {
 
 const steps = ["Login", "Shipping Address", "Order Summary", "Payment Options"];
 
-export default function CustomizedSteppers() {
+export default function CustomizedSteppers({
+  activeStep,
+}: {
+  activeStep: number;
+}) {
   return (
     <Stack sx={{ width: "100%" }} spacing={4}>
       <Stepper
         alternativeLabel
-        activeStep={3}
+        activeStep={activeStep}
         connector={<ColorlibConnector />}
       >
         {steps.map((label) => (
