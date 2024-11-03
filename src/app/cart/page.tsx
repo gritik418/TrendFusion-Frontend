@@ -2,175 +2,33 @@
 import CartItem from "@/components/CartItem/CartItem";
 import Navbar from "@/components/Navbar/Navbar";
 import { Separator } from "@/components/ui/separator";
+import { useGetCartQuery } from "@/features/api/cartApi";
 import { selectUser } from "@/features/user/userSlice";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
 import { useSelector } from "react-redux";
-
-const products: Product[] = [
-  {
-    productId: "1A2B3C",
-    title: "Super Sound Wireless Earbuds",
-    brand: "SoundMax",
-    description:
-      "Experience high-quality sound and seamless connectivity with our latest wireless earbuds.",
-    thumbnail:
-      "https://m.media-amazon.com/images/I/51fKmbuf5+L._AC_SY300_SX300_.jpg",
-    isAvailable: true,
-    images: [
-      "https://m.media-amazon.com/images/I/71652WdL3pL._AC_SX679_.jpg",
-      "https://m.media-amazon.com/images/I/51fKmbuf5+L._AC_SY300_SX300_.jpg",
-    ],
-    category: "Audio",
-    price: 79.99,
-    warranty: "1 year",
-    discount: {
-      discountType: "Percentage",
-      value: 10,
-      description: "Limited time offer",
-    },
-    rating: 4.5,
-    stock: 150,
-    color: {
-      colorName: "Black",
-      colorImage:
-        "https://m.media-amazon.com/images/I/71652WdL3pL._AC_SX679_.jpg",
-    },
-    size: "N/A",
-    highlights: [
-      "Bluetooth 5.0",
-      "24-hour battery life",
-      "IPX7 water-resistant",
-    ],
-    specifications: [
-      {
-        category: "Audio",
-        specs: [
-          {
-            frequencyRange: "20Hz - 20kHz",
-          },
-          {
-            impedance: "32 Ohms",
-          },
-        ],
-      },
-      {
-        category: "Battery",
-        specs: [
-          {
-            life: "6 hours",
-          },
-          {
-            chargingTime: "1 hour",
-          },
-        ],
-      },
-    ],
-    offers: [
-      {
-        offerType: "Buy One Get One",
-        offer: "Yes",
-      },
-    ],
-  },
-  {
-    productId: "4D5E6F",
-    title: "Ultra Smart Fitness Watch",
-    brand: "FitTrack",
-    description:
-      "Track your fitness goals with our feature-packed smartwatch, equipped with heart rate monitoring and GPS.",
-    thumbnail:
-      "https://m.media-amazon.com/images/I/71Nd69-7YiL.__AC_SX300_SY300_QL70_FMwebp_.jpg",
-    isAvailable: true,
-    images: [
-      "https://m.media-amazon.com/images/I/71Nd69-7YiL.__AC_SX300_SY300_QL70_FMwebp_.jpg",
-      "https://m.media-amazon.com/images/I/71LyWQ1NxFL._AC_SX679_.jpg",
-    ],
-    category: "Wearables",
-    price: 149.99,
-    warranty: "2 years",
-    discount: {
-      discountType: "Percentage",
-      value: 15,
-      description: "Holiday sale",
-    },
-    rating: 4.8,
-    stock: 80,
-    color: {
-      colorName: "Silver",
-      colorImage:
-        "https://m.media-amazon.com/images/I/71Nd69-7YiL.__AC_SX300_SY300_QL70_FMwebp_.jpg",
-    },
-    size: "Medium",
-    highlights: [
-      "Heart rate monitoring",
-      "Water-resistant up to 50m",
-      "GPS tracking",
-    ],
-    specifications: [
-      {
-        category: "Display",
-        specs: [
-          {
-            size: "1.5 inches",
-          },
-          {
-            type: "LCD",
-          },
-        ],
-      },
-      {
-        category: "Battery",
-        specs: [
-          {
-            life: "10 days",
-          },
-          {
-            chargingTime: "2 hours",
-          },
-        ],
-      },
-    ],
-    offers: [
-      {
-        offerType: "Free Shipping",
-        offer: "Yes",
-      },
-    ],
-  },
-];
 
 const Cart = () => {
   const user: User = useSelector(selectUser);
-  const isEmpty = false;
+  const { isLoading, data } = useGetCartQuery();
 
-  if (isEmpty)
+  if (isLoading) {
     return (
-      <div className="bg-[#eeeeee] min-h-screen">
+      <div className="min-h-screen relative">
         <Navbar />
-
-        <div className="p-5 pt-10 gap-6 flex flex-col lg:flex-row container m-auto">
-          <div className="bg-white flex items-center py-8 justify-center flex-col w-full min-h-[40vh]">
+        <div className="bg-[#eeeeee] p-5 pb-4 pt-10 h-screen">
+          <div className="bg-white h-full p-3 w-full flex items-center justify-center flex-col gap-3">
             <Image
-              src={"/images/empty-cart.png"}
-              alt="img"
-              height={220}
-              width={220}
+              src={"/images/loading.gif"}
+              alt="loading"
+              height={140}
+              width={140}
             />
-            <p className="text-2xl mb-2">Your cart is empty!</p>
-            <p className="mb-8">Add items to it now.</p>
-
-            <Link
-              href={"/"}
-              className="text-2xl font-semibold rounded-md bg-[var(--secondary-color)] py-2 px-6 text-white"
-            >
-              Shop Now
-            </Link>
           </div>
         </div>
       </div>
     );
+  }
 
   if (!user._id)
     return (
@@ -199,84 +57,147 @@ const Cart = () => {
       </div>
     );
 
+  const sortedCartItems = data?.cart?.items?.toSorted((a, b) => {
+    return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
+  });
+
   return (
-    <div className="min-h-screen">
-      <Navbar />
+    <>
+      {data && data.cart && data.cart.totalQuantity > 0 ? (
+        <div className="min-h-screen">
+          <Navbar />
 
-      <div className="bg-[#eeeeee] p-5 pt-10 gap-6 flex flex-col w-full">
-        <div className="flex bg-white p-5 rounded-lg">
-          <h1 className="text-3xl font-semibold">
-            Shopping Bag{" "}
-            <span className="text-xl font-normal text-gray-500">(4 items)</span>
-          </h1>
-        </div>
-        <div className="flex flex-col lg:flex-row gap-6">
-          <div className="bg-white flex flex-col w-full lg:w-4/6 rounded-lg">
-            <div className="p-4">
-              {products.map((product: Product) => (
-                <CartItem key={product.productId} product={product} />
-              ))}
+          <div className="bg-[#eeeeee] min-h-screen p-5 pt-10 gap-6 flex flex-col w-full">
+            <div className="flex bg-white p-5 rounded-lg">
+              <h1 className="text-3xl font-semibold">
+                Shopping Bag{" "}
+                <span className="text-xl font-normal text-gray-500">
+                  ({data.cart.totalQuantity} item
+                  {data.cart.totalQuantity > 1 ? "s" : ""})
+                </span>
+              </h1>
+            </div>
+            <div className="flex flex-col lg:flex-row gap-6">
+              <div className="bg-white h-max flex flex-col w-full lg:w-4/6 rounded-lg">
+                <div className="p-4">
+                  {sortedCartItems &&
+                    sortedCartItems.map(({ product, quantity }: any) => (
+                      <CartItem
+                        key={product._id}
+                        product={product}
+                        quantity={quantity}
+                      />
+                    ))}
+                </div>
+              </div>
+
+              <div className="bg-white w-full lg:w-2/6 h-max rounded-lg">
+                <div className="p-4">
+                  <h2 className="uppercase text-2xl mb-3 text-gray-400 font-bold">
+                    Order Summary
+                  </h2>
+                  <Separator />
+                </div>
+                <div className="flex flex-col px-6 gap-3">
+                  <div className="flex justify-between">
+                    <p className="text-sm sm:text-lg">
+                      Price ({data.cart.totalQuantity} item
+                      {data.cart.totalQuantity > 1 ? "s" : ""})
+                    </p>
+                    <p className="text-sm sm:text-lg font-semibold">
+                      ₹{data.cart.totalPrice}
+                    </p>
+                  </div>
+                  <div className="flex justify-between">
+                    <p className="text-sm sm:text-lg">Discount</p>
+                    <p className="text-sm sm:text-lg font-semibold text-green-600">
+                      - ₹{data.cart?.discount}
+                    </p>
+                  </div>
+                  <div className="flex justify-between">
+                    <p className="text-sm sm:text-lg">Platform Fee</p>
+                    {data.cart?.platformFee ? (
+                      <p className="text-sm sm:text-lg font-semibold">
+                        ₹{data.cart.platformFee}
+                      </p>
+                    ) : (
+                      <p className="text-sm sm:text-lg text-green-600 font-semibold">
+                        Free
+                      </p>
+                    )}
+                  </div>
+                  <div className="flex justify-between">
+                    <p className="text-sm sm:text-lg">Delivery Charges</p>
+                    {data.cart?.deliveryCharges ? (
+                      <p className="text-sm sm:text-lg font-semibold">
+                        ₹{data.cart.deliveryCharges}
+                      </p>
+                    ) : (
+                      <p className="text-sm sm:text-lg text-green-600 font-semibold">
+                        Free
+                      </p>
+                    )}
+                  </div>
+
+                  <Separator />
+
+                  <div className="flex justify-between my-2">
+                    <p className="text-lg sm:text-xl font-bold">Total Amount</p>
+                    <p className="text-lg sm:text-xl font-bold">
+                      ₹{data.cart.finalPrice}
+                    </p>
+                  </div>
+
+                  {data.cart.discount && (
+                    <p className="text-sm text-green-600 font-bold mb-4">
+                      You will save ₹{data.cart?.discount} on this order
+                    </p>
+                  )}
+                  <Separator />
+
+                  <div className="flex my-2 items-center flex-col justify-end">
+                    <button className="text-lg w-full text-white font-semibold bg-[var(--secondary-color)] py-3 px-5 rounded-full mb-4">
+                      Proceed to Buy
+                    </button>
+
+                    <Link
+                      href={"/"}
+                      className="text-lg text-center w-full text-black font-semibold bg-gray-200 py-3 px-5 rounded-full mb-4"
+                    >
+                      Continue Shopping
+                    </Link>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
+        </div>
+      ) : (
+        <div className="bg-[#eeeeee] min-h-screen">
+          <Navbar />
 
-          <div className="bg-white w-full lg:w-2/6 h-max rounded-lg">
-            <div className="p-4">
-              <h2 className="uppercase text-2xl mb-3 text-gray-400 font-bold">
-                Order Summary
-              </h2>
-              <Separator />
-            </div>
-            <div className="flex flex-col px-6 gap-3">
-              <div className="flex justify-between">
-                <p className="text-sm sm:text-lg">Price (1 item)</p>
-                <p className="text-sm sm:text-lg font-semibold">
-                  ₹{products[0].price}
-                </p>
-              </div>
-              <div className="flex justify-between">
-                <p className="text-sm sm:text-lg">Discount</p>
-                <p className="text-sm sm:text-lg font-semibold text-green-600">
-                  - ₹{products[0].discount?.value}
-                </p>
-              </div>
-              <div className="flex justify-between">
-                <p className="text-sm sm:text-lg">Platform Fee</p>
-                <p className="text-sm sm:text-lg font-semibold">₹5</p>
-              </div>
-              <div className="flex justify-between">
-                <p className="text-sm sm:text-lg">Delivery Charges</p>
-                <p className="text-sm sm:text-lg font-semibold">₹10</p>
-              </div>
+          <div className="p-5 pt-10 gap-6 flex flex-col lg:flex-row container m-auto">
+            <div className="bg-white flex items-center py-8 justify-center flex-col w-full min-h-[40vh]">
+              <Image
+                src={"/images/empty-cart.png"}
+                alt="img"
+                height={220}
+                width={220}
+              />
+              <p className="text-2xl mb-2">Your cart is empty!</p>
+              <p className="mb-8">Add items to it now.</p>
 
-              <Separator />
-
-              <div className="flex justify-between my-2">
-                <p className="text-lg sm:text-xl font-bold">Total Amount</p>
-                <p className="text-lg sm:text-xl font-bold">₹85</p>
-              </div>
-
-              <p className="text-sm text-green-600 font-bold mb-4">
-                You will save ₹10 on this order
-              </p>
-              <Separator />
-
-              <div className="flex my-2 items-center flex-col justify-end">
-                <button className="text-lg w-full text-white font-semibold bg-[var(--secondary-color)] py-3 px-5 rounded-full mb-4">
-                  Proceed to Buy
-                </button>
-
-                <Link
-                  href={"/"}
-                  className="text-lg text-center w-full text-black font-semibold bg-gray-200 py-3 px-5 rounded-full mb-4"
-                >
-                  Continue Shopping
-                </Link>
-              </div>
+              <Link
+                href={"/"}
+                className="text-2xl font-semibold rounded-md bg-[var(--secondary-color)] py-2 px-6 text-white"
+              >
+                Shop Now
+              </Link>
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      )}
+    </>
   );
 };
 

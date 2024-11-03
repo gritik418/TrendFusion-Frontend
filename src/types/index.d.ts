@@ -19,6 +19,7 @@ interface User {
 }
 
 interface Product {
+  _id: string;
   productId: string;
   title: string;
   brand?: string;
@@ -63,11 +64,13 @@ interface Order {
 
 interface Cart {
   userId: Types.ObjectId;
-  items: string[] | CartItem[];
+  items: { product: CartItem[]; quantity: number; updatedAt: Date }[];
   totalPrice: number;
-  discount?: Discount;
+  discount?: number;
   finalPrice: number;
   totalQuantity: number;
+  deliveryCharges?: number;
+  platformFee?: number;
 }
 
 interface Reviews {
@@ -100,15 +103,16 @@ interface OrderProductInfo {
 }
 
 interface CartItem {
-  productId: Types.ObjectId;
+  _id: string;
+  productId: string;
   title: string;
   brand: string;
   thumbnail: string;
   quantity: number;
   stock: number;
-  unitPrice: number;
-  unitDiscount?: Discount;
-  color?: string;
+  price: number;
+  discount?: Discount;
+  color?: Color;
   size?: string;
 }
 

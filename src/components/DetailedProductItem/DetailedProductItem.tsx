@@ -1,14 +1,86 @@
+"use client";
+import { useAddToCartMutation } from "@/features/api/cartApi";
 import { Rating } from "@mui/material";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import Image from "next/image";
-import Link from "next/link";
-import React from "react";
+import { useState } from "react";
+import { Bounce, toast } from "react-toastify";
 
 const DetailedProductItem = ({ product }: { product: Product }) => {
+  const [loading, setLoading] = useState<boolean>(false);
+  const [addToCart] = useAddToCartMutation();
+
+  const handleAddToCart = async () => {
+    setLoading(true);
+    const { error, data } = await addToCart({
+      productId: product._id,
+      quantity: 1,
+    });
+    setLoading(false);
+
+    if (error) {
+      const response = error as FetchBaseQueryError;
+      if (response.status === "FETCH_ERROR") {
+        toast.error("Check your internet.", {
+          position: "bottom-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
+        return;
+      }
+      const errorResponse = response.data as {
+        success: boolean;
+        message?: string;
+      };
+      toast.error(errorResponse.message, {
+        position: "bottom-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+      return;
+    } else {
+      if (data.success) {
+        toast.success(data.message, {
+          position: "bottom-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
+      } else {
+        toast.error(data.message, {
+          position: "bottom-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
+      }
+    }
+  };
+
   return (
-    <Link
-      href={`/product/${product.productId}`}
-      className="w-full cursor-pointer rounded-md shadow hover:shadow-lg py-3 transition-shadow duration-300 ease-in-out flex gap-3"
-    >
+    <div className="w-full rounded-md shadow hover:shadow-lg py-3 transition-shadow duration-300 ease-in-out flex gap-3">
       <div className="flex px-2 items-center justify-center mb-3 w-full max-w-[300px]">
         <Image
           className="h-auto w-full max-w-[300px]"
@@ -69,12 +141,24 @@ const DetailedProductItem = ({ product }: { product: Product }) => {
         </div>
 
         <div className="mt-3">
-          <button className="bg-[var(--secondary-color)] mt-4 font-semibold text-xl py-1 px-4 text-white rounded-full">
-            Add to Cart
+          <button
+            onClick={handleAddToCart}
+            className="w-36 h-10 bg-[var(--secondary-color)] mt-4 font-semibold text-xl flex items-center justify-center text-white rounded-full"
+          >
+            {loading ? (
+              <Image
+                src={"/images/loader.gif"}
+                alt="loading"
+                height={20}
+                width={20}
+              />
+            ) : (
+              "Add to Cart"
+            )}
           </button>
         </div>
       </div>
-    </Link>
+    </div>
   );
 };
 
