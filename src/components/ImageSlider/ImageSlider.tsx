@@ -38,7 +38,7 @@ const ImageSlider = ({ images }: { images: string[] }) => {
               height={650}
               width={650}
               src={img}
-              className="object-contain h-full"
+              className="object-contain h-full justify-self-center"
             />
           </SwiperSlide>
         ))}
@@ -60,7 +60,7 @@ const ImageSlider = ({ images }: { images: string[] }) => {
         >
           {images.map((img: string, index: number) => (
             <SwiperSlide key={index}>
-              <img src={img} className="h-[100px]" />
+              <img src={img} className="h-[100px] justify-self-center" />
             </SwiperSlide>
           ))}
         </Swiper>

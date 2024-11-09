@@ -4,20 +4,75 @@ import FilterSidebar from "@/components/FilterSidebar/FilterSidebar";
 import Navbar from "@/components/Navbar/Navbar";
 import ProductItem from "@/components/ProductItem/ProductItem";
 import { useSearchParams } from "next/navigation";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./Search.module.css";
-import { useSearchProductsQuery } from "@/features/api/productApi";
 import Image from "next/image";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  searchProductsAsync,
+  selectFilters,
+  selectMaxPrice,
+  selectMinPrice,
+  selectProducts,
+  selectSearchProductLoading,
+} from "@/features/product/productSlice";
+import { Dispatch } from "@reduxjs/toolkit";
+
+export type Filters = {
+  brands: string[];
+  categories: string[];
+  colors: string[];
+  size: string[];
+};
+
+export type FilterObject = {
+  brand: string[];
+  category: string[];
+  color: string[];
+  size: string[];
+  min: number;
+  max?: number;
+};
 
 const SearchPage = () => {
   const searchParams = useSearchParams();
   const searchQuery = searchParams.get("q") || "";
-  const { data, isLoading } = useSearchProductsQuery(searchQuery);
+  const [filterQuery, setFilterQuery] = useState<string>("");
+  const [filterOptions, setFilterOptions] = useState<FilterObject>({
+    brand: [],
+    category: [],
+    color: [],
+    size: [],
+    min: 0,
+  });
+  const dispatch = useDispatch<Dispatch<any>>();
+  const isLoading: boolean = useSelector(selectSearchProductLoading);
+  const minPrice: number = useSelector(selectMinPrice);
+  const maxPrice: number = useSelector(selectMaxPrice);
+  const products = useSelector(selectProducts);
+  const filters = useSelector(selectFilters);
+
+  useEffect(() => {
+    dispatch(
+      searchProductsAsync({
+        searchQuery: searchQuery + filterQuery,
+        minPrice: filterOptions.min,
+        maxPrice: filterOptions.max,
+      })
+    );
+  }, [filterQuery, searchQuery, filterOptions]);
 
   return (
     <div>
       <Navbar />
-      <FilterSidebar>
+      <FilterSidebar
+        filterOptions={filterOptions}
+        setFilterOptions={setFilterOptions}
+        setFilterQuery={setFilterQuery}
+        maxPrice={maxPrice}
+        minPrice={minPrice}
+        filters={filters}
+      >
         {searchQuery && (
           <h1 className="text-2xl font-normal mb-4">
             Showing results for:{" "}
@@ -37,11 +92,11 @@ const SearchPage = () => {
             </div>
           ) : (
             <>
-              {data?.products && data.products!.length > 0 ? (
+              {products && products!.length > 0 ? (
                 <>
                   <div className={`${styles.gridContainer} grid lg:hidden`}>
-                    {data &&
-                      data.products!.map((product: Product) => (
+                    {products &&
+                      products!.map((product: Product) => (
                         <ProductItem
                           product={product}
                           key={product.productId}
@@ -50,8 +105,8 @@ const SearchPage = () => {
                   </div>
 
                   <div className="hidden grid-flow-row col-auto lg:flex m-6 gap-4 flex-wrap">
-                    {data &&
-                      data.products!.map((product: Product) => (
+                    {products &&
+                      products!.map((product: Product) => (
                         <DetailedProductItem
                           product={product}
                           key={product.productId}

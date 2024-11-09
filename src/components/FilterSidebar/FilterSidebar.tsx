@@ -1,6 +1,5 @@
 "use client";
-
-import React from "react";
+import React, { ChangeEvent, Dispatch } from "react";
 import { Separator } from "@/components/ui/separator";
 import {
   Sidebar,
@@ -25,164 +24,209 @@ import {
 import { SidebarRail } from "@/components/ui/sidebar";
 import CustomSidebarTrigger from "../CustomSidebarTrigger/CustomSidebarTrigger";
 import PriceRangeSlider from "../PriceRangeSlider/PriceRangeSlider";
+import { FilterObject, Filters } from "@/app/search/page";
+import { Checkbox } from "@mui/material";
 
-const filters = [
-  {
-    title: "Brand",
-    items: [
-      {
-        title: "Installation",
-      },
-      {
-        title: "Project Structure",
-      },
-    ],
-  },
-  {
-    title: "Building Your Application",
-    items: [
-      {
-        title: "Routing",
-      },
-      {
-        title: "Data Fetching",
-        isActive: true,
-      },
-      {
-        title: "Rendering",
-      },
-      {
-        title: "Caching",
-      },
-      {
-        title: "Styling",
-      },
-      {
-        title: "Optimizing",
-      },
-      {
-        title: "Configuring",
-      },
-      {
-        title: "Testing",
-      },
-      {
-        title: "Authentication",
-      },
-      {
-        title: "Deploying",
-      },
-      {
-        title: "Upgrading",
-      },
-      {
-        title: "Examples",
-      },
-    ],
-  },
-  {
-    title: "API Reference",
-    items: [
-      {
-        title: "Components",
-      },
-      {
-        title: "File Conventions",
-      },
-      {
-        title: "Functions",
-      },
-      {
-        title: "next.config.js Options",
-      },
-      {
-        title: "CLI",
-      },
-      {
-        title: "Edge Runtime",
-      },
-    ],
-  },
-  {
-    title: "Architecture",
-    items: [
-      {
-        title: "Accessibility",
-      },
-      {
-        title: "Fast Refresh",
-      },
-      {
-        title: "Next.js Compiler",
-      },
-      {
-        title: "Supported Browsers",
-      },
-      {
-        title: "Turbopack",
-      },
-    ],
-  },
-  {
-    title: "Community",
-    items: [
-      {
-        title: "Contribution Guide",
-        url: "#",
-      },
-    ],
-  },
-];
+const FilterSidebar = ({
+  children,
+  filters,
+  minPrice,
+  maxPrice,
+  filterOptions,
+  setFilterOptions,
+  setFilterQuery,
+}: {
+  children: React.ReactNode;
+  filters?: Filters;
+  minPrice?: number;
+  maxPrice?: number;
+  filterOptions: FilterObject;
+  setFilterOptions: Dispatch<React.SetStateAction<FilterObject>>;
+  setFilterQuery: Dispatch<React.SetStateAction<string>>;
+}) => {
+  const handleFilterChange = (
+    e: ChangeEvent<HTMLInputElement>,
+    value: string,
+    type: string
+  ) => {
+    let q = filterOptions;
+    if (e.target.checked) {
+      if (type === "brands") {
+        q.brand.push(value);
+      }
+      if (type === "categories") {
+        q.category.push(value);
+      }
+      if (type === "colors") {
+        q.color.push(value);
+      }
+      if (type === "size") {
+        q.size.push(value);
+      }
+    } else {
+      if (type === "brands") {
+        q.brand = q.brand.filter((item: string) => {
+          return item !== value;
+        });
+      }
+      if (type === "categories") {
+        q.category = q.category.filter((item: string) => {
+          return item !== value;
+        });
+      }
+      if (type === "colors") {
+        q.color = q.color.filter((item: string) => {
+          return item !== value;
+        });
+      }
+      if (type === "size") {
+        q.size = q.size.filter((item: string) => {
+          return item !== value;
+        });
+      }
+    }
+    setFilterOptions(q);
+    let query = "";
 
-const FilterSidebar = ({ children }: { children: React.ReactNode }) => {
+    q.brand.forEach((brand) => {
+      query += `&brand=${brand}`;
+    });
+    q.category.forEach((category) => {
+      query += `&category=${category}`;
+    });
+    q.color.forEach((color) => {
+      query += `&color=${color}`;
+    });
+    q.size.forEach((size) => {
+      query += `&size=${size}`;
+    });
+
+    setFilterQuery(query);
+  };
+
+  const handleClearFilters = () => {
+    setFilterOptions({
+      brand: [],
+      category: [],
+      color: [],
+      size: [],
+      min: 0,
+    });
+    setFilterQuery("");
+  };
+
+  const checkSelected = (item: string, value: string): boolean => {
+    if (item === "brands") {
+      if (filterOptions.brand.includes(value)) {
+        return true;
+      }
+    }
+    if (item === "categories") {
+      if (filterOptions.category.includes(value)) {
+        return true;
+      }
+    }
+    if (item === "colors") {
+      if (filterOptions.color.includes(value)) {
+        return true;
+      }
+    }
+    if (item === "size") {
+      if (filterOptions.size.includes(value)) {
+        return true;
+      }
+    }
+    return false;
+  };
+
   return (
     <SidebarProvider>
-      <Sidebar className="border-0 pt-[110px] md:pt-[60px]">
-        <SidebarHeader>
-          <h1 className="text-3xl mt-4 mb-6 font-semibold">Filters</h1>
-        </SidebarHeader>
-        <SidebarContent>
-          <SidebarGroup>
-            <SidebarMenu>
-              <div className="border-b-2 px-2 pb-3 mb-2 flex gap-3 text-gray-500 font-semibold flex-col">
-                <SidebarMenuSubItem>Price</SidebarMenuSubItem>
-                <PriceRangeSlider />
-              </div>
-              {filters.map((item, index) => (
-                <Collapsible
-                  key={item.title}
-                  defaultOpen={index === 1}
-                  className="group/collapsible"
-                >
-                  <SidebarMenuItem className="border-b-2 pb-3 flex gap-3 text-gray-500 font-semibold flex-col">
-                    <CollapsibleTrigger asChild>
-                      <SidebarMenuButton>
-                        {item.title}{" "}
-                        <Plus className="ml-auto group-data-[state=open]/collapsible:hidden" />
-                        <Minus className="ml-auto group-data-[state=closed]/collapsible:hidden" />
-                      </SidebarMenuButton>
-                    </CollapsibleTrigger>
-                    {item.items?.length ? (
-                      <CollapsibleContent>
-                        <SidebarMenuSub>
-                          {item.items.map((item) => (
-                            <SidebarMenuSubItem key={item.title}>
-                              <SidebarMenuSubButton asChild>
-                                <p>{item.title}</p>
-                              </SidebarMenuSubButton>
-                            </SidebarMenuSubItem>
-                          ))}
-                        </SidebarMenuSub>
-                      </CollapsibleContent>
-                    ) : null}
-                  </SidebarMenuItem>
-                </Collapsible>
-              ))}
-            </SidebarMenu>
-          </SidebarGroup>
-        </SidebarContent>
-        <SidebarRail />
-      </Sidebar>
+      {filters && (
+        <Sidebar className="border-0 pt-[110px] md:pt-[60px]">
+          <SidebarHeader>
+            <div className="flex items-center justify-between">
+              <h1 className="text-3xl mt-4 mb-6 font-semibold">Filters</h1>
+              <p
+                onClick={handleClearFilters}
+                className="text-xs uppercase text-[var(--secondary-color)] font-bold cursor-pointer"
+              >
+                Clear all
+              </p>
+            </div>
+          </SidebarHeader>
+          <SidebarContent>
+            <SidebarGroup>
+              <SidebarMenu>
+                {minPrice && maxPrice && (
+                  <div className="border-b-2 px-2 pb-3 mb-2 flex gap-3 text-gray-500 font-semibold flex-col">
+                    <SidebarMenuSubItem>Price</SidebarMenuSubItem>
+                    <div className="px-6">
+                      <PriceRangeSlider
+                        filterOptions={filterOptions}
+                        setFilterOptions={setFilterOptions}
+                        minPrice={minPrice}
+                        maxPrice={maxPrice}
+                      />
+                    </div>
+                  </div>
+                )}
+                <>
+                  {filters &&
+                    Object.entries(filters).map((item: [string, string[]]) => (
+                      <Collapsible
+                        key={item[0]}
+                        defaultOpen={true}
+                        className="group/collapsible"
+                      >
+                        <SidebarMenuItem className="border-b-2 pb-3 flex gap-3 text-gray-500 font-semibold flex-col">
+                          <CollapsibleTrigger asChild>
+                            <SidebarMenuButton>
+                              {item[0].charAt(0).toUpperCase() +
+                                item[0].slice(1)}{" "}
+                              <Plus className="ml-auto group-data-[state=open]/collapsible:hidden" />
+                              <Minus className="ml-auto group-data-[state=closed]/collapsible:hidden" />
+                            </SidebarMenuButton>
+                          </CollapsibleTrigger>
+                          {item[1]?.length ? (
+                            <CollapsibleContent>
+                              <SidebarMenuSub>
+                                {item[1].map((subItem) => (
+                                  <SidebarMenuSubItem key={subItem}>
+                                    <SidebarMenuSubButton>
+                                      <Checkbox
+                                        onChange={(e) =>
+                                          handleFilterChange(
+                                            e,
+                                            subItem,
+                                            item[0]
+                                          )
+                                        }
+                                        checked={checkSelected(
+                                          item[0],
+                                          subItem
+                                        )}
+                                        size="small"
+                                      />
+                                      <p>
+                                        {subItem.charAt(0).toUpperCase() +
+                                          subItem.slice(1)}{" "}
+                                      </p>
+                                    </SidebarMenuSubButton>
+                                  </SidebarMenuSubItem>
+                                ))}
+                              </SidebarMenuSub>
+                            </CollapsibleContent>
+                          ) : null}
+                        </SidebarMenuItem>
+                      </Collapsible>
+                    ))}
+                </>
+              </SidebarMenu>
+            </SidebarGroup>
+          </SidebarContent>
+          <SidebarRail />
+        </Sidebar>
+      )}
       <SidebarInset>
         <header className="flex md:hidden h-16 shrink-0 items-center gap-2 px-4">
           <CustomSidebarTrigger />

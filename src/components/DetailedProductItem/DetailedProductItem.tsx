@@ -3,6 +3,7 @@ import { useAddToCartMutation } from "@/features/api/cartApi";
 import { Rating } from "@mui/material";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 import { Bounce, toast } from "react-toastify";
 
@@ -81,7 +82,10 @@ const DetailedProductItem = ({ product }: { product: Product }) => {
 
   return (
     <div className="w-full rounded-md shadow hover:shadow-lg py-3 transition-shadow duration-300 ease-in-out flex gap-3">
-      <div className="flex px-2 items-center justify-center mb-3 w-full max-w-[300px]">
+      <Link
+        href={`/product/${product.productId}`}
+        className="flex px-2 items-center justify-center mb-3 w-full max-w-[300px]"
+      >
         <Image
           className="h-auto w-full max-w-[300px]"
           src={product.thumbnail}
@@ -89,13 +93,18 @@ const DetailedProductItem = ({ product }: { product: Product }) => {
           height={300}
           width={300}
         />
-      </div>
+      </Link>
 
       <div className="flex flex-grow w-full flex-col p-3">
         <p className="uppercase text-lg text-gray-400 font-bold">
           {product.brand}
         </p>
-        <p className="text-xl font-[500]">{product.title}</p>
+        <Link
+          href={`/product/${product.productId}`}
+          className="text-xl font-[500] hover:text-[var(--secondary-color)] transition-colors ease-in-out duration-300"
+        >
+          {product.title}
+        </Link>
         <p className="text-gray-400 text-sm font-semibold">
           {product.color?.colorName}
           {product.color?.colorName && product.size && ","} {product.size}

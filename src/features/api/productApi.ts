@@ -1,9 +1,13 @@
+import { Filters } from "@/app/search/page";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 type SearchProductsResponse = {
   message?: string;
   success: boolean;
   products?: Product[];
+  minPrice: number;
+  maxPrice: number;
+  filters: Filters;
 };
 
 type GetProductByIdResponse = {
@@ -19,14 +23,6 @@ const productApi = createApi({
     baseUrl: `${process.env.NEXT_PUBLIC_API_BASE_URL}/product`,
   }),
   endpoints: (builder) => ({
-    searchProducts: builder.query<SearchProductsResponse, string>({
-      query: (searchQuery) => ({
-        url: `/search?searchQuery=${searchQuery}`,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }),
-    }),
     getProductById: builder.query<GetProductByIdResponse, string>({
       query: (productId) => ({
         url: `/${productId}`,
@@ -38,6 +34,6 @@ const productApi = createApi({
   }),
 });
 
-export const { useSearchProductsQuery, useGetProductByIdQuery } = productApi;
+export const { useGetProductByIdQuery } = productApi;
 
 export default productApi;
