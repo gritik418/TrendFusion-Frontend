@@ -1,6 +1,4 @@
 import AdminSidebar from "@/components/AdminSidebar/AdminSidebar";
-import { useSidebar } from "@/components/ui/sidebar";
-import { GoSidebarCollapse } from "react-icons/go";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -19,12 +17,3 @@ export default function Layout({ children }: LayoutProps) {
     </div>
   );
 }
-
-const CustomSidebarTrigger = () => {
-  const { toggleSidebar } = useSidebar();
-  return (
-    <div onClick={toggleSidebar} className="flex items-center justify-center">
-      <GoSidebarCollapse className="text-2xl" />
-    </div>
-  );
-};

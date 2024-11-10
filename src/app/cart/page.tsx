@@ -3,14 +3,19 @@ import CartItem from "@/components/CartItem/CartItem";
 import Navbar from "@/components/Navbar/Navbar";
 import { Separator } from "@/components/ui/separator";
 import { useGetCartQuery } from "@/features/api/cartApi";
+import { getCartAsync } from "@/features/cart/cartSlice";
 import { selectUser } from "@/features/user/userSlice";
+import { Dispatch } from "@reduxjs/toolkit";
 import Image from "next/image";
 import Link from "next/link";
-import { useSelector } from "react-redux";
+import { useRouter } from "next/navigation";
+import { useDispatch, useSelector } from "react-redux";
 
 const Cart = () => {
   const user: User = useSelector(selectUser);
   const { isLoading, data } = useGetCartQuery();
+  const dispatch = useDispatch<Dispatch<any>>();
+  const router = useRouter();
 
   if (isLoading) {
     return (
@@ -60,6 +65,11 @@ const Cart = () => {
   const sortedCartItems = data?.cart?.items?.toSorted((a, b) => {
     return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
   });
+
+  const handleProceedToBuy = () => {
+    dispatch(getCartAsync());
+    router.push("/checkout?otracker=cart");
+  };
 
   return (
     <>
@@ -156,7 +166,10 @@ const Cart = () => {
                   <Separator />
 
                   <div className="flex my-2 items-center flex-col justify-end">
-                    <button className="text-lg w-full text-white font-semibold bg-[var(--secondary-color)] py-3 px-5 rounded-full mb-4">
+                    <button
+                      onClick={handleProceedToBuy}
+                      className="text-lg w-full text-white font-semibold bg-[var(--secondary-color)] py-3 px-5 rounded-full mb-4"
+                    >
                       Proceed to Buy
                     </button>
 

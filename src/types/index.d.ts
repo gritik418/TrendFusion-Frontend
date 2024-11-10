@@ -64,7 +64,7 @@ interface Order {
 
 interface Cart {
   userId: Types.ObjectId;
-  items: { product: CartItem[]; quantity: number; updatedAt: Date }[];
+  items: { product: CartItem; quantity: number; updatedAt: Date }[];
   totalPrice: number;
   discount?: number;
   finalPrice: number;

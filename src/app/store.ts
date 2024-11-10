@@ -6,6 +6,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import productSlice from "@/features/product/productSlice";
 import userSlice from "@/features/user/userSlice";
 import cartApi from "@/features/api/cartApi";
+import cartSlice from "@/features/cart/cartSlice";
 
 const store = configureStore({
   reducer: {
@@ -16,6 +17,7 @@ const store = configureStore({
     [productApi.reducerPath]: productApi.reducer,
     [productSlice.name]: productSlice.reducer,
     [userSlice.name]: userSlice.reducer,
+    [cartSlice.name]: cartSlice.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()

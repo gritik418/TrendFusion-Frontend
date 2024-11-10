@@ -90,7 +90,7 @@ const AdminSidebar = () => {
         </div>
         <SidebarContent>
           {data.map(({ items, label }) => (
-            <SidebarGroup>
+            <SidebarGroup key={label}>
               <SidebarGroupLabel className="uppercase">
                 {label}
               </SidebarGroupLabel>
@@ -98,7 +98,7 @@ const AdminSidebar = () => {
                 {items.map((item) => {
                   if (item.isLink) {
                     return (
-                      <Link href={item.link!}>
+                      <Link key={item.link} href={item.link!}>
                         <SidebarMenuItem
                           className={`${
                             pathname === item.link

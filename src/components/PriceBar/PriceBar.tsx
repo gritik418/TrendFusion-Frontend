@@ -1,12 +1,15 @@
+import { SELECTED_PRODUCT } from "@/constants/variables";
 import { useAddToCartMutation } from "@/features/api/cartApi";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import Image from "next/image";
-import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { Bounce, toast } from "react-toastify";
 
 const PriceBar = ({ product }: { product: Product }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [addToCart] = useAddToCartMutation();
+  const router = useRouter();
 
   const handleAddToCart = async () => {
     setLoading(true);
@@ -76,6 +79,39 @@ const PriceBar = ({ product }: { product: Product }) => {
       }
     }
   };
+
+  let discount = 0;
+  let finalPrice = 0;
+
+  if (product.discount) {
+    finalPrice =
+      product.discount.discountType === "Percentage"
+        ? Math.floor(
+            product.price - (product.price * product.discount?.value!) / 100
+          )
+        : Math.floor(product.price - product.discount.value);
+
+    discount =
+      product.discount.discountType === "Percentage"
+        ? Math.floor((product.price * product.discount?.value!) / 100)
+        : product.discount.value;
+  } else {
+    finalPrice = product.price;
+  }
+
+  const handleBuyNow = () => {
+    const selectedProduct: string = JSON.stringify({
+      items: [{ product: product, quantity: 1 }],
+      totalPrice: product.price,
+      totalQuantity: 1,
+      finalPrice: finalPrice,
+      discount: discount,
+      deliveryCharges: 0,
+      platformFee: 0,
+    });
+    localStorage.setItem(SELECTED_PRODUCT, selectedProduct);
+    router.push("/checkout");
+  };
   return (
     <div className="flex p-3 items-end gap-3 flex-col sm:flex-row bg-white border-t-0 shadow-2xl shadow-slate-900 px-8 sticky bottom-0 sm:justify-between sm:items-center">
       <div className="flex items-end">
@@ -122,7 +158,11 @@ const PriceBar = ({ product }: { product: Product }) => {
             "Add to Cart"
           )}
         </button>
-        <button className="bg-[var(--secondary-color)] text-2xl font-normal px-3 py-1 text-white rounded-md">
+
+        <button
+          onClick={handleBuyNow}
+          className="bg-[var(--secondary-color)] text-2xl font-normal px-3 py-1 text-white rounded-md"
+        >
           Buy Now
         </button>
       </div>

@@ -5,10 +5,12 @@ import { CiSearch } from "react-icons/ci";
 import { IoAddOutline } from "react-icons/io5";
 import { MdSort } from "react-icons/md";
 import styles from "./Products.module.css";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 const products: Product[] = [
   {
+    _id: "",
     productId: "1A2B3C",
     title: "Super Sound Wireless Earbuds",
     brand: "SoundMax",
@@ -74,6 +76,7 @@ const products: Product[] = [
     ],
   },
   {
+    _id: "",
     productId: "4D5E6F",
     title: "Ultra Smart Fitness Watch",
     brand: "FitTrack",
@@ -139,6 +142,7 @@ const products: Product[] = [
     ],
   },
   {
+    _id: "",
     productId: "1A2B3C",
     title: "Super Sound Wireless Earbuds",
     brand: "SoundMax",
@@ -204,6 +208,7 @@ const products: Product[] = [
     ],
   },
   {
+    _id: "",
     productId: "4D5E6F",
     title: "Ultra Smart Fitness Watch",
     brand: "FitTrack",
@@ -269,6 +274,7 @@ const products: Product[] = [
     ],
   },
   {
+    _id: "",
     productId: "1A2B3C",
     title: "Super Sound Wireless Earbuds",
     brand: "SoundMax",
@@ -334,6 +340,7 @@ const products: Product[] = [
     ],
   },
   {
+    _id: "",
     productId: "4D5E6F",
     title: "Ultra Smart Fitness Watch",
     brand: "FitTrack",
@@ -399,6 +406,7 @@ const products: Product[] = [
     ],
   },
   {
+    _id: "",
     productId: "1A2B3C",
     title: "Super Sound Wireless Earbuds",
     brand: "SoundMax",
@@ -464,6 +472,7 @@ const products: Product[] = [
     ],
   },
   {
+    _id: "",
     productId: "4D5E6F",
     title: "Ultra Smart Fitness Watch",
     brand: "FitTrack",
@@ -529,6 +538,7 @@ const products: Product[] = [
     ],
   },
   {
+    _id: "",
     productId: "1A2B3C",
     title: "Super Sound Wireless Earbuds",
     brand: "SoundMax",
@@ -594,6 +604,7 @@ const products: Product[] = [
     ],
   },
   {
+    _id: "",
     productId: "4D5E6F",
     title: "Ultra Smart Fitness Watch",
     brand: "FitTrack",
@@ -663,65 +674,49 @@ const products: Product[] = [
 const categories = [
   {
     title: "All Products",
-    link: "",
   },
   {
     title: "Most Purchased",
-    link: "",
   },
   {
     title: "Laptops",
-    link: "",
   },
   {
     title: "Smart Watch",
-    link: "",
   },
   {
     title: "Mobiles",
-    link: "",
   },
   {
     title: "Speakers",
-    link: "",
   },
   {
     title: "Earphones",
-    link: "",
-  },
-  {
-    title: "All Products",
-    link: "",
-  },
-  {
-    title: "Most Purchased",
-    link: "",
-  },
-  {
-    title: "Laptops",
-    link: "",
-  },
-  {
-    title: "Smart Watch",
-    link: "",
-  },
-  {
-    title: "Mobiles",
-    link: "",
-  },
-  {
-    title: "Speakers",
-    link: "",
-  },
-  {
-    title: "Earphones",
-    link: "",
   },
 ];
 
 const ProductsPage = () => {
   const searchParams = useSearchParams();
-  console.log(searchParams.get("category"));
+  const router = useRouter();
+  const [selectedCategory, setSelectedCategory] =
+    useState<string>("all products");
+
+  const handleAddNewProduct = () => {
+    router.push("/admin/dashboard/products/add");
+  };
+
+  const handleChangeCategory = (title: string) => {
+    setSelectedCategory(title.toLocaleLowerCase());
+    router.push(
+      `/admin/dashboard/products?category=${title.toLocaleLowerCase()}`
+    );
+  };
+
+  useEffect(() => {
+    if (searchParams.get("category") !== null) {
+      setSelectedCategory(searchParams.get("category")!);
+    }
+  }, []);
   return (
     <div className="flex w-full flex-col">
       <AdminNavbar />
@@ -744,7 +739,10 @@ const ProductsPage = () => {
 
             <span className="border-l-[1px]"></span>
 
-            <button className="bg-[var(--secondary-color)] text-white flex items-center gap-2 py-2 px-5 rounded-full font-semibold">
+            <button
+              onClick={handleAddNewProduct}
+              className="bg-[var(--secondary-color)] text-white flex items-center gap-2 py-2 px-5 rounded-full font-semibold"
+            >
               Add New Product <IoAddOutline className="text-2xl" />
             </button>
           </div>
@@ -754,7 +752,10 @@ const ProductsPage = () => {
           <div className="flex items-center w-full mb-4 justify-between">
             <h1 className="text-2xl md:text-3xl font-[500]">Products</h1>
 
-            <button className="text-xs sm:text-lg flex items-center gap-2 py-2 px-3 sm:px-5 rounded-full bg-[var(--secondary-color)] text-white">
+            <button
+              onClick={handleAddNewProduct}
+              className="text-xs sm:text-lg flex items-center gap-2 py-2 px-3 sm:px-5 rounded-full bg-[var(--secondary-color)] text-white"
+            >
               Add New Product <IoAddOutline className="text-xl" />
             </button>
           </div>
@@ -775,9 +776,17 @@ const ProductsPage = () => {
 
         <div className="flex my-10 gap-2 justify-between w-full">
           <div className="flex no-scrollbar flex-row gap-2 overflow-x-scroll">
-            {categories.map(({ link, title }) => {
+            {categories.map(({ title }, index: number) => {
               return (
-                <div className="flex text-nowrap flex-nowrap cursor-pointer duration-500 ease-in-out transition-colors hover:bg-gray-100 py-2 px-4 rounded-full">
+                <div
+                  onClick={() => handleChangeCategory(title)}
+                  key={index}
+                  className={`flex text-nowrap flex-nowrap cursor-pointer duration-500 ease-in-out transition-colors hover:bg-gray-100 py-2 px-4 rounded-full ${
+                    title.toLowerCase() === selectedCategory.toLowerCase()
+                      ? "bg-[var(--medium-color)] hover:bg-[var(--medium-color)]"
+                      : ""
+                  } `}
+                >
                   {title}
                 </div>
               );
@@ -794,8 +803,11 @@ const ProductsPage = () => {
         </div>
 
         <div className={`${styles.customGrid} gap-3 w-full overflow-x-scroll`}>
-          {products.map((product: Product) => (
-            <AdminProductItem key={product.productId} product={product} />
+          {products.map((product: Product, index: number) => (
+            <AdminProductItem
+              key={product.productId + index}
+              product={product}
+            />
           ))}
         </div>
       </div>

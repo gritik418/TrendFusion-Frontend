@@ -6,7 +6,9 @@ import { useSelector } from "react-redux";
 import { Separator } from "../ui/separator";
 import Link from "next/link";
 import { IoMdAdd } from "react-icons/io";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
+import AddPhoneNumber from "../AddPhoneNumber/AddPhoneNumber";
+import EditName from "../EditName/EditName";
 
 const CheckLogin = ({
   setActiveStep,
@@ -14,6 +16,18 @@ const CheckLogin = ({
   setActiveStep: Dispatch<SetStateAction<number>>;
 }) => {
   const user: User = useSelector(selectUser);
+  const [showAddNumber, setShowAddNumber] = useState<boolean>(false);
+  const [showEditName, setShowEditName] = useState<boolean>(false);
+
+  const checkDisabled = (): boolean => {
+    if (!user._id) {
+      return true;
+    }
+    if (!user.phoneNumber) {
+      return true;
+    }
+    return false;
+  };
 
   return (
     <div>
@@ -23,29 +37,48 @@ const CheckLogin = ({
       {user._id && (
         <div className="flex flex-col gap-4 mt-4">
           <div className="flex items-center gap-4 justify-between">
-            <div className="flex gap-4">
+            <div className="flex flex-col md:flex-row md:gap-4">
               <p className="text-lg text-gray-400 font-semibold">Name </p>
-              <p className="text-xl">
-                {user.firstName} {user?.lastName || ""}
-              </p>
+              {showEditName ? (
+                <EditName />
+              ) : (
+                <p className="text-xl">
+                  {user.firstName} {user?.lastName || ""}
+                </p>
+              )}
             </div>
-            <button className="flex items-center gap-1 bg-gray-200 py-1 px-2 rounded-md">
+            <button
+              onClick={() => setShowEditName(!showEditName)}
+              className="flex items-center gap-1 bg-gray-200 py-1 px-2 rounded-md"
+            >
               <CiEdit className="text-xl" />
             </button>
           </div>
 
           <div className="flex items-center gap-4 justify-between">
-            <div className="flex gap-4">
+            <div className="flex flex-col md:flex-row md:gap-4">
               <p className="text-lg text-gray-400 font-semibold">Phone </p>
               {user.phoneNumber ? (
                 <p className="text-xl">{user.phoneNumber}</p>
               ) : (
-                <p className="bg-gray-200 gap-1 flex items-center justify-center py-1 px-3 rounded-md">
-                  <IoMdAdd /> Add
-                </p>
+                <>
+                  {showAddNumber ? (
+                    <AddPhoneNumber />
+                  ) : (
+                    <p
+                      onClick={() => setShowAddNumber(true)}
+                      className="cursor-pointer bg-gray-200 gap-1 flex items-center justify-center py-1 px-3 rounded-md"
+                    >
+                      <IoMdAdd /> Add
+                    </p>
+                  )}
+                </>
               )}
             </div>
-            <button className="flex items-center gap-1 bg-gray-200 py-1 px-2 rounded-md">
+            <button
+              onClick={() => setShowAddNumber(!showAddNumber)}
+              className="flex items-center gap-1 bg-gray-200 py-1 px-2 rounded-md"
+            >
               <CiEdit className="text-xl" />
             </button>
           </div>
@@ -72,10 +105,15 @@ const CheckLogin = ({
 
       {user._id && (
         <div className="flex justify-end mt-8">
-          <FaArrowCircleRight
-            onClick={() => setActiveStep(1)}
-            className="text-4xl text-green-700 cursor-pointer"
-          />
+          <button
+            disabled={checkDisabled()}
+            className="rounded-full disabled:text-gray-400 text-green-700 z-10"
+          >
+            <FaArrowCircleRight
+              onClick={() => setActiveStep(1)}
+              className="text-4xl cursor-pointer"
+            />
+          </button>
         </div>
       )}
     </div>
