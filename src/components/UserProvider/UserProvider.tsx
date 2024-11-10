@@ -1,4 +1,5 @@
 "use client";
+import { getCartCountAsync } from "@/features/cart/cartSlice";
 import { getUserAsync, selectUser } from "@/features/user/userSlice";
 import { Dispatch } from "@reduxjs/toolkit";
 import React, { useEffect } from "react";
@@ -9,6 +10,7 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const user: User | null = useSelector(selectUser);
 
   useEffect(() => {
+    dispatch(getCartCountAsync());
     if (user && user._id) return;
     dispatch(getUserAsync());
   }, [dispatch]);

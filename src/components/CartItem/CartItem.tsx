@@ -3,10 +3,13 @@ import {
   useIncrementProductQuantityMutation,
   useRemoveFromCartMutation,
 } from "@/features/api/cartApi";
+import { getCartCountAsync } from "@/features/cart/cartSlice";
+import { Dispatch } from "@reduxjs/toolkit";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import Image from "next/image";
 import React, { useState } from "react";
 import { FaHeart, FaTrash } from "react-icons/fa";
+import { useDispatch } from "react-redux";
 import { Bounce, toast } from "react-toastify";
 
 const CartItem = ({
@@ -21,6 +24,7 @@ const CartItem = ({
   const [removeFromCart] = useRemoveFromCartMutation();
   const [incrementLoading, setIncrementLoading] = useState<boolean>(false);
   const [decrementLoading, setDecrementLoading] = useState<boolean>(false);
+  const dispatch = useDispatch<Dispatch<any>>();
 
   let discountedPrice: number = product.price;
   if (product?.discount?.discountType === "Fixed") {
@@ -71,6 +75,7 @@ const CartItem = ({
       });
       return;
     }
+    dispatch(getCartCountAsync());
   };
 
   const handleDecrementQuantity = async () => {
@@ -111,6 +116,7 @@ const CartItem = ({
       });
       return;
     }
+    dispatch(getCartCountAsync());
   };
 
   const handleRemoveFromCart = async () => {
@@ -149,6 +155,7 @@ const CartItem = ({
       });
       return;
     }
+    dispatch(getCartCountAsync());
   };
 
   return (

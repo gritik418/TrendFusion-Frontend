@@ -1,15 +1,19 @@
 "use client";
 import { useAddToCartMutation } from "@/features/api/cartApi";
+import { getCartCountAsync } from "@/features/cart/cartSlice";
 import { Rating } from "@mui/material";
+import { Dispatch } from "@reduxjs/toolkit";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { Bounce, toast } from "react-toastify";
 
 const DetailedProductItem = ({ product }: { product: Product }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [addToCart] = useAddToCartMutation();
+  const dispatch = useDispatch<Dispatch<any>>();
 
   const handleAddToCart = async () => {
     setLoading(true);
@@ -78,6 +82,7 @@ const DetailedProductItem = ({ product }: { product: Product }) => {
         });
       }
     }
+    dispatch(getCartCountAsync());
   };
 
   return (

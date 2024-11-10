@@ -16,7 +16,7 @@ const AddressInput = ({
           Add a new address
         </h2>
 
-        <div className="flex w-full flex-col lg:flex-row gap-3">
+        <div className="flex w-full flex-col lg:flex-row gap-8 lg:gap-3">
           <TextField
             className="w-full"
             id="outlined-basic"
@@ -33,7 +33,7 @@ const AddressInput = ({
           />
         </div>
 
-        <div className="flex w-full flex-col lg:flex-row gap-3">
+        <div className="flex w-full flex-col lg:flex-row gap-8 lg:gap-3">
           <TextField
             className="w-full"
             size="medium"
@@ -79,7 +79,7 @@ const AddressInput = ({
           />
         </div>
 
-        <div className="flex w-full flex-col lg:flex-row gap-3">
+        <div className="flex w-full flex-col lg:flex-row gap-8 lg:gap-3">
           <TextField
             className="w-full"
             size="medium"
@@ -98,7 +98,7 @@ const AddressInput = ({
           />
         </div>
 
-        <div className="flex w-full flex-col lg:flex-row gap-3">
+        <div className="flex w-full flex-col lg:flex-row gap-8 lg:gap-3">
           <TextField
             className="w-full"
             size="medium"

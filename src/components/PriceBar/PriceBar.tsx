@@ -1,15 +1,19 @@
 import { SELECTED_PRODUCT } from "@/constants/variables";
 import { useAddToCartMutation } from "@/features/api/cartApi";
+import { getCartCountAsync } from "@/features/cart/cartSlice";
+import { Dispatch } from "@reduxjs/toolkit";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { Bounce, toast } from "react-toastify";
 
 const PriceBar = ({ product }: { product: Product }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [addToCart] = useAddToCartMutation();
   const router = useRouter();
+  const dispatch = useDispatch<Dispatch<any>>();
 
   const handleAddToCart = async () => {
     setLoading(true);
@@ -78,6 +82,7 @@ const PriceBar = ({ product }: { product: Product }) => {
         });
       }
     }
+    dispatch(getCartCountAsync());
   };
 
   let discount = 0;

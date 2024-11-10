@@ -1,28 +1,11 @@
+import { selectUser } from "@/features/user/userSlice";
 import { Avatar } from "@mui/material";
 import React from "react";
-
-const user: User = {
-  firstName: "John",
-  lastName: "Doe",
-  gender: "male",
-  email: "john.doe@example.com",
-  username: "johndoe123",
-  phoneNumber: "+1234567890",
-
-  avatar: "https://example.com/avatar.jpg",
-
-  provider: "google",
-  password: "securePassword123",
-  verificationCode: "123456",
-  verificationCodeExpiry: new Date(Date.now() + 3600000), // 1 hour from now
-  addresses: [],
-  wishlist: [],
-  userRole: "customer",
-  isVerified: true,
-  orderHistory: [],
-};
+import { useSelector } from "react-redux";
 
 const ProfileInformation = () => {
+  const user: User = useSelector(selectUser);
+
   return (
     <div className="flex w-full my-8 flex-col">
       <div className="flex justify-center w-full mb-8">
@@ -36,7 +19,7 @@ const ProfileInformation = () => {
             <input
               readOnly
               className="w-full border-2 p-3 rounded-md focus:outline-none border-[var(--secondary-color)]"
-              value={user.firstName}
+              defaultValue={user.firstName}
             />
           </div>
 
@@ -45,7 +28,7 @@ const ProfileInformation = () => {
             <input
               readOnly
               className="w-full border-2 p-3 rounded-md focus:outline-none border-[var(--secondary-color)]"
-              value={user.lastName}
+              defaultValue={user.lastName}
             />
           </div>
         </div>
@@ -56,7 +39,7 @@ const ProfileInformation = () => {
             <input
               readOnly
               className="w-full border-2 p-3 rounded-md focus:outline-none border-[var(--secondary-color)]"
-              value={user.email}
+              defaultValue={user.email}
             />
           </div>
 
@@ -65,7 +48,7 @@ const ProfileInformation = () => {
             <input
               readOnly
               className="w-full border-2 p-3 rounded-md focus:outline-none border-[var(--secondary-color)]"
-              value={user.username}
+              defaultValue={user.username}
             />
           </div>
         </div>
@@ -76,7 +59,7 @@ const ProfileInformation = () => {
             <input
               readOnly
               className="w-full border-2 p-3 rounded-md focus:outline-none border-[var(--secondary-color)]"
-              value={user.phoneNumber}
+              defaultValue={user.phoneNumber}
             />
           </div>
         </div>
@@ -86,10 +69,10 @@ const ProfileInformation = () => {
 
           <div className="flex gap-6">
             <div className="flex items-center gap-2 cursor-default">
-              <span className="h-6 w-6 flex p-[2px] rounded-full border-2 border-gray-400">
+              <span className="h-6 w-6 flex p-[2px] rounded-full border-2 border-[var(--medium-color)]">
                 <span
                   className={`${
-                    user.gender === "male" ? "bg-gray-400" : ""
+                    user.gender === "male" ? "bg-[var(--medium-color)]" : ""
                   } h-full rounded-full w-full`}
                 ></span>
               </span>
@@ -97,10 +80,10 @@ const ProfileInformation = () => {
             </div>
 
             <div className="flex items-center gap-2 cursor-default">
-              <span className="h-6 w-6 flex p-[2px] rounded-full border-2 border-gray-400">
+              <span className="h-6 w-6 flex p-[2px] rounded-full border-2 border-[var(--medium-color)]">
                 <span
                   className={`${
-                    user.gender === "female" ? "bg-gray-400" : ""
+                    user.gender === "female" ? "bg-[var(--medium-color)]" : ""
                   } h-full rounded-full w-full`}
                 ></span>
               </span>

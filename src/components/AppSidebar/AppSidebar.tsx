@@ -142,7 +142,7 @@ export default function AppSidebar({
               {data.navMain.map((item) => {
                 if (item.isLink) {
                   return (
-                    <Link href={item.url}>
+                    <Link href={item.url} key={item.url}>
                       <SidebarMenuItem
                         className={`${
                           pathname === item.url

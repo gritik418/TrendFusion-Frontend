@@ -16,6 +16,13 @@ const ShippingAddress = ({
   const [showAddressInput, setShowAddressInput] = useState<boolean>(false);
   const user: User = useSelector(selectUser);
 
+  const checkDisabled = (): boolean => {
+    if (user?.addresses?.length <= 0) {
+      return true;
+    }
+    return false;
+  };
+
   return (
     <div>
       <h1 className="text-4xl mb-2">Shipping Address</h1>
@@ -34,11 +41,16 @@ const ShippingAddress = ({
         <AddressInput setShowAddressInput={setShowAddressInput} />
       )}
 
-      {user.addresses && (
+      {user.addresses && user.addresses.length > 0 ? (
         <div className="flex gap-4 mt-8 flex-col">
           {user.addresses.map((address: DeliveryAddress, index: number) => (
             <AddressItem address={address} key={index} />
           ))}
+        </div>
+      ) : (
+        <div className="flex mt-16 ml-4 flex-col items-center justify-center">
+          <p className="text-xl">No saved address found.</p>
+          <p className="text-2xl">Please add a valid address to proceed.</p>
         </div>
       )}
 
@@ -47,10 +59,15 @@ const ShippingAddress = ({
           onClick={() => setActiveStep(0)}
           className="text-4xl text-green-700 cursor-pointer"
         />
-        <FaArrowCircleRight
-          onClick={() => setActiveStep(2)}
-          className="text-4xl text-green-700 cursor-pointer"
-        />
+        <button
+          disabled={checkDisabled()}
+          className="rounded-full disabled:text-gray-400 text-green-700 z-10"
+        >
+          <FaArrowCircleRight
+            onClick={() => setActiveStep(1)}
+            className="text-4xl cursor-pointer"
+          />
+        </button>
       </div>
     </div>
   );

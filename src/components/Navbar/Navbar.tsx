@@ -8,9 +8,11 @@ import Link from "next/link";
 import MenubarComponent from "../MenubarComponent/MenubarComponent";
 import { useSelector } from "react-redux";
 import { selectUser } from "@/features/user/userSlice";
+import { selectCartCount } from "@/features/cart/cartSlice";
 
 const Navbar = () => {
   const user: User = useSelector(selectUser);
+  const cartCount: number = useSelector(selectCartCount);
 
   return (
     <>
@@ -43,9 +45,22 @@ const Navbar = () => {
           )}
           <Link
             href={"/cart"}
-            className="flex items-center text-lg gap-1 hover:bg-slate-50 transition-colors ease-in-out duration-300 py-1 px-3 rounded-md"
+            className="flex items-center relative text-lg gap-1 hover:bg-slate-50 transition-colors ease-in-out duration-300 py-1 px-3 rounded-md"
           >
             <IoCartOutline className="text-2xl" /> Cart
+            {cartCount > 0 ? (
+              <>
+                {cartCount > 9 ? (
+                  <div className="span h-5 w-5 rounded-full text-white flex items-center justify-center text-xs bg-[var(--secondary-color)] absolute top-0 left-6">
+                    9+
+                  </div>
+                ) : (
+                  <div className="span h-5 w-5 rounded-full text-white flex items-center justify-center text-xs bg-[var(--secondary-color)] absolute top-0 left-6">
+                    {cartCount}
+                  </div>
+                )}
+              </>
+            ) : null}
           </Link>
         </div>
       </div>
@@ -79,9 +94,22 @@ const Navbar = () => {
             )}
             <Link
               href={"/cart"}
-              className="flex items-center text-lg gap-1 hover:bg-slate-50 transition-colors ease-in-out duration-300 py-1 px-3 rounded-md"
+              className="flex relative items-center text-lg gap-1 hover:bg-slate-50 transition-colors ease-in-out duration-300 py-1 px-3 rounded-md"
             >
               <IoCartOutline className="text-2xl" /> Cart
+              {cartCount > 0 ? (
+                <>
+                  {cartCount > 9 ? (
+                    <div className="span h-5 w-5 rounded-full text-white flex items-center justify-center text-xs bg-[var(--secondary-color)] absolute top-0 left-6">
+                      9+
+                    </div>
+                  ) : (
+                    <div className="span h-5 w-5 rounded-full text-white flex items-center justify-center text-xs bg-[var(--secondary-color)] absolute top-0 left-6">
+                      {cartCount}
+                    </div>
+                  )}
+                </>
+              ) : null}
             </Link>
           </div>
         </div>
