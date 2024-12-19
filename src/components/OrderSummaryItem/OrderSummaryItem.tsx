@@ -1,8 +1,17 @@
+import {
+  useDecrementProductQuantityMutation,
+  useIncrementProductQuantityMutation,
+  useRemoveFromCartMutation,
+} from "@/features/api/cartApi";
+import { getCartAsync, getCartCountAsync } from "@/features/cart/cartSlice";
+import { Dispatch } from "@reduxjs/toolkit";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 import { CiTrash } from "react-icons/ci";
 import { FiMinus } from "react-icons/fi";
-import { IoMdAdd } from "react-icons/io";
+import { useDispatch } from "react-redux";
+import { Bounce, toast } from "react-toastify";
 
 const OrderSummaryItem = ({
   item,
@@ -11,6 +20,146 @@ const OrderSummaryItem = ({
   item: CartItem;
   quantity: number;
 }) => {
+  const [incrementProductQuantity] = useIncrementProductQuantityMutation();
+  const [decrementProductQuantity] = useDecrementProductQuantityMutation();
+  const [removeFromCart] = useRemoveFromCartMutation();
+  const [incrementLoading, setIncrementLoading] = useState<boolean>(false);
+  const [decrementLoading, setDecrementLoading] = useState<boolean>(false);
+  const dispatch = useDispatch<Dispatch<any>>();
+
+  let discountedPrice: number = item?.price;
+  if (item?.discount?.discountType === "Fixed") {
+    discountedPrice = Math.floor(item?.price - item?.discount.value);
+  }
+  if (item?.discount?.discountType === "Percentage") {
+    let discountValue = Math.floor((item?.price * item?.discount.value) / 100);
+    discountedPrice = Math.floor(item?.price - discountValue);
+  }
+
+  const handleIncrementQuantity = async () => {
+    setIncrementLoading(true);
+    const { error } = await incrementProductQuantity(item?._id);
+    setIncrementLoading(false);
+    dispatch(getCartAsync());
+
+    if (error) {
+      const response = error as FetchBaseQueryError;
+      if (response.status === "FETCH_ERROR") {
+        toast.error("Check your internet.", {
+          position: "bottom-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
+        return;
+      }
+      const errorResponse = response.data as {
+        success: boolean;
+        message?: string;
+      };
+      toast.error(errorResponse.message, {
+        position: "bottom-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+      return;
+    }
+    dispatch(getCartCountAsync());
+  };
+
+  const handleDecrementQuantity = async () => {
+    setDecrementLoading(true);
+    const { error } = await decrementProductQuantity(item._id);
+    setDecrementLoading(false);
+    dispatch(getCartAsync());
+
+    if (error) {
+      const response = error as FetchBaseQueryError;
+      if (response.status === "FETCH_ERROR") {
+        toast.error("Check your internet.", {
+          position: "bottom-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
+        return;
+      }
+      const errorResponse = response.data as {
+        success: boolean;
+        message?: string;
+      };
+      toast.error(errorResponse.message, {
+        position: "bottom-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+      return;
+    }
+    dispatch(getCartCountAsync());
+  };
+
+  const handleRemoveFromCart = async () => {
+    const { error } = await removeFromCart(item._id);
+
+    if (error) {
+      const response = error as FetchBaseQueryError;
+      if (response.status === "FETCH_ERROR") {
+        toast.error("Check your internet.", {
+          position: "bottom-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
+        return;
+      }
+      const errorResponse = response.data as {
+        success: boolean;
+        message?: string;
+      };
+      toast.error(errorResponse.message, {
+        position: "bottom-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+      return;
+    }
+    dispatch(getCartCountAsync());
+    dispatch(getCartAsync());
+  };
+
   return (
     <div className="border-b-2 flex flex-col sm:flex-row gap-4 pb-3">
       <div className="flex items-center h-auto justify-center w-full min-w-[220px]">
@@ -82,20 +231,47 @@ const OrderSummaryItem = ({
           )}
         </div>
 
-        <div className="flex gap-6 mt-3">
-          <div className="flex border-2 h-10 items-center justify-center rounded-lg">
-            <div className="flex items-center justify-center px-2 bg-gray-200 h-full">
-              <FiMinus />
-            </div>
-            <div className="px-4 flex items-center border-l-2 h-full text-center border-r-2">
-              <p className="">{quantity}</p>
-            </div>
-            <div className="flex items-center justify-center px-2 bg-gray-200 h-full">
-              <IoMdAdd />
-            </div>
+        <div className="flex mt-3 justify-between items-center gap-4">
+          <div className="flex items-center">
+            <button
+              disabled={quantity === 1}
+              onClick={handleDecrementQuantity}
+              className="border-2 disabled:bg-gray-100 disabled:text-gray-500 disabled:border-none m-1 w-10 h-10 flex items-center justify-center bg-gray-200 rounded-md"
+            >
+              {decrementLoading ? (
+                <Image
+                  src={"/images/colorLoader.gif"}
+                  alt="loading"
+                  height={20}
+                  width={20}
+                />
+              ) : (
+                "-"
+              )}
+            </button>
+            <p className="px-4">{quantity}</p>
+            <button
+              disabled={item.stock <= quantity}
+              onClick={handleIncrementQuantity}
+              className="border-2 disabled:bg-gray-100 disabled:text-gray-500 disabled:border-none m-1 w-10 h-10 flex items-center justify-center bg-gray-200 rounded-md"
+            >
+              {incrementLoading ? (
+                <Image
+                  src={"/images/colorLoader.gif"}
+                  alt="loading"
+                  height={20}
+                  width={20}
+                />
+              ) : (
+                "+"
+              )}
+            </button>
           </div>
 
-          <button className="text-sm font-semibold flex items-center gap-1 bg-gray-100 px-4 rounded-lg uppercase">
+          <button
+            onClick={handleRemoveFromCart}
+            className="text-sm p-2 font-semibold flex items-center gap-1 bg-gray-100 px-4 rounded-lg uppercase"
+          >
             <CiTrash className="text-lg" /> Remove
           </button>
         </div>

@@ -145,6 +145,7 @@ interface Offers {
 }
 
 interface DeliveryAddress {
+  _id: string;
   firstName: string;
   lastName?: string;
   city: string;
@@ -263,4 +264,18 @@ interface ProductErrors {
   stock?: string;
   color?: string;
   size?: string;
+}
+
+interface Subcategory {
+  id: string; // Unique identifier for the subcategory
+  name: string; // URL for the image representing the subcategory
+  url: string; // URL for the subcategory page
+}
+
+interface Category {
+  id: string; // Unique identifier for the category
+  name: string; // Name of the category
+  image: string; // URL for the image representing the category
+  url: string; // URL for the category page
+  subcategories?: Subcategory[]; // List of subcategories under this category
 }

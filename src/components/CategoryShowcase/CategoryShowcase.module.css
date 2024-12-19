@@ -1,0 +1,6 @@
+.container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 20px;
+  /* flex flex-wrap m-6 py-3 justify-around rounded-lg px-6 bg-gray-100 gap-2 */
+}

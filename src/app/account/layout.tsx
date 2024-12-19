@@ -1,6 +1,7 @@
 import Navbar from "@/components/Navbar/Navbar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import AppSidebar from "@/components/AppSidebar/AppSidebar";
+import UserProvider from "@/components/UserProvider/UserProvider";
 
 interface SettingsLayoutProps {
   children: React.ReactNode;
@@ -9,11 +10,13 @@ interface SettingsLayoutProps {
 export default function SettingsLayout({ children }: SettingsLayoutProps) {
   return (
     <>
-      <Navbar />
+      <UserProvider>
+        <Navbar />
 
-      <SidebarProvider className="bg-[#eeeeee]">
-        <AppSidebar>{children}</AppSidebar>
-      </SidebarProvider>
+        <SidebarProvider className="bg-[#eeeeee]">
+          <AppSidebar>{children}</AppSidebar>
+        </SidebarProvider>
+      </UserProvider>
     </>
   );
 }

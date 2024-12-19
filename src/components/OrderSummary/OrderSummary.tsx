@@ -26,7 +26,7 @@ const OrderSummary = ({
       <Separator />
 
       <div className="flex flex-col gap-4 mt-8">
-        {cart?.items &&
+        {cart &&
           cart?.items.map(({ product, quantity }: Item) => (
             <OrderSummaryItem
               key={product?._id}

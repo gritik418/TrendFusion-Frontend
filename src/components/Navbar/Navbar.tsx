@@ -9,13 +9,14 @@ import MenubarComponent from "../MenubarComponent/MenubarComponent";
 import { useSelector } from "react-redux";
 import { selectUser } from "@/features/user/userSlice";
 import { selectCartCount } from "@/features/cart/cartSlice";
+import UserProvider from "../UserProvider/UserProvider";
 
 const Navbar = () => {
   const user: User = useSelector(selectUser);
   const cartCount: number = useSelector(selectCartCount);
 
   return (
-    <>
+    <UserProvider>
       <div className="z-50 h-[60px] shadow-lg hidden md:flex bg-white/85 backdrop-blur-md sticky top-0">
         <div className="h-full container m-auto gap-6 flex items-center">
           <Link
@@ -117,7 +118,7 @@ const Navbar = () => {
           <SearchBar />
         </div>
       </div>
-    </>
+    </UserProvider>
   );
 };
 

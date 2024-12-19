@@ -22,7 +22,7 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/admin/login", request.url));
   }
 
-  if (isPublicPath && cookie) {
+  if (isPublicPath && cookie && !pathname.startsWith("/admin/login")) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 

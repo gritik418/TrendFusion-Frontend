@@ -8,7 +8,7 @@ import {
 
 const AddressItem = ({ address }: { address: DeliveryAddress }) => {
   return (
-    <div className="border-2 p-4 relative">
+    <div className="p-4 relative">
       {address.isDefault && (
         <TooltipProvider>
           <Tooltip>

@@ -2,6 +2,7 @@
 import CheckLogin from "@/components/CheckLogin/CheckLogin";
 import Navbar from "@/components/Navbar/Navbar";
 import OrderSummary from "@/components/OrderSummary/OrderSummary";
+import PaymentOptions from "@/components/PaymentOptions/PaymentOptions";
 import ShippingAddress from "@/components/ShippingAddress/ShippingAddress";
 import CustomizedSteppers from "@/components/Stepper/Stepper";
 import { Separator } from "@/components/ui/separator";
@@ -48,7 +49,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 const Checkout = () => {
   const searchParams = useSearchParams();
-  const [activeStep, setActiveStep] = useState<number>(1);
+  const [activeStep, setActiveStep] = useState<number>(0);
   const [items, setItems] = useState<Cart>();
   const cart: Cart = useSelector(selectCart);
   const dispatch = useDispatch<Dispatch<any>>();
@@ -60,6 +61,7 @@ const Checkout = () => {
     0: <CheckLogin setActiveStep={setActiveStep} />,
     1: <ShippingAddress setActiveStep={setActiveStep} />,
     2: <OrderSummary setActiveStep={setActiveStep} cart={items} />,
+    3: <PaymentOptions setActiveStep={setActiveStep} items={items} />,
   };
 
   useEffect(() => {
@@ -120,7 +122,7 @@ const Checkout = () => {
             </div>
           )}
 
-          {items?.finalPrice && (
+          {items?.finalPrice ? (
             <div className="bg-white w-full lg:w-2/6 h-max rounded-lg">
               <div className="flex flex-col p-6 gap-3">
                 <div className="flex justify-between">
@@ -180,7 +182,7 @@ const Checkout = () => {
                 )}
               </div>
             </div>
-          )}
+          ) : null}
         </div>
       </div>
     </div>

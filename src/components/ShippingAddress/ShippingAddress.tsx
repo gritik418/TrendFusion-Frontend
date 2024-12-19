@@ -1,5 +1,5 @@
 "use client";
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Separator } from "../ui/separator";
 import { FaArrowCircleLeft, FaArrowCircleRight } from "react-icons/fa";
 import { useSelector } from "react-redux";
@@ -15,13 +15,27 @@ const ShippingAddress = ({
 }) => {
   const [showAddressInput, setShowAddressInput] = useState<boolean>(false);
   const user: User = useSelector(selectUser);
+  const [selectedAddress, setSelectedAddress] =
+    useState<DeliveryAddress | null>();
 
   const checkDisabled = (): boolean => {
     if (user?.addresses?.length <= 0) {
-      return true;
+      if (selectedAddress) {
+        return true;
+      }
     }
     return false;
   };
+
+  useEffect(() => {
+    const defaultAddress = user.addresses
+      ? user.addresses.filter((address: DeliveryAddress) => {
+          return address.isDefault;
+        })
+      : null;
+
+    setSelectedAddress(defaultAddress ? defaultAddress[0] : null);
+  }, []);
 
   return (
     <div>
@@ -44,7 +58,16 @@ const ShippingAddress = ({
       {user.addresses && user.addresses.length > 0 ? (
         <div className="flex gap-4 mt-8 flex-col">
           {user.addresses.map((address: DeliveryAddress, index: number) => (
-            <AddressItem address={address} key={index} />
+            <div
+              onClick={() => setSelectedAddress(address)}
+              className={`${
+                selectedAddress?._id === address._id
+                  ? "border-[var(--secondary-color)]"
+                  : ""
+              } cursor-pointer border-2 rounded-md`}
+            >
+              <AddressItem address={address} key={index} />
+            </div>
           ))}
         </div>
       ) : (
@@ -64,7 +87,7 @@ const ShippingAddress = ({
           className="rounded-full disabled:text-gray-400 text-green-700 z-10"
         >
           <FaArrowCircleRight
-            onClick={() => setActiveStep(1)}
+            onClick={() => setActiveStep(2)}
             className="text-4xl cursor-pointer"
           />
         </button>

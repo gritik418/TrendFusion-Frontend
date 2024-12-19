@@ -168,6 +168,7 @@ const CartItem = ({
           height={300}
           width={300}
         />
+        
         <div className="flex items-center">
           <button
             disabled={quantity === 1}

@@ -8,7 +8,6 @@ import Link from "next/link";
 import { IoMdAdd } from "react-icons/io";
 import { Dispatch, SetStateAction, useState } from "react";
 import AddPhoneNumber from "../AddPhoneNumber/AddPhoneNumber";
-import EditName from "../EditName/EditName";
 
 const CheckLogin = ({
   setActiveStep,
@@ -17,7 +16,6 @@ const CheckLogin = ({
 }) => {
   const user: User = useSelector(selectUser);
   const [showAddNumber, setShowAddNumber] = useState<boolean>(false);
-  const [showEditName, setShowEditName] = useState<boolean>(false);
 
   const checkDisabled = (): boolean => {
     if (!user._id) {
@@ -39,44 +37,34 @@ const CheckLogin = ({
           <div className="flex items-center gap-4 justify-between">
             <div className="flex flex-col md:flex-row md:gap-4">
               <p className="text-lg text-gray-400 font-semibold">Name </p>
-              {showEditName ? (
-                <EditName />
-              ) : (
-                <p className="text-xl">
-                  {user.firstName} {user?.lastName || ""}
-                </p>
-              )}
+
+              <p className="text-xl">
+                {user.firstName} {user?.lastName || ""}
+              </p>
             </div>
-            <button
-              onClick={() => setShowEditName(!showEditName)}
-              className="flex items-center gap-1 bg-gray-200 py-1 px-2 rounded-md"
-            >
-              <CiEdit className="text-xl" />
-            </button>
           </div>
 
           <div className="flex items-center gap-4 justify-between">
             <div className="flex flex-col md:flex-row md:gap-4">
               <p className="text-lg text-gray-400 font-semibold">Phone </p>
-              {user.phoneNumber ? (
+              {user.phoneNumber && !showAddNumber ? (
                 <p className="text-xl">{user.phoneNumber}</p>
+              ) : showAddNumber ? (
+                <AddPhoneNumber />
               ) : (
-                <>
-                  {showAddNumber ? (
-                    <AddPhoneNumber />
-                  ) : (
-                    <p
-                      onClick={() => setShowAddNumber(true)}
-                      className="cursor-pointer bg-gray-200 gap-1 flex items-center justify-center py-1 px-3 rounded-md"
-                    >
-                      <IoMdAdd /> Add
-                    </p>
-                  )}
-                </>
+                <p
+                  onClick={() => setShowAddNumber(!showAddNumber)}
+                  className="cursor-pointer bg-gray-200 gap-1 flex items-center justify-center py-1 px-3 rounded-md"
+                >
+                  <IoMdAdd /> Add
+                </p>
               )}
             </div>
+
             <button
-              onClick={() => setShowAddNumber(!showAddNumber)}
+              onClick={() => {
+                setShowAddNumber(!showAddNumber);
+              }}
               className="flex items-center gap-1 bg-gray-200 py-1 px-2 rounded-md"
             >
               <CiEdit className="text-xl" />
