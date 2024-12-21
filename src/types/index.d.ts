@@ -92,6 +92,7 @@ interface Reviews {
 
 interface OrderProductInfo {
   title: string;
+  _id: string;
   brand: string;
   thumbnail: string;
   quantity: number;

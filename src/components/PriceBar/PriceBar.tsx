@@ -1,4 +1,3 @@
-import { SELECTED_PRODUCT } from "@/constants/variables";
 import { useAddToCartMutation } from "@/features/api/cartApi";
 import { getCartCountAsync } from "@/features/cart/cartSlice";
 import { Dispatch } from "@reduxjs/toolkit";
@@ -105,18 +104,7 @@ const PriceBar = ({ product }: { product: Product }) => {
   }
 
   const handleBuyNow = () => {
-    const selectedProduct: string = JSON.stringify({
-      items: [{ product: product, quantity: 1 }],
-      totalPrice: product.price,
-      totalQuantity: 1,
-      finalPrice: finalPrice,
-      discount: discount,
-      deliveryCharges: 0,
-      platformFee: 0,
-      stock: product.stock,
-    });
-    localStorage.setItem(SELECTED_PRODUCT, selectedProduct);
-    router.push("/checkout");
+    router.push(`/checkout/browse/${product._id}`);
   };
   return (
     <div className="flex p-3 items-end gap-3 flex-col sm:flex-row bg-white border-t-0 shadow-2xl shadow-slate-900 px-8 sticky bottom-0 sm:justify-between sm:items-center">

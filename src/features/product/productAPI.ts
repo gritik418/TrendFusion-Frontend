@@ -17,6 +17,23 @@ export const getSuggestions = async (searchQuery: string) => {
   }
 };
 
+export const getProductById = async (id: string) => {
+  try {
+    const { data } = await axios.get(
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/product/${id}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    return data;
+  } catch (error: any) {
+    return error.respponse.data;
+  }
+};
+
 export const searchProducts = async (
   searchQuery: string,
   minPrice?: number,

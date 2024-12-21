@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getSuggestions, searchProducts } from "./productAPI";
+import { getProductById, getSuggestions, searchProducts } from "./productAPI";
 
 const initialState = {
   suggestions: [],
@@ -8,12 +8,22 @@ const initialState = {
   minPrice: null,
   maxPrice: null,
   filters: null,
+  productLoading: false,
+  product: {},
 };
 
 export const getSuggestionsAsync = createAsyncThunk(
   "product/getSuggestions",
   async (searchQuery: string) => {
     const response = await getSuggestions(searchQuery);
+    return response;
+  }
+);
+
+export const getProductByIdAsync = createAsyncThunk(
+  "product/getProductById",
+  async (id: string) => {
+    const response = await getProductById(id);
     return response;
   }
 );
@@ -63,6 +73,18 @@ const productSlice = createSlice({
       })
       .addCase(searchProductsAsync.rejected, (state, action) => {
         state.loading = false;
+      })
+      .addCase(getProductByIdAsync.pending, (state, action) => {
+        state.productLoading = true;
+      })
+      .addCase(getProductByIdAsync.fulfilled, (state, action) => {
+        state.productLoading = false;
+        if (action.payload.success) {
+          state.product = action.payload.product;
+        }
+      })
+      .addCase(getProductByIdAsync.rejected, (state, action) => {
+        state.productLoading = false;
       });
   },
 });
@@ -73,5 +95,8 @@ export const selectMinPrice = (state: any) => state.product.minPrice;
 export const selectMaxPrice = (state: any) => state.product.maxPrice;
 export const selectProducts = (state: any) => state.product.products;
 export const selectFilters = (state: any) => state.product.filters;
+export const selectProductLoading = (state: any) =>
+  state.product.productLoading;
+export const selectProduct = (state: any) => state.product.product;
 
 export default productSlice;

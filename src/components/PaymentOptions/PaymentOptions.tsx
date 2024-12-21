@@ -47,9 +47,7 @@ const PaymentOptions = ({
   };
 
   const confirmCashOrder = async () => {
-    // setIncrementLoading(true);
     const { error, data } = await createOrder(orderDetails!);
-    // setIncrementLoading(false);
 
     if (error) {
       const response = error as FetchBaseQueryError;
@@ -67,7 +65,6 @@ const PaymentOptions = ({
         });
         return;
       }
-      console.log(response.data);
       const errorResponse = response.data as {
         success: boolean;
         message?: string;
@@ -105,9 +102,6 @@ const PaymentOptions = ({
       }, 1000);
     }
   };
-
-  console.log(orderDetails);
-
   return (
     <div>
       <h1 className="text-4xl mb-2">Payment Options</h1>

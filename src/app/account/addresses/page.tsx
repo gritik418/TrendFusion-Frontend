@@ -34,7 +34,9 @@ const Addresses = () => {
       {user.addresses && user.addresses.length > 0 ? (
         <div className="flex gap-4 mt-8 flex-col">
           {user.addresses.map((address: DeliveryAddress, index: number) => (
-            <AddressItem address={address} key={index} />
+            <div className="border-2 rounded-md" key={address._id}>
+              <AddressItem address={address} key={index} />
+            </div>
           ))}
         </div>
       ) : (

@@ -1,14 +1,4 @@
-import { Filters } from "@/app/search/page";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-
-type SearchProductsResponse = {
-  message?: string;
-  success: boolean;
-  products?: Product[];
-  minPrice: number;
-  maxPrice: number;
-  filters: Filters;
-};
 
 type GetProductByIdResponse = {
   product?: Product;
@@ -25,7 +15,7 @@ const productApi = createApi({
   endpoints: (builder) => ({
     getProductById: builder.query<GetProductByIdResponse, string>({
       query: (productId) => ({
-        url: `/${productId}`,
+        url: `/variants/${productId}`,
         headers: {
           "Content-Type": "application/json",
         },

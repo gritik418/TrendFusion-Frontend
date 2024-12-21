@@ -242,7 +242,7 @@ const OrderSummaryItem = ({
             <button
               disabled={quantity <= 1}
               onClick={handleDecrementQuantity}
-              className="border-2 disabled:bg-gray-100 disabled:text-gray-500 disabled:border-none m-1 w-10 h-10 flex items-center justify-center bg-gray-200 rounded-md"
+              className="border-2 disabled:bg-gray-50 disabled:text-gray-400 disabled:border-none m-1 w-10 h-10 flex items-center justify-center bg-gray-300 rounded-md"
             >
               {decrementLoading ? (
                 <Image
@@ -259,7 +259,7 @@ const OrderSummaryItem = ({
             <button
               disabled={item.stock <= quantity}
               onClick={handleIncrementQuantity}
-              className="border-2 disabled:bg-gray-100 disabled:text-gray-500 disabled:border-none m-1 w-10 h-10 flex items-center justify-center bg-gray-200 rounded-md"
+              className="border-2 disabled:bg-gray-50 disabled:text-gray-400 disabled:border-none m-1 w-10 h-10 flex items-center justify-center bg-gray-300 rounded-md"
             >
               {incrementLoading ? (
                 <Image
