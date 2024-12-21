@@ -16,28 +16,97 @@ import {
 } from "../ui/alert-dialog";
 import { Separator } from "../ui/separator";
 import { useRouter } from "next/navigation";
+import { OrderDetails } from "@/app/checkout/cart/page";
+import { useCreateOrderMutation } from "@/features/api/orderApi";
+import { Bounce, toast } from "react-toastify";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 
 const PaymentOptions = ({
   setActiveStep,
+  orderDetails,
   items,
+  setOrderDetails,
 }: {
   setActiveStep: Dispatch<SetStateAction<number>>;
   items: Cart | undefined;
+  setOrderDetails: Dispatch<SetStateAction<OrderDetails | null>>;
+  orderDetails: OrderDetails | null;
 }) => {
   const router = useRouter();
   const [paymentMethod, setPaymentMethod] = useState<
-    "Credit Card" | "PayPal" | "Bank Transfer" | "Cash on Delivery"
-  >("Cash on Delivery");
+    "Credit Card" | "PayPal" | "Bank Transfer" | "Cash on Delivery" | null
+  >(null);
+
+  const [createOrder] = useCreateOrderMutation();
 
   const changePaymentMethod = (
     method: "Credit Card" | "PayPal" | "Bank Transfer" | "Cash on Delivery"
   ) => {
     setPaymentMethod(method);
+    setOrderDetails((prev) => ({ ...prev, paymentMethod: method }));
   };
 
-  const confirmCashOrder = () => {
-    router.push("/order-success");
+  const confirmCashOrder = async () => {
+    // setIncrementLoading(true);
+    const { error, data } = await createOrder(orderDetails!);
+    // setIncrementLoading(false);
+
+    if (error) {
+      const response = error as FetchBaseQueryError;
+      if (response.status === "FETCH_ERROR") {
+        toast.error("Check your internet.", {
+          position: "bottom-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
+        return;
+      }
+      console.log(response.data);
+      const errorResponse = response.data as {
+        success: boolean;
+        message?: string;
+      };
+      toast.error(errorResponse.message, {
+        position: "bottom-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+      return;
+    }
+
+    if (data) {
+      if (data.success) {
+        toast.success(data.message, {
+          position: "bottom-center",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
+      }
+      setTimeout(() => {
+        router.push("/order-success");
+      }, 1000);
+    }
   };
+
+  console.log(orderDetails);
 
   return (
     <div>

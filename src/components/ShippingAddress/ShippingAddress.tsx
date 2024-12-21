@@ -7,11 +7,14 @@ import { selectUser } from "@/features/user/userSlice";
 import { IoMdAdd } from "react-icons/io";
 import AddressItem from "../AddressItem/AddressItem";
 import AddressInput from "../AddressInput/AddressInput";
+import { OrderDetails } from "@/app/checkout/cart/page";
 
 const ShippingAddress = ({
   setActiveStep,
+  setOrderDetails,
 }: {
   setActiveStep: Dispatch<SetStateAction<number>>;
+  setOrderDetails: Dispatch<SetStateAction<OrderDetails | null>>;
 }) => {
   const [showAddressInput, setShowAddressInput] = useState<boolean>(false);
   const user: User = useSelector(selectUser);
@@ -35,6 +38,12 @@ const ShippingAddress = ({
       : null;
 
     setSelectedAddress(defaultAddress ? defaultAddress[0] : null);
+    if (defaultAddress) {
+      setOrderDetails((prev) => ({
+        ...prev,
+        deliveryAddress: defaultAddress[0],
+      }));
+    }
   }, []);
 
   return (
@@ -59,7 +68,14 @@ const ShippingAddress = ({
         <div className="flex gap-4 mt-8 flex-col">
           {user.addresses.map((address: DeliveryAddress, index: number) => (
             <div
-              onClick={() => setSelectedAddress(address)}
+              key={address._id}
+              onClick={() => {
+                setSelectedAddress(address);
+                setOrderDetails((prev) => ({
+                  ...prev,
+                  deliveryAddress: address,
+                }));
+              }}
               className={`${
                 selectedAddress?._id === address._id
                   ? "border-[var(--secondary-color)]"

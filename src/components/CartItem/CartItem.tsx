@@ -3,11 +3,11 @@ import {
   useIncrementProductQuantityMutation,
   useRemoveFromCartMutation,
 } from "@/features/api/cartApi";
-import { getCartCountAsync } from "@/features/cart/cartSlice";
+import { getCartAsync, getCartCountAsync } from "@/features/cart/cartSlice";
 import { Dispatch } from "@reduxjs/toolkit";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import Image from "next/image";
-import React, { useState } from "react";
+import { useState } from "react";
 import { FaHeart, FaTrash } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 import { Bounce, toast } from "react-toastify";
@@ -24,6 +24,7 @@ const CartItem = ({
   const [removeFromCart] = useRemoveFromCartMutation();
   const [incrementLoading, setIncrementLoading] = useState<boolean>(false);
   const [decrementLoading, setDecrementLoading] = useState<boolean>(false);
+  const [removeLoading, setRemoveLoading] = useState<boolean>(false);
   const dispatch = useDispatch<Dispatch<any>>();
 
   let discountedPrice: number = product.price;
@@ -40,6 +41,7 @@ const CartItem = ({
   const handleIncrementQuantity = async () => {
     setIncrementLoading(true);
     const { error } = await incrementProductQuantity(product._id);
+    dispatch(getCartAsync());
     setIncrementLoading(false);
 
     if (error) {
@@ -81,6 +83,7 @@ const CartItem = ({
   const handleDecrementQuantity = async () => {
     setDecrementLoading(true);
     const { error } = await decrementProductQuantity(product._id);
+    dispatch(getCartAsync());
     setDecrementLoading(false);
 
     if (error) {
@@ -120,7 +123,9 @@ const CartItem = ({
   };
 
   const handleRemoveFromCart = async () => {
+    setRemoveLoading(true);
     const { error } = await removeFromCart(product._id);
+    setRemoveLoading(false);
 
     if (error) {
       const response = error as FetchBaseQueryError;
@@ -155,6 +160,7 @@ const CartItem = ({
       });
       return;
     }
+    dispatch(getCartAsync());
     dispatch(getCartCountAsync());
   };
 
@@ -168,7 +174,7 @@ const CartItem = ({
           height={300}
           width={300}
         />
-        
+
         <div className="flex items-center">
           <button
             disabled={quantity === 1}
@@ -215,7 +221,13 @@ const CartItem = ({
             {product?.color?.colorName}
             {product.color?.colorName && product?.size && ","} {product.size}
           </p>
-          <p className="text-sm text-green-700 font-normal">In Stock</p>
+          <p
+            className={`text-sm ${
+              product.stock >= quantity ? "text-green-700" : "text-red-600"
+            } font-bold`}
+          >
+            {product.stock >= quantity ? "In Stock" : "Out of Stock"}
+          </p>
 
           <p className="mt-4">
             {product.discount && (
@@ -242,9 +254,19 @@ const CartItem = ({
 
           <button
             onClick={handleRemoveFromCart}
-            className="flex items-center gap-1 bg-gray-100 px-2 py-1 rounded-md"
+            className="flex items-center text-sm justify-center p-2 w-28  gap-1 bg-gray-100 px-2 py-1 rounded-md"
           >
-            <FaTrash className="text-gray-400" /> Remove
+            <FaTrash className="text-gray-400" />{" "}
+            {removeLoading ? (
+              <Image
+                src={"/images/colorLoader.gif"}
+                alt="loading"
+                height={20}
+                width={20}
+              />
+            ) : (
+              "Remove"
+            )}
           </button>
         </div>
       </div>

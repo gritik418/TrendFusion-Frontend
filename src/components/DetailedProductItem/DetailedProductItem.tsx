@@ -155,21 +155,25 @@ const DetailedProductItem = ({ product }: { product: Product }) => {
         </div>
 
         <div className="mt-3">
-          <button
-            onClick={handleAddToCart}
-            className="w-36 h-10 bg-[var(--secondary-color)] mt-4 font-semibold text-xl flex items-center justify-center text-white rounded-full"
-          >
-            {loading ? (
-              <Image
-                src={"/images/loader.gif"}
-                alt="loading"
-                height={20}
-                width={20}
-              />
-            ) : (
-              "Add to Cart"
-            )}
-          </button>
+          {product.stock > 0 ? (
+            <button
+              onClick={handleAddToCart}
+              className="w-36 h-10 bg-[var(--secondary-color)] mt-4 font-semibold text-xl flex items-center justify-center text-white rounded-full"
+            >
+              {loading ? (
+                <Image
+                  src={"/images/loader.gif"}
+                  alt="loading"
+                  height={20}
+                  width={20}
+                />
+              ) : (
+                "Add to Cart"
+              )}
+            </button>
+          ) : (
+            <p className="text-red-500 font-bold">Currently unavailable</p>
+          )}
         </div>
       </div>
     </div>

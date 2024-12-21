@@ -1,16 +1,19 @@
-import React, { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, SetStateAction, useEffect } from "react";
 import { Separator } from "../ui/separator";
 import OrderSummaryItem from "../OrderSummaryItem/OrderSummaryItem";
 import { FaArrowCircleLeft, FaArrowCircleRight } from "react-icons/fa";
+import { OrderDetails } from "@/app/checkout/cart/page";
 
 type Item = { product: CartItem; quantity: number };
 
 const OrderSummary = ({
   setActiveStep,
+  setOrderDetails,
   cart,
 }: {
   setActiveStep: Dispatch<SetStateAction<number>>;
   cart: Cart | undefined;
+  setOrderDetails: Dispatch<SetStateAction<OrderDetails | null>>;
 }) => {
   if (!cart) {
     return (
@@ -19,6 +22,41 @@ const OrderSummary = ({
       </div>
     );
   }
+
+  const items = cart.items.map((item) => {
+    return {
+      _id: item.product._id,
+      brand: item.product.brand,
+      quantity: item.quantity,
+      thumbnail: item.product.thumbnail,
+      title: item.product.title,
+      unitPrice: item.product.price,
+      color: item.product.color?.colorName,
+      size: item.product.size,
+      unitDiscount: item.product.discount,
+    };
+  });
+
+  useEffect(() => {
+    setOrderDetails((prev) => ({
+      ...prev,
+      discount: cart.discount,
+      finalPrice: cart.finalPrice,
+      itemCount: cart.totalQuantity,
+      totalQuantity: cart.totalQuantity,
+      totalPrice: cart.totalPrice,
+      items: items,
+    }));
+  }, []);
+
+  const checkDisabled = (): boolean => {
+    for (const item of cart.items) {
+      if (item.product.stock < item.quantity) {
+        return true;
+      }
+    }
+    return false;
+  };
 
   return (
     <div>
@@ -41,10 +79,12 @@ const OrderSummary = ({
           onClick={() => setActiveStep(1)}
           className="text-4xl text-green-700 cursor-pointer"
         />
-        <FaArrowCircleRight
-          onClick={() => setActiveStep(3)}
-          className="text-4xl text-green-700 cursor-pointer"
-        />
+        {!checkDisabled() && (
+          <FaArrowCircleRight
+            onClick={() => setActiveStep(3)}
+            className="text-4xl text-green-700 cursor-pointer"
+          />
+        )}
       </div>
     </div>
   );

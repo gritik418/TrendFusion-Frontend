@@ -1,21 +1,19 @@
 "use client";
 import CartItem from "@/components/CartItem/CartItem";
+import EmptyCart from "@/components/EmptyCart/EmptyCart";
 import Navbar from "@/components/Navbar/Navbar";
 import { Separator } from "@/components/ui/separator";
 import { useGetCartQuery } from "@/features/api/cartApi";
-import { getCartAsync } from "@/features/cart/cartSlice";
 import { selectUser } from "@/features/user/userSlice";
-import { Dispatch } from "@reduxjs/toolkit";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 const Cart = () => {
   const user: User = useSelector(selectUser);
-  const { isLoading, data } = useGetCartQuery();
-  const dispatch = useDispatch<Dispatch<any>>();
   const router = useRouter();
+  const { isLoading, data } = useGetCartQuery();
 
   if (isLoading) {
     return (
@@ -67,9 +65,22 @@ const Cart = () => {
   });
 
   const handleProceedToBuy = () => {
-    dispatch(getCartAsync());
-    router.push("/checkout?otracker=cart");
+    router.push("/checkout/cart");
   };
+
+  const checkDisabled = (): boolean => {
+    if (!data?.cart?.items) {
+      return true;
+    }
+    for (const item of data?.cart?.items) {
+      if (item.product.stock < item.quantity) {
+        return true;
+      }
+    }
+    return false;
+  };
+
+  checkDisabled();
 
   return (
     <>
@@ -167,15 +178,21 @@ const Cart = () => {
 
                   <div className="flex my-2 items-center flex-col justify-end">
                     <button
+                      disabled={checkDisabled()}
                       onClick={handleProceedToBuy}
-                      className="text-lg w-full text-white font-semibold bg-[var(--secondary-color)] py-3 px-5 rounded-full mb-4"
+                      className="text-lg disabled:bg-[var(--medium-color)] w-full text-white font-semibold bg-[var(--secondary-color)] py-3 px-5 rounded-full"
                     >
                       Proceed to Buy
                     </button>
+                    {checkDisabled() ? (
+                      <div className="font-bold text-xs text-red-400">
+                        Item not in stock, remove to proceed.
+                      </div>
+                    ) : null}
 
                     <Link
                       href={"/"}
-                      className="text-lg text-center w-full text-black font-semibold bg-gray-200 py-3 px-5 rounded-full mb-4"
+                      className="mt-4 text-lg text-center w-full text-black font-semibold bg-gray-200 py-3 px-5 rounded-full mb-4"
                     >
                       Continue Shopping
                     </Link>
@@ -186,29 +203,7 @@ const Cart = () => {
           </div>
         </div>
       ) : (
-        <div className="bg-[#eeeeee] min-h-screen">
-          <Navbar />
-
-          <div className="p-5 pt-10 gap-6 flex flex-col lg:flex-row container m-auto">
-            <div className="bg-white flex items-center py-8 justify-center flex-col w-full min-h-[40vh]">
-              <Image
-                src={"/images/empty-cart.png"}
-                alt="img"
-                height={220}
-                width={220}
-              />
-              <p className="text-2xl mb-2">Your cart is empty!</p>
-              <p className="mb-8">Add items to it now.</p>
-
-              <Link
-                href={"/"}
-                className="text-2xl font-semibold rounded-md bg-[var(--secondary-color)] py-2 px-6 text-white"
-              >
-                Shop Now
-              </Link>
-            </div>
-          </div>
-        </div>
+        <EmptyCart />
       )}
     </>
   );

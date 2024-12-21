@@ -91,7 +91,6 @@ interface Reviews {
 }
 
 interface OrderProductInfo {
-  productId: Types.ObjectId;
   title: string;
   brand: string;
   thumbnail: string;

@@ -7,6 +7,7 @@ import productSlice from "@/features/product/productSlice";
 import userSlice from "@/features/user/userSlice";
 import cartApi from "@/features/api/cartApi";
 import cartSlice from "@/features/cart/cartSlice";
+import orderApi from "@/features/api/orderApi";
 
 const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ const store = configureStore({
     [adminAuthApi.reducerPath]: adminAuthApi.reducer,
     [adminProductAPi.reducerPath]: adminProductAPi.reducer,
     [cartApi.reducerPath]: cartApi.reducer,
+    [orderApi.reducerPath]: orderApi.reducer,
     [productApi.reducerPath]: productApi.reducer,
     [productSlice.name]: productSlice.reducer,
     [userSlice.name]: userSlice.reducer,
@@ -25,7 +27,8 @@ const store = configureStore({
       .concat(adminAuthApi.middleware)
       .concat(adminProductAPi.middleware)
       .concat(productApi.middleware)
-      .concat(cartApi.middleware),
+      .concat(cartApi.middleware)
+      .concat(orderApi.middleware),
 });
 
 export default store;

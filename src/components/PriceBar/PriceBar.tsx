@@ -113,6 +113,7 @@ const PriceBar = ({ product }: { product: Product }) => {
       discount: discount,
       deliveryCharges: 0,
       platformFee: 0,
+      stock: product.stock,
     });
     localStorage.setItem(SELECTED_PRODUCT, selectedProduct);
     router.push("/checkout");
@@ -147,30 +148,34 @@ const PriceBar = ({ product }: { product: Product }) => {
         )}
       </div>
 
-      <div className="flex gap-3 justify-end">
-        <button
-          onClick={handleAddToCart}
-          className="bg-gray-100 flex items-center justify-center text-xl font-normal h-10 w-32 text-gray-700 rounded-md"
-        >
-          {loading ? (
-            <Image
-              src={"/images/colorLoader.gif"}
-              alt="loading"
-              height={25}
-              width={25}
-            />
-          ) : (
-            "Add to Cart"
-          )}
-        </button>
+      {product.stock > 0 ? (
+        <div className="flex gap-3 justify-end">
+          <button
+            onClick={handleAddToCart}
+            className="bg-gray-100 flex items-center justify-center text-xl font-normal h-10 w-32 text-gray-700 rounded-md"
+          >
+            {loading ? (
+              <Image
+                src={"/images/colorLoader.gif"}
+                alt="loading"
+                height={25}
+                width={25}
+              />
+            ) : (
+              "Add to Cart"
+            )}
+          </button>
 
-        <button
-          onClick={handleBuyNow}
-          className="bg-[var(--secondary-color)] text-2xl font-normal px-3 py-1 text-white rounded-md"
-        >
-          Buy Now
-        </button>
-      </div>
+          <button
+            onClick={handleBuyNow}
+            className="bg-[var(--secondary-color)] text-2xl font-normal px-3 py-1 text-white rounded-md"
+          >
+            Buy Now
+          </button>
+        </div>
+      ) : (
+        <p className="text-red-500 font-bold">Currently unavailable</p>
+      )}
     </div>
   );
 };

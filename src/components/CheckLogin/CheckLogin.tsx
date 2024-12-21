@@ -1,13 +1,13 @@
 "use client";
 import { selectUser } from "@/features/user/userSlice";
+import Link from "next/link";
+import { Dispatch, SetStateAction, useState } from "react";
 import { CiEdit } from "react-icons/ci";
 import { FaArrowCircleRight } from "react-icons/fa";
-import { useSelector } from "react-redux";
-import { Separator } from "../ui/separator";
-import Link from "next/link";
 import { IoMdAdd } from "react-icons/io";
-import { Dispatch, SetStateAction, useState } from "react";
+import { useSelector } from "react-redux";
 import AddPhoneNumber from "../AddPhoneNumber/AddPhoneNumber";
+import { Separator } from "../ui/separator";
 
 const CheckLogin = ({
   setActiveStep,

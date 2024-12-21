@@ -7,9 +7,8 @@ import { getCartAsync, getCartCountAsync } from "@/features/cart/cartSlice";
 import { Dispatch } from "@reduxjs/toolkit";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import Image from "next/image";
-import React, { useState } from "react";
+import { useState } from "react";
 import { CiTrash } from "react-icons/ci";
-import { FiMinus } from "react-icons/fi";
 import { useDispatch } from "react-redux";
 import { Bounce, toast } from "react-toastify";
 
@@ -25,6 +24,7 @@ const OrderSummaryItem = ({
   const [removeFromCart] = useRemoveFromCartMutation();
   const [incrementLoading, setIncrementLoading] = useState<boolean>(false);
   const [decrementLoading, setDecrementLoading] = useState<boolean>(false);
+  const [removeLoading, setRemoveLoading] = useState<boolean>(false);
   const dispatch = useDispatch<Dispatch<any>>();
 
   let discountedPrice: number = item?.price;
@@ -121,8 +121,12 @@ const OrderSummaryItem = ({
   };
 
   const handleRemoveFromCart = async () => {
+    setRemoveLoading(true);
     const { error } = await removeFromCart(item._id);
 
+    dispatch(getCartCountAsync());
+    setRemoveLoading(false);
+    dispatch(getCartAsync());
     if (error) {
       const response = error as FetchBaseQueryError;
       if (response.status === "FETCH_ERROR") {
@@ -156,8 +160,6 @@ const OrderSummaryItem = ({
       });
       return;
     }
-    dispatch(getCartCountAsync());
-    dispatch(getCartAsync());
   };
 
   return (
@@ -231,10 +233,14 @@ const OrderSummaryItem = ({
           )}
         </div>
 
+        {item.stock < quantity ? (
+          <p className="text-red-500 font-bold">Stock not available.</p>
+        ) : null}
+
         <div className="flex mt-3 justify-between items-center gap-4">
           <div className="flex items-center">
             <button
-              disabled={quantity === 1}
+              disabled={quantity <= 1}
               onClick={handleDecrementQuantity}
               className="border-2 disabled:bg-gray-100 disabled:text-gray-500 disabled:border-none m-1 w-10 h-10 flex items-center justify-center bg-gray-200 rounded-md"
             >
@@ -270,9 +276,19 @@ const OrderSummaryItem = ({
 
           <button
             onClick={handleRemoveFromCart}
-            className="text-sm p-2 font-semibold flex items-center gap-1 bg-gray-100 px-4 rounded-lg uppercase"
+            className="text-sm p-2 w-28 font-semibold flex items-center justify-center gap-1 bg-gray-100 px-4 rounded-lg uppercase"
           >
-            <CiTrash className="text-lg" /> Remove
+            <CiTrash className="text-lg" />
+            {removeLoading ? (
+              <Image
+                src={"/images/colorLoader.gif"}
+                alt="loading"
+                height={20}
+                width={20}
+              />
+            ) : (
+              "Remove"
+            )}
           </button>
         </div>
       </div>

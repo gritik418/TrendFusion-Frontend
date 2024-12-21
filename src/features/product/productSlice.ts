@@ -54,7 +54,6 @@ const productSlice = createSlice({
       })
       .addCase(searchProductsAsync.fulfilled, (state, action) => {
         state.loading = false;
-        console.log(action.payload);
         if (action.payload.success) {
           state.products = action.payload.products;
           state.filters = action.payload.filters;

@@ -29,9 +29,9 @@ const OrderItem = ({ order }: { order: Order }) => {
               Order Placed
             </p>
             <p className="text-[16px] font-semibold text-gray-500">
-              {order.orderDate.getDate()}{" "}
-              {getMonths(order.orderDate.getMonth())}{" "}
-              {order.orderDate.getFullYear()}
+              {new Date(order.orderDate).getDate()}{" "}
+              {getMonths(new Date(order.orderDate).getMonth())}{" "}
+              {new Date(order.orderDate).getFullYear()}
             </p>
           </div>
 
@@ -87,7 +87,7 @@ const OrderItem = ({ order }: { order: Order }) => {
               </div>
 
               <div className="flex items-center">
-                <button className="border-2 rounded-full border-gray-500 py-1 px-4">
+                <button className="text-nowrap ml-4 border-2 rounded-full border-gray-500 py-1 px-4">
                   Write a review
                 </button>
               </div>
