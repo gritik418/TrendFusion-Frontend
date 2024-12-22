@@ -219,6 +219,29 @@ const Product = ({ params }: { params: { productId: string } }) => {
                         </p>
                       </div>
 
+                      {
+                        <>
+                          {data?.product?.stock > 0 ? (
+                            <>
+                              {data.product.stock > 9 ? (
+                                <p className="text-green-500 font-bold">
+                                  In Stock
+                                </p>
+                              ) : (
+                                <p className="text-green-500 font-bold">
+                                  Hurry, only {data.product.stock} left in
+                                  stock!
+                                </p>
+                              )}
+                            </>
+                          ) : (
+                            <p className="text-red-500 font-bold">
+                              Out of Stock
+                            </p>
+                          )}
+                        </>
+                      }
+
                       {data?.variants && data?.product?.color && (
                         <div className="flex flex-col mt-1">
                           <Separator />

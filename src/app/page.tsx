@@ -131,7 +131,7 @@ const categories: Category[] = [
     id: "1",
     name: "Grocery",
     image: "/images/grocery.jpeg",
-    url: "",
+    url: "/search?q=grocery",
   },
   {
     id: "2",
@@ -161,7 +161,7 @@ const categories: Category[] = [
     id: "4",
     name: "Electronics",
     image: "/images/laptops.jpeg",
-    url: "",
+    url: "/search?q=laptops",
     subcategories: [
       {
         id: "1-1",
@@ -171,7 +171,7 @@ const categories: Category[] = [
       {
         id: "1-2",
         name: "Laptops",
-        url: "",
+        url: "/search?q=laptops",
       },
       {
         id: "1-3",

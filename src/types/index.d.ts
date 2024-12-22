@@ -46,12 +46,17 @@ interface Order {
   orderDate: Date;
   expectedDeliveryDate?: Date;
   deliveredOn?: Date;
-  status: "Pending" | "Shipped" | "Delivered" | "Cancelled";
+  status:
+    | "Pending"
+    | "Shipped"
+    | "Delivered"
+    | "Cancelled"
+    | "Out for Delivery";
   items: OrderProductInfo[];
   itemCount: number;
   totalQuantity: number;
   totalPrice: number;
-  discount?: Discount;
+  discount?: number;
   finalPrice: number;
   paymentMethod:
     | "Credit Card"
@@ -60,6 +65,8 @@ interface Order {
     | "Cash on Delivery";
   deliveryAddress: DeliveryAddress;
   trackingId?: string;
+  deliveryCharges?: number;
+  platformFee?: number;
 }
 
 interface Cart {

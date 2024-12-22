@@ -1,14 +1,13 @@
 "use client";
-import React from "react";
-import SearchBar from "../SearchBar/SearchBar";
-import { IoCartOutline } from "react-icons/io5";
-import { CiLogin } from "react-icons/ci";
+import { selectCartCount } from "@/features/cart/cartSlice";
+import { selectUser } from "@/features/user/userSlice";
 import Image from "next/image";
 import Link from "next/link";
-import MenubarComponent from "../MenubarComponent/MenubarComponent";
+import { CiLogin } from "react-icons/ci";
+import { IoCartOutline } from "react-icons/io5";
 import { useSelector } from "react-redux";
-import { selectUser } from "@/features/user/userSlice";
-import { selectCartCount } from "@/features/cart/cartSlice";
+import MenubarComponent from "../MenubarComponent/MenubarComponent";
+import SearchBar from "../SearchBar/SearchBar";
 import UserProvider from "../UserProvider/UserProvider";
 
 const Navbar = () => {
@@ -16,7 +15,10 @@ const Navbar = () => {
   const cartCount: number = useSelector(selectCartCount);
 
   return (
-    <UserProvider>
+    <>
+      <UserProvider>
+        <span></span>
+      </UserProvider>
       <div className="z-50 h-[60px] shadow-lg hidden md:flex bg-white/85 backdrop-blur-md sticky top-0">
         <div className="h-full container m-auto gap-6 flex items-center">
           <Link
@@ -65,7 +67,6 @@ const Navbar = () => {
           </Link>
         </div>
       </div>
-
       <div className="z-50 h-[110px] py-2 shadow-lg flex-col flex md:hidden bg-white/85 backdrop-blur-md sticky top-0">
         <div className="h-full px-3 container m-auto gap-6 justify-between flex items-center">
           <Link
@@ -118,7 +119,7 @@ const Navbar = () => {
           <SearchBar />
         </div>
       </div>
-    </UserProvider>
+    </>
   );
 };
 

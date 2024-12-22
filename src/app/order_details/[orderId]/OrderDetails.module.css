@@ -1,0 +1,24 @@
+.group {
+  display: flex;
+  position: relative;
+}
+
+.item:nth-child(1) {
+  position: absolute;
+  box-shadow: 5px 1px 8px 0px #11111124;
+  z-index: 4;
+}
+
+.item:nth-child(2) {
+  position: absolute;
+  box-shadow: 5px 1px 8px 0px #11111124;
+  left: 40%;
+  z-index: 3;
+}
+
+.item:nth-child(3) {
+  position: absolute;
+  box-shadow: 5px 1px 8px 0px #11111124;
+  left: 80%;
+  z-index: 2;
+}

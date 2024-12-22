@@ -6,6 +6,7 @@ type GetOrderResponse = {
   success: boolean;
   orders?: Order[];
   errors?: any;
+  order?: Order;
 };
 
 const orderApi = createApi({
@@ -18,6 +19,16 @@ const orderApi = createApi({
     getOrders: builder.query<GetOrderResponse, void>({
       query: () => ({
         url: "/",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      }),
+      providesTags: ["order"],
+    }),
+    getOrderById: builder.query<GetOrderResponse, string>({
+      query: (orderId: string) => ({
+        url: `${orderId}`,
         headers: {
           "Content-Type": "application/json",
         },
@@ -40,6 +51,10 @@ const orderApi = createApi({
   }),
 });
 
-export const { useGetOrdersQuery, useCreateOrderMutation } = orderApi;
+export const {
+  useGetOrdersQuery,
+  useCreateOrderMutation,
+  useGetOrderByIdQuery,
+} = orderApi;
 
 export default orderApi;
