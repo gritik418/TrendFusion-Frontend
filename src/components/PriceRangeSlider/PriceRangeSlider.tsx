@@ -4,8 +4,8 @@ import Slider from "@mui/material/Slider";
 import { FilterObject } from "@/app/search/page";
 
 const PriceRangeSlider = ({
-  minPrice,
   maxPrice,
+  minPrice,
   filterOptions,
   setFilterOptions,
 }: {
@@ -14,28 +14,24 @@ const PriceRangeSlider = ({
   filterOptions: FilterObject;
   setFilterOptions: React.Dispatch<React.SetStateAction<FilterObject>>;
 }) => {
-  const [value, setValue] = React.useState<number[]>([minPrice, maxPrice]);
+  const [value, setValue] = React.useState<number>(maxPrice);
 
   const handleChange = (event: Event, newValue: number | number[]) => {
-    setValue(newValue as number[]);
-    let values: number[] = newValue as number[];
+    setValue(newValue as number);
 
-    setFilterOptions({ ...filterOptions, min: values[0], max: values[1] });
+    setFilterOptions({ ...filterOptions, max: newValue as number });
   };
-
-  React.useEffect(() => {
-    setValue([minPrice, maxPrice]);
-  }, [minPrice, maxPrice]);
 
   return (
     <Box>
       <Slider
         value={value}
-        min={minPrice}
         max={maxPrice}
+        min={minPrice}
         onChange={handleChange}
         valueLabelDisplay="auto"
         className="text-xs"
+        defaultValue={maxPrice}
       />
     </Box>
   );

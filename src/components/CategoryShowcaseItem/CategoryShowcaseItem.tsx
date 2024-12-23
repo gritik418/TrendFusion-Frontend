@@ -10,7 +10,7 @@ const CategoryShowcaseItem = ({ item }: { item: Category }) => {
           <div className="p-2 h-[170px] flex-col w-40 bg-white flex items-center justify-between rounded-lg overflow-hidden">
             <div className="relative flex h-full items-center justify-center w-full">
               <Image
-                className="bg-white max-h-[120px] h-full max-w-[150px] w-full object-contain"
+                className="bg-white max-h-[120px] h-auto aspect-auto max-w-[150px] w-full object-contain"
                 src={item.image}
                 height={120}
                 width={120}
@@ -29,7 +29,7 @@ const CategoryShowcaseItem = ({ item }: { item: Category }) => {
                 return (
                   <Link
                     href={subItem.url}
-                    className="min-w-[170px] p-1 hover:bg-gray-100"
+                    className="min-w-[170px] px-3 p-2 hover:bg-gray-100"
                   >
                     <p className="text-sm">{subItem.name}</p>
                   </Link>

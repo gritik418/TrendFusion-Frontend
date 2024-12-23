@@ -32,6 +32,8 @@ export type FilterObject = {
   size: string[];
   min: number;
   max?: number;
+  sortCriteria?: "price" | "rating";
+  sortOrder?: "asc" | "desc";
 };
 
 const SearchPage = () => {
@@ -58,6 +60,8 @@ const SearchPage = () => {
         searchQuery: searchQuery + filterQuery,
         minPrice: filterOptions.min,
         maxPrice: filterOptions.max,
+        sortCriteria: filterOptions.sortCriteria,
+        sortOrder: filterOptions.sortOrder,
       })
     );
   }, [filterQuery, searchQuery, filterOptions]);
@@ -123,7 +127,6 @@ const SearchPage = () => {
                     width={240}
                   />
                   <h2 className="text-2xl text-gray-600">
-                    {" "}
                     Sorry, no results found!
                   </h2>
                 </div>

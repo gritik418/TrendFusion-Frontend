@@ -34,12 +34,22 @@ export const searchProductsAsync = createAsyncThunk(
     searchQuery,
     maxPrice,
     minPrice,
+    sortCriteria,
+    sortOrder,
   }: {
     searchQuery: string;
     minPrice?: number;
     maxPrice?: number;
+    sortCriteria?: "price" | "rating";
+    sortOrder?: "asc" | "desc";
   }) => {
-    const response = await searchProducts(searchQuery, minPrice, maxPrice);
+    const response = await searchProducts(
+      searchQuery,
+      minPrice,
+      maxPrice,
+      sortCriteria,
+      sortOrder
+    );
     return response;
   }
 );

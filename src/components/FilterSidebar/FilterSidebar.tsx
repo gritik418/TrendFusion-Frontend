@@ -1,5 +1,10 @@
 "use client";
-import React, { ChangeEvent, Dispatch } from "react";
+import { FilterObject, Filters } from "@/app/search/page";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 import { Separator } from "@/components/ui/separator";
 import {
   Sidebar,
@@ -14,18 +19,13 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
   SidebarProvider,
+  SidebarRail,
 } from "@/components/ui/sidebar";
+import { Checkbox, FormControl, NativeSelect } from "@mui/material";
 import { Minus, Plus } from "lucide-react";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
-import { SidebarRail } from "@/components/ui/sidebar";
+import React, { ChangeEvent, Dispatch, useState } from "react";
 import CustomSidebarTrigger from "../CustomSidebarTrigger/CustomSidebarTrigger";
 import PriceRangeSlider from "../PriceRangeSlider/PriceRangeSlider";
-import { FilterObject, Filters } from "@/app/search/page";
-import { Checkbox } from "@mui/material";
 
 const FilterSidebar = ({
   children,
@@ -44,6 +44,7 @@ const FilterSidebar = ({
   setFilterOptions: Dispatch<React.SetStateAction<FilterObject>>;
   setFilterQuery: Dispatch<React.SetStateAction<string>>;
 }) => {
+  const [value, setValue] = useState("p-lth");
   const handleFilterChange = (
     e: ChangeEvent<HTMLInputElement>,
     value: string,
@@ -139,6 +140,20 @@ const FilterSidebar = ({
     return false;
   };
 
+  const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setValue(e.target.value);
+    if (e.target.value.split("-")[0] === "p") {
+      setFilterOptions((prev) => ({ ...prev, sortCriteria: "price" }));
+    } else {
+      setFilterOptions((prev) => ({ ...prev, sortCriteria: "rating" }));
+    }
+    if (e.target.value.split("-")[1] === "asc") {
+      setFilterOptions((prev) => ({ ...prev, sortOrder: "asc" }));
+    } else {
+      setFilterOptions((prev) => ({ ...prev, sortOrder: "desc" }));
+    }
+  };
+
   return (
     <SidebarProvider>
       {filters && (
@@ -154,22 +169,48 @@ const FilterSidebar = ({
               </p>
             </div>
           </SidebarHeader>
+
           <SidebarContent>
             <SidebarGroup>
               <SidebarMenu>
-                {minPrice && maxPrice && (
-                  <div className="border-b-2 px-2 pb-3 mb-2 flex gap-3 text-gray-500 font-semibold flex-col">
-                    <SidebarMenuSubItem>Price</SidebarMenuSubItem>
-                    <div className="px-6">
-                      <PriceRangeSlider
-                        filterOptions={filterOptions}
-                        setFilterOptions={setFilterOptions}
-                        minPrice={minPrice}
-                        maxPrice={maxPrice}
-                      />
+                {typeof minPrice === "number" &&
+                  typeof maxPrice === "number" && (
+                    <div className="border-b-2 px-2 pb-3 mb-2 flex gap-3 text-gray-500 font-semibold flex-col">
+                      <SidebarMenuSubItem>Price</SidebarMenuSubItem>
+                      <div className="px-6">
+                        <PriceRangeSlider
+                          filterOptions={filterOptions}
+                          setFilterOptions={setFilterOptions}
+                          minPrice={minPrice}
+                          maxPrice={maxPrice}
+                        />
+                      </div>
                     </div>
+                  )}
+
+                <div className="border-b-2 px-2 pb-3 mb-2 flex gap-3 text-gray-500 font-semibold flex-col">
+                  <SidebarMenuSubItem>Sort</SidebarMenuSubItem>
+                  <div className="px-6">
+                    <FormControl
+                      sx={{ minWidth: 140, width: "100%" }}
+                      size="small"
+                    >
+                      <NativeSelect
+                        variant="outlined"
+                        className="w-full"
+                        value={value}
+                        defaultValue="p-asc"
+                        onChange={handleSortChange}
+                      >
+                        <option value="p-asc">Price - Low to High</option>
+                        <option value={"p-desc"}>Price - High to Low</option>
+                        <option value={"r-asc"}>Rating - Low to High</option>
+                        <option value={"r-desc"}>Rating - High to Low</option>
+                      </NativeSelect>
+                    </FormControl>
                   </div>
-                )}
+                </div>
+
                 <>
                   {filters &&
                     Object.entries(filters).map((item: [string, string[]]) => (

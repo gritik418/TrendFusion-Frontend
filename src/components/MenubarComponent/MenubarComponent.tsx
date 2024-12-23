@@ -30,7 +30,10 @@ const MenubarComponent = () => {
           >
             <FaUserCircle /> Profile
           </MenubarItem>
-          <MenubarItem className="flex gap-2 cursor-pointer">
+          <MenubarItem
+            onClick={() => router.push("/account/orders")}
+            className="flex gap-2 cursor-pointer"
+          >
             <FaBoxOpen /> Orders
           </MenubarItem>
           <MenubarItem className="flex gap-2 cursor-pointer">
