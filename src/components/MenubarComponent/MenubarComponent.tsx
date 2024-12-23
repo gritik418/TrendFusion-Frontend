@@ -36,7 +36,10 @@ const MenubarComponent = () => {
           >
             <FaBoxOpen /> Orders
           </MenubarItem>
-          <MenubarItem className="flex gap-2 cursor-pointer">
+          <MenubarItem
+            onClick={() => router.push("/account/wishlist")}
+            className="flex gap-2 cursor-pointer"
+          >
             <FaHeart className="text-red-500" /> Wishlist
           </MenubarItem>
           <MenubarSeparator />

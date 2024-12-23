@@ -2,13 +2,62 @@ import Image from "next/image";
 import { Separator } from "../ui/separator";
 import { FaStar, FaTrash } from "react-icons/fa";
 import Link from "next/link";
+import { useState } from "react";
+import { useRemoveFromWishlistMutation } from "@/features/api/wishlistApi";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import { Bounce, toast } from "react-toastify";
 
 const WishlistItem = ({ item }: { item: WishlistItem }) => {
+  const [removeLoading, setRemoveLoading] = useState<boolean>(false);
+  const [removeFromWishlist] = useRemoveFromWishlistMutation();
+
+  const handleRemoveFromWishlist = async () => {
+    setRemoveLoading(true);
+    const { error } = await removeFromWishlist(item._id);
+    setRemoveLoading(false);
+
+    if (error) {
+      const response = error as FetchBaseQueryError;
+      if (response.status === "FETCH_ERROR") {
+        toast.error("Check your internet.", {
+          position: "bottom-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
+        return;
+      }
+      const errorResponse = response.data as {
+        success: boolean;
+        message?: string;
+      };
+      toast.error(errorResponse.message, {
+        position: "bottom-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+      return;
+    }
+  };
   return (
-    <Link href={`/product/${item.productId}`}>
-      <div className="gap-3 flex p-2 mb-2 justify-between hover:bg-[var(--light-color)]">
+    <div>
+      <div className="gap-3 flex p-2 mb-2 justify-between">
         <div className="flex gap-3">
-          <div className="flex bg-white min-w-[120px] items-center justify-center">
+          <Link
+            href={`/product/${item.productId}`}
+            className="flex bg-white min-w-[120px] items-center justify-center"
+          >
             <Image
               className="h-[120px] max-w-[120px] w-auto"
               src={item.thumbnail}
@@ -16,18 +65,29 @@ const WishlistItem = ({ item }: { item: WishlistItem }) => {
               width={120}
               alt=""
             />
-          </div>
+          </Link>
 
           <div className="flex flex-col justify-between">
             <div>
               <p className="text-gray-400 font-semibold uppercase text-sm">
                 {item.brand}
               </p>
-              <p className="text-lg">{item.title}</p>
-              <div className="flex w-max items-center gap-2 mt-1 bg-green-700 text-white px-1 py-0 rounded-sm">
-                <p className="text-sm font-semibold">{item.rating}</p>
-                <FaStar className="text-sm" />
-              </div>
+              <Link
+                href={`/product/${item.productId}`}
+                className="text-lg hover:text-[var(--secondary-color)] transition-colors ease-in-out duration-300"
+              >
+                {item.title}
+              </Link>
+              <p className="text-xs font-semibold mb-1 text-gray-500">
+                {item?.color?.colorName} {item?.color && item?.size && ", "}
+                {item?.size}
+              </p>
+              {item.rating && (
+                <div className="flex w-max items-center gap-2 mt-1 bg-green-700 text-white px-1 py-0 rounded-sm">
+                  <p className="text-sm font-semibold">{item.rating}</p>
+                  <FaStar className="text-sm" />
+                </div>
+              )}
             </div>
 
             <div className="flex items-end">
@@ -60,13 +120,25 @@ const WishlistItem = ({ item }: { item: WishlistItem }) => {
         </div>
 
         <div>
-          <div className="cursor-pointer transition-colors duration-300 ease-in-out hover:bg-gray-100 h-10 w-10 flex items-center justify-center rounded-full">
-            <FaTrash />
+          <div
+            onClick={handleRemoveFromWishlist}
+            className="cursor-pointer bg-gray-50 transition-colors duration-500 ease-in-out hover:text-red-400 h-10 w-10 flex items-center justify-center rounded-full"
+          >
+            {removeLoading ? (
+              <Image
+                src={"/images/colorLoader.gif"}
+                alt="loading"
+                height={20}
+                width={20}
+              />
+            ) : (
+              <FaTrash />
+            )}
           </div>
         </div>
       </div>
       <Separator />
-    </Link>
+    </div>
   );
 };
 

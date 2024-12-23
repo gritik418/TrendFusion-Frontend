@@ -174,6 +174,7 @@ interface Discount {
 }
 
 interface WishlistItem {
+  _id: string;
   productId: string;
   title: string;
   brand?: string;
@@ -181,8 +182,10 @@ interface WishlistItem {
   isAvailable: boolean;
   price: number;
   discount?: Discount;
-  rating?: number;
   stock: number;
+  color?: Color;
+  rating?: number;
+  size?: string;
 }
 
 interface JWTPayload extends JwtPayload {
