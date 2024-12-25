@@ -14,7 +14,18 @@ export const getUserAsync = createAsyncThunk("user/getUser", async () => {
 const userSlice = createSlice({
   name: "user",
   initialState,
-  reducers: {},
+  reducers: {
+    removeProductIdFromWishlist: (state: { user: any }, action) => {
+      state.user.wishlist = state.user?.wishlist.filter((id: string) => {
+        return id !== action.payload;
+      });
+    },
+    addProductIdToWishlist: (state: { user: any }, action) => {
+      if (!state.user?.wishlist.includes(action.payload)) {
+        state.user.wishlist.push(action.payload);
+      }
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getUserAsync.pending, (state, action) => {
@@ -31,6 +42,9 @@ const userSlice = createSlice({
       });
   },
 });
+
+export const { removeProductIdFromWishlist, addProductIdToWishlist } =
+  userSlice.actions;
 
 export const selectUser = (state: any) => state.user.user;
 

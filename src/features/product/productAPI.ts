@@ -39,7 +39,9 @@ export const searchProducts = async (
   minPrice?: number,
   maxPrice?: number,
   sortCriteria?: "price" | "rating",
-  sortOrder?: "asc" | "desc"
+  sortOrder?: "asc" | "desc",
+  page?: number,
+  limit?: number
 ) => {
   try {
     const { data } = await axios.get(
@@ -49,7 +51,9 @@ export const searchProducts = async (
         minPrice ? `&min=${minPrice}` : ""
       }${maxPrice ? `&max=${maxPrice}` : ""}${
         sortCriteria ? `&sortCriteria=${sortCriteria}` : ""
-      }${sortOrder ? `&sortOrder=${sortOrder}` : ""}`,
+      }${sortOrder ? `&sortOrder=${sortOrder}` : ""}${
+        page ? `&page=${page}` : ""
+      }${limit ? `&limit=${limit}` : ""}`,
       {
         headers: {
           "Content-Type": "application/json",

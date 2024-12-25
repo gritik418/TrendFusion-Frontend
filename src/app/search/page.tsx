@@ -11,12 +11,14 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   searchProductsAsync,
   selectFilters,
+  selectMaxPages,
   selectMaxPrice,
   selectMinPrice,
   selectProducts,
   selectSearchProductLoading,
 } from "@/features/product/productSlice";
 import { Dispatch } from "@reduxjs/toolkit";
+import SearchPagination from "@/components/SearchPagination/SearchPagination";
 
 export type Filters = {
   brands: string[];
@@ -37,9 +39,6 @@ export type FilterObject = {
 };
 
 const SearchPage = () => {
-  const searchParams = useSearchParams();
-  const searchQuery = searchParams.get("q") || "";
-  const [filterQuery, setFilterQuery] = useState<string>("");
   const [filterOptions, setFilterOptions] = useState<FilterObject>({
     brand: [],
     category: [],
@@ -47,12 +46,17 @@ const SearchPage = () => {
     size: [],
     min: 0,
   });
+  const searchParams = useSearchParams();
+  const searchQuery = searchParams.get("q") || "";
+  const [filterQuery, setFilterQuery] = useState<string>("");
   const dispatch = useDispatch<Dispatch<any>>();
   const isLoading: boolean = useSelector(selectSearchProductLoading);
   const minPrice: number = useSelector(selectMinPrice);
   const maxPrice: number = useSelector(selectMaxPrice);
   const products = useSelector(selectProducts);
   const filters = useSelector(selectFilters);
+  const maxPages = useSelector(selectMaxPages);
+  const [page, setPage] = useState<number>(Number(searchParams.get("page")));
 
   useEffect(() => {
     dispatch(
@@ -62,9 +66,11 @@ const SearchPage = () => {
         maxPrice: filterOptions.max,
         sortCriteria: filterOptions.sortCriteria,
         sortOrder: filterOptions.sortOrder,
+        limit: 3,
+        page,
       })
     );
-  }, [filterQuery, searchQuery, filterOptions]);
+  }, [filterQuery, searchQuery, filterOptions, page]);
 
   return (
     <div>
@@ -117,6 +123,12 @@ const SearchPage = () => {
                         />
                       ))}
                   </div>
+
+                  <SearchPagination
+                    page={page}
+                    maxPages={maxPages}
+                    setPage={setPage}
+                  />
                 </>
               ) : (
                 <div className="flex flex-col justify-center items-center h-[60%]">

@@ -10,6 +10,7 @@ const initialState = {
   filters: null,
   productLoading: false,
   product: {},
+  maxPages: null,
 };
 
 export const getSuggestionsAsync = createAsyncThunk(
@@ -36,19 +37,25 @@ export const searchProductsAsync = createAsyncThunk(
     minPrice,
     sortCriteria,
     sortOrder,
+    page,
+    limit,
   }: {
     searchQuery: string;
     minPrice?: number;
     maxPrice?: number;
     sortCriteria?: "price" | "rating";
     sortOrder?: "asc" | "desc";
+    page?: number;
+    limit?: number;
   }) => {
     const response = await searchProducts(
       searchQuery,
       minPrice,
       maxPrice,
       sortCriteria,
-      sortOrder
+      sortOrder,
+      page,
+      limit
     );
     return response;
   }
@@ -79,6 +86,7 @@ const productSlice = createSlice({
           state.filters = action.payload.filters;
           state.minPrice = action.payload.minPrice;
           state.maxPrice = action.payload.maxPrice;
+          state.maxPages = action.payload.maxPages;
         }
       })
       .addCase(searchProductsAsync.rejected, (state, action) => {
@@ -103,6 +111,7 @@ export const selectSuggestions = (state: any) => state.product.suggestions;
 export const selectSearchProductLoading = (state: any) => state.product.loading;
 export const selectMinPrice = (state: any) => state.product.minPrice;
 export const selectMaxPrice = (state: any) => state.product.maxPrice;
+export const selectMaxPages = (state: any) => state.product.maxPages;
 export const selectProducts = (state: any) => state.product.products;
 export const selectFilters = (state: any) => state.product.filters;
 export const selectProductLoading = (state: any) =>
