@@ -9,7 +9,11 @@ export function middleware(request: NextRequest) {
     pathname.startsWith("/signup") ||
     pathname.startsWith("/admin/login");
 
-  const isAdminPath = pathname.startsWith("/admin/dashboard");
+  const isAdminPath =
+    pathname.startsWith("/admin/dashboard") ||
+    pathname.startsWith("/admin/orders") ||
+    pathname.startsWith("/admin/products") ||
+    pathname.startsWith("/admin/customers");
 
   const cookie = request.cookies.get(TF_TOKEN)?.value;
   const isAdmin = request.cookies.get(ADMIN_TF_TOKEN)?.value;
@@ -26,7 +30,7 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 
-  if (!isPublicPath && !cookie) {
+  if (!isPublicPath && !cookie && !isAdmin) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 }
@@ -38,7 +42,6 @@ export const config = {
     "/order_details/:path*",
     "/login/:path*",
     "/signup/:path*",
-    "/admin/dashboard/:path*",
     "/admin/:path*",
   ],
 };

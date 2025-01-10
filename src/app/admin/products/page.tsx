@@ -702,7 +702,7 @@ const ProductsPage = () => {
     useState<string>("all products");
 
   const handleAddNewProduct = () => {
-    router.push("/admin/dashboard/products/add");
+    router.push("/admin/products/add");
   };
 
   const handleChangeCategory = (title: string) => {

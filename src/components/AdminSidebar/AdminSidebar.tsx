@@ -54,11 +54,11 @@ const data = [
         subItems: [
           {
             title: "All Products",
-            link: "/admin/dashboard/products",
+            link: "/admin/products",
           },
           {
             title: "Add Product",
-            link: "/admin/dashboard/products/add",
+            link: "/admin/products/add",
           },
         ],
       },

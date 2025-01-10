@@ -56,7 +56,9 @@ const SearchPage = () => {
   const products = useSelector(selectProducts);
   const filters = useSelector(selectFilters);
   const maxPages = useSelector(selectMaxPages);
-  const [page, setPage] = useState<number>(Number(searchParams.get("page")));
+  const [page, setPage] = useState<number>(
+    Number(searchParams.get("page")) || 1
+  );
 
   useEffect(() => {
     dispatch(

@@ -23,7 +23,7 @@ const CategoryShowcaseItem = ({ item }: { item: Category }) => {
 
           {item.subcategories && (
             <div
-              className={`${styles.options} rounded-md gap-1 flex flex-col py-2 bg-white`}
+              className={`${styles.options} rounded-md gap-1 flex flex-col py-2 bg-white z-[9999]`}
             >
               {item.subcategories.map((subItem) => {
                 return (
